@@ -1,0 +1,18 @@
+SET (CMAKE_CXX_FLAGS "-std=gnu++11 ${CMAKE_CXX_FLAGS}")
+SET (CMAKE_C_COMPILER "/usr/local/bin/gcc-8")
+SET (CMAKE_CXX_COMPILER "/usr/local/bin/g++-8")
+
+cmake_minimum_required (VERSION 3.0)
+project (IF97)
+
+list (APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
+message("Hello World" ${CMAKE_SOURCE_DIR})
+
+include_directories (${CMAKE_SOURCE_DIR})
+
+set (CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+AUX_SOURCE_DIRECTORY(${CMAKE_SOURCE_DIR} SRC_ROOT)
+
+ADD_EXECUTABLE (IF97 ${SRC_ROOT})

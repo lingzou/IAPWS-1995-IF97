@@ -128,4 +128,89 @@ static const double R1_ps_Coef[20][3] = {
 
 double R1_T_from_p_s(double p, double s);
 
+
+const static double R2_TStar = 540.0;  // K
+const static double R2_pStar = 1.0e6; // Pa
+
+static const double R2Coef0[9][2] = {
+  { 0, -0.96927686500217e1  },
+  { 1,  0.10086655968018e2  },
+  {-5, -0.56087911283020e-2 },
+  {-4,  0.71452738081455e-1 },
+  {-3, -0.40710498223928    },
+  {-2,  0.14240819171444e1  },
+  {-1, -0.43839511319450e1  },
+  { 2, -0.28408632460772    },
+  { 3,  0.21268463753307e-1 },
+};
+
+static const double R2Coefr[43][3] = {
+  {1,   0, -0.17731742473213e-2   },
+  {1,   1, -0.17834862292358e-1   },
+  {1,   2, -0.45996013696365e-1   },
+  {1,   3, -0.57581259083432e-1   },
+  {1,   6, -0.50325278727930e-1   },
+  {2,   1, -0.33032641670203e-4   },
+  {2,   2, -0.18948987516315e-3   },
+  {2,   4, -0.39392777243355e-2   },
+  {2,   7, -0.43797295650573e-1   },
+  {2,  36, -0.26674547914087e-4   },
+  {3,   0,  0.20481737692309e-7   },
+  {3,   1,  0.43870667284435e-6   },
+  {3,   3, -0.32277677238570e-4   },
+  {3,   6, -0.15033924542148e-2   },
+  {3,  35, -0.40668253562649e-1   },
+  {4,   1, -0.78847309559367e-9   },
+  {4,   2,  0.12790717852285e-7   },
+  {4,   3,  0.48225372718507e-6   },
+  {5,   7,  0.22922076337661e-5   },
+  {6,   3, -0.16714766451061e-10  },
+  {6,  16, -0.21171472321355e-2   },
+  {6,  35, -0.23895741934104e2    },
+  {7,   0, -0.59059564324270e-17  },
+  {7,  11, -0.12621808899101e-5   },
+  {7,  25, -0.38946842435739e-1   },
+  {8,   8,  0.11256211360459e-10  },
+  {8,  36, -0.82311340897998e1    },
+  {9,  13,  0.19809712802088e-7   },
+  {10,  4,  0.10406965210174e-18  },
+  {10, 10, -0.10234747095929e-12  },
+  {10, 14, -0.10018179379511e-8   },
+  {16, 29, -0.80882908646985e-10  },
+  {16, 50,  0.10693031879409      },
+  {18, 57, -0.33662250574171      },
+  {20, 20,  0.89185845355421e-24  },
+  {20, 35,  0.30629316876232e-12  },
+  {20, 48, -0.42002467698208e-5   },
+  {21, 21, -0.59056029685639e-25  },
+  {22, 53,  0.37826947613457e-5   },
+  {23, 39, -0.12768608934681e-14  },
+  {24, 26,  0.73087610595061e-28  },
+  {24, 40,  0.55414715350778e-16  },
+  {24, 58, -0.94369707241210e-6   }
+};
+
+double R2_gamma_0(double pi, double tau);
+double R2_gamma_r(double pi, double tau);
+
+double R2_gamma_0_pi(double pi, double tau);
+double R2_gamma_0_pi_pi(double pi, double tau);
+double R2_gamma_0_tau(double pi, double tau);
+double R2_gamma_0_tau_tau(double pi, double tau);
+double R2_gamma_0_pi_tau(double pi, double tau);
+
+double R2_gamma_r_pi(double pi, double tau);
+double R2_gamma_r_pi_pi(double pi, double tau);
+double R2_gamma_r_tau(double pi, double tau);
+double R2_gamma_r_tau_tau(double pi, double tau);
+double R2_gamma_r_pi_tau(double pi, double tau);
+
+double R2_specific_volume(double p, double T);
+double R2_specific_int_energy(double p, double T);
+double R2_specific_entropy(double p, double T);
+double R2_specific_enthalpy(double p, double T);
+double R2_cp(double p, double T);
+double R2_cv(double p, double T);
+double R2_sound_speed(double p, double T);
+
 #endif /*IF97_H*/

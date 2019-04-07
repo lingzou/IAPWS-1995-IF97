@@ -62,5 +62,36 @@ int main()
       << R1_T_from_p_s(80.0e6, 3e3) << std::endl;
   std::cout << std::endl;
 
+  // R2
+  std::cout << "v = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2_specific_volume(0.0035e6, 300) << " "
+      << R2_specific_volume(0.0035e6, 700) << " "
+      << R2_specific_volume(30.0e6, 700) << std::endl;
+  std::cout << "h = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2_specific_enthalpy(0.0035e6, 300) << " "
+      << R2_specific_enthalpy(0.0035e6, 700) << " "
+      << R2_specific_enthalpy(30.0e6, 700) << std::endl;
+
+  std::cout << "u = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2_specific_int_energy(0.0035e6, 300) << " "
+      << R2_specific_int_energy(0.0035e6, 700) << " "
+      << R2_specific_int_energy(30.0e6, 700) << std::endl;
+
+  std::cout << "s = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2_specific_entropy(0.0035e6, 300) << " "
+      << R2_specific_entropy(0.0035e6, 700) << " "
+      << R2_specific_entropy(30.0e6, 700) << std::endl;
+
+  std::cout << "cp = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2_cp(0.0035e6, 300) << " "
+      << R2_cp(0.0035e6, 700) << " "
+      << R2_cp(30.0e6, 700) << std::endl;
+
+  std::cout << "w = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2_sound_speed(0.0035e6, 300) << " "
+      << R2_sound_speed(0.0035e6, 700) << " "
+      << R2_sound_speed(30.0e6, 700) << std::endl;
+  std::cout << std::endl;
+
   return 0;
 }

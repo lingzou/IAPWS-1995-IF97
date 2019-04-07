@@ -532,3 +532,78 @@ double B2bc_h_from_p(double p)
 
   return (B2bc_n[3] + std::sqrt((pi - B2bc_n[4]) / B2bc_n[2])) * 1.0e3;
 }
+
+double R2a_T_from_p_h(double p, double h)
+{
+  double pi = p * 1.0e-6;
+  double eta = h / 2.0e6;
+
+  double theta = 0.0;
+  for (int i = 0; i < 34; i++)
+    theta += R2a_ph_Coef[i][2] * std::pow(pi, R2a_ph_Coef[i][0])
+            * std::pow(eta - 2.1, R2a_ph_Coef[i][1]);
+
+  return theta;  // theta = T
+}
+
+double R2b_T_from_p_h(double p, double h)
+{
+  double pi = p * 1.0e-6;
+  double eta = h / 2.0e6;
+
+  double theta = 0.0;
+  for (int i = 0; i < 38; i++)
+    theta += R2b_ph_Coef[i][2] * std::pow(pi - 2.0, R2b_ph_Coef[i][0])
+            * std::pow(eta - 2.6, R2b_ph_Coef[i][1]);
+
+  return theta;  // theta = T
+}
+
+double R2c_T_from_p_h(double p, double h)
+{
+  double pi = p * 1.0e-6;
+  double eta = h / 2.0e6;
+
+  double theta = 0.0;
+  for (int i = 0; i < 23; i++)
+    theta += R2c_ph_Coef[i][2] * std::pow(pi + 25.0, R2c_ph_Coef[i][0])
+            * std::pow(eta - 1.8, R2c_ph_Coef[i][1]);
+
+  return theta;  // theta = T
+}
+
+double R2a_T_from_p_s(double p, double s)
+{
+  double pi = p * 1.0e-6;
+  double sigma = s / 2.0e3;
+
+  double theta = 0.0;
+  for (int i = 0; i < 46; i ++)
+    theta += R2a_ps_Coef[i][2] * std::pow(pi, R2a_ps_Coef[i][0]) * std::pow(sigma - 2.0, R2a_ps_Coef[i][1]);
+
+  return theta; // theta = T
+}
+
+double R2b_T_from_p_s(double p, double s)
+{
+  double pi = p * 1.0e-6;
+  double sigma = s / 0.7853e3;
+
+  double theta = 0.0;
+  for (int i = 0; i < 44; i ++)
+    theta += R2b_ps_Coef[i][2] * std::pow(pi, R2b_ps_Coef[i][0]) * std::pow(10.0 - sigma, R2b_ps_Coef[i][1]);
+
+  return theta; // theta = T
+}
+
+double R2c_T_from_p_s(double p, double s)
+{
+  double pi = p * 1.0e-6;
+  double sigma = s / 2.9251e3;
+
+  double theta = 0.0;
+  for (int i = 0; i < 30; i ++)
+    theta += R2c_ps_Coef[i][2] * std::pow(pi, R2c_ps_Coef[i][0]) * std::pow(2.0 - sigma, R2c_ps_Coef[i][1]);
+
+  return theta; // theta = T
+}

@@ -129,5 +129,32 @@ int main()
   std::cout << "p_cal = " << std::setprecision(9) << B2bc_p_from_h(0.3516004323e7) << std::endl;
   std::cout << "h_cal = " << std::setprecision(9) << B2bc_h_from_p(100e6) << std::endl;
 
+  std::cout << std::endl;
+  // R2 backward (p, h)
+  std::cout << "T     = " << std::setprecision(8) << R2a_T_from_p_h(0.001e6, 3.0e6) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2a_T_from_p_h(3.0e6, 3.0e6) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2a_T_from_p_h(3.0e6, 4.0e6) << std::endl << std::endl;
+
+  std::cout << "T     = " << std::setprecision(8) << R2b_T_from_p_h(5.0e6, 3.5e6) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2b_T_from_p_h(5.0e6, 4.0e6) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2b_T_from_p_h(25.0e6, 3.5e6) << std::endl << std::endl;
+
+  std::cout << "T     = " << std::setprecision(8) << R2c_T_from_p_h(40.0e6, 2.7e6) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2c_T_from_p_h(60.0e6, 2.7e6) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2c_T_from_p_h(60.0e6, 3.2e6) << std::endl << std::endl;
+
+  // R2 backward (p, s)
+  std::cout << "T     = " << std::setprecision(8) << R2a_T_from_p_s(0.1e6, 7.5e3) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2a_T_from_p_s(0.1e6, 8.0e3) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2a_T_from_p_s(2.5e6, 8.0e3) << std::endl << std::endl;
+
+  std::cout << "T     = " << std::setprecision(8) << R2b_T_from_p_s(8.0e6, 6.0e3) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2b_T_from_p_s(8.0e6, 7.5e3) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2b_T_from_p_s(90.0e6, 6.0e3) << std::endl << std::endl;
+
+  std::cout << "T     = " << std::setprecision(8) << R2c_T_from_p_s(20.0e6, 5.75e3) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2c_T_from_p_s(80.0e6, 5.25e3) << std::endl;
+  std::cout << "T     = " << std::setprecision(8) << R2c_T_from_p_s(80.0e6, 5.75e3) << std::endl << std::endl;
+
   return 0;
 }

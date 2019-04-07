@@ -42,5 +42,25 @@ int main()
       << R1_sound_speed(3.0e6, 300) << " "
       << R1_sound_speed(80.0e6, 300) << " "
       << R1_sound_speed(3.0e6, 500) << std::endl;
+  std::cout << std::endl;
+
+  // R1 backward T(p,h)
+  std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R1_T_from_p_h(3.0e6, 500e3) << std::endl;
+  std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R1_T_from_p_h(80.0e6, 500e3) << std::endl;
+  std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R1_T_from_p_h(80.0e6, 1500e3) << std::endl;
+  std::cout << std::endl;
+
+  // R1 backward T(p,s)
+  std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R1_T_from_p_s(3.0e6, 0.5e3) << std::endl;
+  std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R1_T_from_p_s(80.0e6, 0.5e3) << std::endl;
+  std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R1_T_from_p_s(80.0e6, 3e3) << std::endl;
+  std::cout << std::endl;
+
   return 0;
 }

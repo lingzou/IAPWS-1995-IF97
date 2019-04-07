@@ -148,3 +148,27 @@ double R1_sound_speed(double p, double T)
   double val2 = gamma_pi * gamma_pi / (val * val / (tau * tau * R1_gamma_tau_tau(p, T)) - R1_gamma_pi_pi(p, T));
   return std::sqrt(val2 * Rgas * T);
 }
+
+double R1_T_from_p_h(double p, double h)
+{
+  double pi = p / 1.0e6;
+  double eta = h / 2500e3;
+
+  double sum = 0.0;
+  for (int i = 0; i < 20; i++)
+    sum += R1_ph_Coef[i][2] * std::pow(pi, R1_ph_Coef[i][0]) * std::pow(eta + 1.0, R1_ph_Coef[i][1]);
+
+  return sum;
+}
+
+double R1_T_from_p_s(double p, double s)
+{
+  double pi = p / 1.0e6;
+  double sigma = s / 1.0e3;
+
+  double sum = 0.0;
+  for (int i = 0; i < 20; i++)
+    sum += R1_ps_Coef[i][2] * std::pow(pi, R1_ps_Coef[i][0]) * std::pow(sigma + 2.0, R1_ps_Coef[i][1]);
+
+  return sum;
+}

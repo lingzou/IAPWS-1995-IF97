@@ -213,4 +213,66 @@ double R2_cp(double p, double T);
 double R2_cv(double p, double T);
 double R2_sound_speed(double p, double T);
 
+static const double R2MetaCoef0[9][2] = {
+  { 0, -0.96937268393049e1  },
+  { 1,  0.10087275970006e2  },
+  {-5, -0.56087911283020e-2 },
+  {-4,  0.71452738081455e-1 },
+  {-3, -0.40710498223928    },
+  {-2,  0.14240819171444e1  },
+  {-1, -0.43839511319450e1  },
+  { 2, -0.28408632460772    },
+  { 3,  0.21268463753307e-1 },
+};
+
+static const double R2MetaCoefr[13][3] = {
+  {1,   0, -0.73362260186506e-2   },
+  {1,   2, -0.88223831943146e-1   },
+  {1,   5, -0.72334555213245e-1   },
+  {1,  11, -0.40813178534455e-2   },
+  {2,   1,  0.20097803380207e-2   },
+  {2,   7, -0.53045921898642e-1   },
+  {2,  16, -0.76190409086970e-2   },
+  {3,   4, -0.63498037657313e-2   },
+  {3,  16, -0.86043093028588e-1   },
+  {4,   7,  0.75321581522770e-2   },
+  {4,  10, -0.79238375446139e-2   },
+  {5,   9, -0.22888160778447e-3   },
+  {5,  10, -0.26456501482810e-2   }
+};
+
+double R2Meta_gamma_0(double pi, double tau);
+double R2Meta_gamma_r(double pi, double tau);
+
+double R2Meta_gamma_0_pi(double pi, double tau);
+double R2Meta_gamma_0_pi_pi(double pi, double tau);
+double R2Meta_gamma_0_tau(double pi, double tau);
+double R2Meta_gamma_0_tau_tau(double pi, double tau);
+double R2Meta_gamma_0_pi_tau(double pi, double tau);
+
+double R2Meta_gamma_r_pi(double pi, double tau);
+double R2Meta_gamma_r_pi_pi(double pi, double tau);
+double R2Meta_gamma_r_tau(double pi, double tau);
+double R2Meta_gamma_r_tau_tau(double pi, double tau);
+double R2Meta_gamma_r_pi_tau(double pi, double tau);
+
+double R2Meta_specific_volume(double p, double T);
+double R2Meta_specific_int_energy(double p, double T);
+double R2Meta_specific_entropy(double p, double T);
+double R2Meta_specific_enthalpy(double p, double T);
+double R2Meta_cp(double p, double T);
+double R2Meta_cv(double p, double T);
+double R2Meta_sound_speed(double p, double T);
+
+static const double B2bc_n[5] = {
+  0.90584278514723e3,
+ -0.67955786399241e0,
+  0.12809002730136e-3,
+  0.26526571908428e4,
+  0.45257578905948e1
+};
+
+double B2bc_p_from_h(double h);
+double B2bc_h_from_p(double p);
+
 #endif /*IF97_H*/

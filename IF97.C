@@ -345,3 +345,190 @@ double R2_sound_speed(double p, double T)
 
   return std::sqrt(w2);
 }
+
+// R2 Meta
+double R2Meta_gamma_0(double pi, double tau)
+{
+  double gamma_0 = std::log(pi);
+  for (int i = 0; i < 9; i++)
+    gamma_0 += R2MetaCoef0[i][1] * std::pow(tau, R2MetaCoef0[i][0]);
+
+  return gamma_0;
+}
+
+double R2Meta_gamma_r(double pi, double tau)
+{
+  double gamma_r = 0;
+  for (int i = 0; i < 13; i++)
+    gamma_r += R2MetaCoefr[i][2] * std::pow(pi, R2MetaCoefr[i][0]) * std::pow(tau - 0.5, R2MetaCoefr[i][1]);
+
+  return gamma_r;
+}
+
+double R2Meta_gamma_0_pi(double pi, double /*tau*/)
+{
+  return 1.0 / pi;
+}
+
+double R2Meta_gamma_0_pi_pi(double pi, double tau)
+{
+  return -1.0 / (pi * pi);
+}
+double R2Meta_gamma_0_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 9; i++)
+    der += R2MetaCoef0[i][1] * R2MetaCoef0[i][0] * std::pow(tau, R2MetaCoef0[i][0] - 1.0);
+
+  return der;
+}
+
+double R2Meta_gamma_0_tau_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 9; i++)
+    der += R2MetaCoef0[i][1] * R2MetaCoef0[i][0] * (R2MetaCoef0[i][0] - 1.0) * std::pow(tau, R2MetaCoef0[i][0] - 2.0);
+
+  return der;
+}
+
+double R2Meta_gamma_0_pi_tau(double /*pi*/, double /*tau*/)
+{
+  return 0.0;
+}
+
+double R2Meta_gamma_r_pi(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 13; i++)
+    der += R2MetaCoefr[i][2] * R2MetaCoefr[i][0] * std::pow(pi, R2MetaCoefr[i][0] - 1.0)
+            * std::pow(tau - 0.5, R2MetaCoefr[i][1]);
+
+  return der;
+}
+
+double R2Meta_gamma_r_pi_pi(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 13; i++)
+    der += R2MetaCoefr[i][2] * R2MetaCoefr[i][0] * (R2MetaCoefr[i][0] - 1.0 )* std::pow(pi, R2MetaCoefr[i][0] - 2.0)
+            * std::pow(tau - 0.5, R2MetaCoefr[i][1]);
+
+  return der;
+}
+
+double R2Meta_gamma_r_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 13; i++)
+    der += R2MetaCoefr[i][2] * std::pow(pi, R2MetaCoefr[i][0]) * R2MetaCoefr[i][1]
+            * std::pow(tau - 0.5, R2MetaCoefr[i][1] - 1.0);
+
+  return der;
+}
+double R2Meta_gamma_r_tau_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 13; i++)
+    der += R2MetaCoefr[i][2] * std::pow(pi, R2MetaCoefr[i][0]) * R2MetaCoefr[i][1] * (R2MetaCoefr[i][1] - 1.0)
+            * std::pow(tau - 0.5, R2MetaCoefr[i][1] - 2.0);
+
+  return der;
+}
+
+double R2Meta_gamma_r_pi_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 13; i++)
+    der += R2MetaCoefr[i][2] * R2MetaCoefr[i][0] * std::pow(pi, R2MetaCoefr[i][0] - 1.0)
+            * R2MetaCoefr[i][1] * std::pow(tau - 0.5, R2MetaCoefr[i][1] - 1.0);
+
+  return der;
+}
+
+double R2Meta_specific_volume(double p, double T)
+{
+  double pi = p / R2_pStar;
+  double tau = R2_TStar / T;
+
+  return pi * (R2Meta_gamma_0_pi(pi, tau) + R2Meta_gamma_r_pi(pi, tau)) * Rgas * T / p;
+}
+
+double R2Meta_specific_int_energy(double p, double T)
+{
+  double pi = p / R2_pStar;
+  double tau = R2_TStar / T;
+
+  double val = tau * (R2Meta_gamma_0_tau(pi, tau) + R2Meta_gamma_r_tau(pi, tau))
+              - pi * (R2Meta_gamma_0_pi(pi, tau)  + R2Meta_gamma_r_pi(pi, tau));
+
+  return val * Rgas * T;
+}
+
+double R2Meta_specific_entropy(double p, double T)
+{
+  double pi = p / R2_pStar;
+  double tau = R2_TStar / T;
+
+  double val = tau * (R2Meta_gamma_0_tau(pi, tau) + R2Meta_gamma_r_tau(pi, tau))
+              - (R2Meta_gamma_0(pi, tau)  + R2Meta_gamma_r(pi, tau));
+
+  return val * Rgas;
+}
+
+double R2Meta_specific_enthalpy(double p, double T)
+{
+  double pi = p / R2_pStar;
+  double tau = R2_TStar / T;
+
+  return tau * (R2Meta_gamma_0_tau(pi, tau) + R2Meta_gamma_r_tau(pi, tau)) * Rgas * T;
+}
+
+double R2Meta_cp(double p, double T)
+{
+  double pi = p / R2_pStar;
+  double tau = R2_TStar / T;
+
+  return -tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) + R2Meta_gamma_r_tau_tau(pi, tau)) * Rgas;
+}
+
+double R2Meta_cv(double p, double T)
+{
+  double pi = p / R2_pStar;
+  double tau = R2_TStar / T;
+
+  double cp = -tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) * R2Meta_gamma_r_tau_tau(pi, tau)) * Rgas;
+  double val1 = 1.0 + pi * R2Meta_gamma_r_pi(pi, tau) - tau * pi * R2Meta_gamma_r_pi_tau(pi, tau);
+  double val2 = 1.0 - pi * pi * R2Meta_gamma_r_pi_pi(pi, tau);
+
+  return cp - val1 * val1 / val2;
+}
+
+double R2Meta_sound_speed(double p, double T)
+{
+  double pi = p / R2_pStar;
+  double tau = R2_TStar / T;
+
+  double gamma_r_pi = R2Meta_gamma_r_pi(pi, tau);
+  double val1 = 1.0 + 2.0 * pi * R2Meta_gamma_r_pi(pi, tau) + pi * pi * gamma_r_pi * gamma_r_pi;
+  double val2 = 1.0 - pi * pi * R2Meta_gamma_r_pi_pi(pi, tau);
+  double val3 = 1.0 + pi * R2Meta_gamma_r_pi(pi, tau) - tau * pi * R2Meta_gamma_r_pi_tau(pi, tau);
+  double val4 = tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) + R2Meta_gamma_r_tau_tau(pi, tau));
+
+  double w2 = val1 / (val2 + val3 * val3 / val4) * Rgas * T;
+
+  return std::sqrt(w2);
+}
+
+double B2bc_p_from_h(double h)
+{
+  double eta = h * 1.0e-3;
+
+  return (B2bc_n[0] + B2bc_n[1] * eta + B2bc_n[2] * eta * eta) * 1.0e6;
+}
+double B2bc_h_from_p(double p)
+{
+  double pi = p * 1.0e-6;
+
+  return (B2bc_n[3] + std::sqrt((pi - B2bc_n[4]) / B2bc_n[2])) * 1.0e3;
+}

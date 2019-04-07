@@ -93,5 +93,41 @@ int main()
       << R2_sound_speed(30.0e6, 700) << std::endl;
   std::cout << std::endl;
 
+  // R2Meta
+  std::cout << "v = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2Meta_specific_volume(1.0e6, 450) << " "
+      << R2Meta_specific_volume(1.0e6, 440) << " "
+      << R2Meta_specific_volume(1.5e6, 450) << std::endl;
+  std::cout << "h = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2Meta_specific_enthalpy(1.0e6, 450) << " "
+      << R2Meta_specific_enthalpy(1.0e6, 440) << " "
+      << R2Meta_specific_enthalpy(1.5e6, 450) << std::endl;
+
+  std::cout << "u = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2Meta_specific_int_energy(1.0e6, 450) << " "
+      << R2Meta_specific_int_energy(1.0e6, 440) << " "
+      << R2Meta_specific_int_energy(1.5e6, 450) << std::endl;
+
+  std::cout << "s = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2Meta_specific_entropy(1.0e6, 450) << " "
+      << R2Meta_specific_entropy(1.0e6, 440) << " "
+      << R2Meta_specific_entropy(1.5e6, 450) << std::endl;
+
+  std::cout << "cp = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2Meta_cp(1.0e6, 450) << " "
+      << R2Meta_cp(1.0e6, 440) << " "
+      << R2Meta_cp(1.5e6, 450) << std::endl;
+
+  std::cout << "w = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R2Meta_sound_speed(1.0e6, 450) << " "
+      << R2Meta_sound_speed(1.0e6, 440) << " "
+      << R2Meta_sound_speed(1.5e6, 450) << std::endl;
+  std::cout << std::endl;
+
+  std::cout << "p     = " << std::setprecision(9) << 100e6 << std::endl;
+  std::cout << "h     = " << std::setprecision(9) << 0.3516004323e7 << std::endl;
+  std::cout << "p_cal = " << std::setprecision(9) << B2bc_p_from_h(0.3516004323e7) << std::endl;
+  std::cout << "h_cal = " << std::setprecision(9) << B2bc_h_from_p(100e6) << std::endl;
+
   return 0;
 }

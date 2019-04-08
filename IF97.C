@@ -764,3 +764,180 @@ double T_sat_from_p(double p)
   double val = (R4Coef[9] + D) * (R4Coef[9] + D) - 4.0 * (R4Coef[8] + R4Coef[9] * D);
   return 0.5 * (R4Coef[9] + D - std::sqrt(val));
 }
+
+double R5_gamma_0(double pi, double tau)
+{
+  double gamma = std::log(pi);
+
+  for (int i = 0; i < 6; i++)
+    gamma += R5Coef0[i][1] * std::pow(tau, R5Coef0[i][0]);
+
+  return gamma;
+}
+
+double R5_gamma_r(double pi, double tau)
+{
+  double gamma_r = 0.0;
+  for (int i = 0; i < 6; i++)
+    gamma_r += R5Coefr[i][2] * std::pow(pi, R5Coefr[i][0]) * std::pow(tau, R5Coefr[i][1]);
+
+  return gamma_r;
+}
+
+double R5_gamma_0_pi(double pi, double /*tau*/)
+{
+  return 1.0 / pi;
+}
+
+double R5_gamma_0_pi_pi(double pi, double /*tau*/)
+{
+  return -1.0 / (pi * pi);
+}
+
+double R5_gamma_0_tau(double /*pi*/, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 6; i++)
+    der += R5Coef0[i][1] * R5Coef0[i][0] * std::pow(tau, R5Coef0[i][0] - 1.0);
+
+  return der;
+}
+
+double R5_gamma_0_tau_tau(double /*pi*/, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 6; i++)
+    der += R5Coef0[i][1] * R5Coef0[i][0] * (R5Coef0[i][0] - 1.0)
+            * std::pow(tau, R5Coef0[i][0] - 2.0);
+
+  return der;
+}
+
+double R5_gamma_0_pi_tau(double /*pi*/, double /*tau*/)
+{
+  return 0.0;
+}
+
+double R5_gamma_r_pi(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 6; i++)
+    der += R5Coefr[i][2] * R5Coefr[i][0] * std::pow(pi, R5Coefr[i][0] - 1.0)
+            * std::pow(tau, R5Coefr[i][1]);
+
+  return der;
+}
+
+double R5_gamma_r_pi_pi(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 6; i++)
+    der += R5Coefr[i][2] * R5Coefr[i][0] * (R5Coefr[i][0] - 1.0) * std::pow(pi, R5Coefr[i][0] - 2.0)
+            * std::pow(tau, R5Coefr[i][1]);
+
+  return der;
+}
+
+double R5_gamma_r_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 6; i++)
+    der += R5Coefr[i][2] * std::pow(pi, R5Coefr[i][0]) * R5Coefr[i][1]
+            * std::pow(tau, R5Coefr[i][1] - 1.0);
+
+  return der;
+}
+
+double R5_gamma_r_tau_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 6; i++)
+    der += R5Coefr[i][2] * std::pow(pi, R5Coefr[i][0]) * R5Coefr[i][1]
+            * (R5Coefr[i][1] - 1.0) * std::pow(tau, R5Coefr[i][1] - 2.0);
+
+  return der;
+}
+
+double R5_gamma_r_pi_tau(double pi, double tau)
+{
+  double der = 0.0;
+  for (int i = 0; i < 6; i++)
+    der += R5Coefr[i][2] * R5Coefr[i][0] * std::pow(pi, R5Coefr[i][0] - 1.0)
+            * R5Coefr[i][1] * std::pow(tau, R5Coefr[i][1] - 1.0);
+
+  return der;
+}
+
+double R5_specific_volume(double p, double T)
+{
+  double pi = p * 1.0e-6;
+  double tau = 1000.0 / T;
+
+  return pi * (R5_gamma_0_pi(pi, tau) + R5_gamma_r_pi(pi, tau)) * Rgas * T / p;
+}
+
+double R5_specific_int_energy(double p, double T)
+{
+  double pi = p * 1.0e-6;
+  double tau = 1000.0 / T;
+
+  double val = tau * (R5_gamma_0_tau(pi, tau) + R5_gamma_r_tau(pi, tau))
+              - pi * (R5_gamma_0_pi(pi, tau)  + R5_gamma_r_pi(pi, tau));
+
+  return val * Rgas * T;
+}
+
+double R5_specific_entropy(double p, double T)
+{
+  double pi = p * 1.0e-6;
+  double tau = 1000.0 / T;
+
+  double val = tau * (R5_gamma_0_tau(pi, tau) + R5_gamma_r_tau(pi, tau))
+              - (R5_gamma_0(pi, tau)  + R5_gamma_r(pi, tau));
+
+  return val * Rgas;
+}
+
+double R5_specific_enthalpy(double p, double T)
+{
+  double pi = p * 1.0e-6;
+  double tau = 1000.0 / T;
+
+  return tau * (R5_gamma_0_tau(pi, tau) + R5_gamma_r_tau(pi, tau)) * Rgas * T;
+}
+
+double R5_cp(double p, double T)
+{
+  double pi = p * 1.0e-6;
+  double tau = 1000.0 / T;
+
+  return -tau * tau * (R5_gamma_0_tau_tau(pi, tau) + R5_gamma_r_tau_tau(pi, tau)) * Rgas;
+}
+
+double R5_cv(double p, double T)
+{
+  double pi = p * 1.0e-6;
+  double tau = 1000.0 / T;
+
+  double cp = -tau * tau * (R5_gamma_0_tau_tau(pi, tau) * R5_gamma_r_tau_tau(pi, tau)) * Rgas;
+  double val1 = 1.0 + pi * R5_gamma_r_pi(pi, tau) - tau * pi * R5_gamma_r_pi_tau(pi, tau);
+  double val2 = 1.0 - pi * pi * R5_gamma_r_pi_pi(pi, tau);
+
+  return cp - val1 * val1 / val2;
+}
+
+double R5_sound_speed(double p, double T)
+{
+  double pi = p * 1.0e-6;
+  double tau = 1000.0 / T;
+
+  double gamma_r_pi = R5_gamma_r_pi(pi, tau);
+  double val1 = 1.0 + 2.0 * pi * R5_gamma_r_pi(pi, tau) + pi * pi * gamma_r_pi * gamma_r_pi;
+  double val2 = 1.0 - pi * pi * R5_gamma_r_pi_pi(pi, tau);
+  double val3 = 1.0 + pi * R5_gamma_r_pi(pi, tau) - tau * pi * R5_gamma_r_pi_tau(pi, tau);
+  double val4 = tau * tau * (R5_gamma_0_tau_tau(pi, tau) + R5_gamma_r_tau_tau(pi, tau));
+
+  double w2 = val1 / (val2 + val3 * val3 / val4) * Rgas * T;
+
+  return std::sqrt(w2);
+}

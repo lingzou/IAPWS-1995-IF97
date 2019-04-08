@@ -596,4 +596,46 @@ static const double R4Coef[10] = {
 double p_sat_from_T(double T);
 double T_sat_from_p(double p);
 
+// Region 5
+static const double R5Coef0[6][2] = {
+  { 0, -0.13179983674201e2  },
+  { 1,  0.68540841634434e1  },
+  {-3, -0.24805148933466e-1 },
+  {-2,  0.36901534980333    },
+  {-1, -0.31161318213925e1  },
+  { 2, -0.32961626538917    }
+};
+
+static const double R5Coefr[6][3] = {
+  {1, 1,  0.15736404855259e-2},
+  {1, 2,  0.90153761673944e-3},
+  {1, 3, -0.50270077677648e-2},
+  {2, 3,  0.22440037409485e-5},
+  {2, 9, -0.41163275453471e-5},
+  {3, 7,  0.37919454822955e-7}
+};
+
+double R5_gamma_0(double pi, double tau);
+double R5_gamma_r(double pi, double tau);
+
+double R5_gamma_0_pi(double pi, double tau);
+double R5_gamma_0_pi_pi(double pi, double tau);
+double R5_gamma_0_tau(double pi, double tau);
+double R5_gamma_0_tau_tau(double pi, double tau);
+double R5_gamma_0_pi_tau(double pi, double tau);
+
+double R5_gamma_r_pi(double pi, double tau);
+double R5_gamma_r_pi_pi(double pi, double tau);
+double R5_gamma_r_tau(double pi, double tau);
+double R5_gamma_r_tau_tau(double pi, double tau);
+double R5_gamma_r_pi_tau(double pi, double tau);
+
+double R5_specific_volume(double p, double T);
+double R5_specific_int_energy(double p, double T);
+double R5_specific_entropy(double p, double T);
+double R5_specific_enthalpy(double p, double T);
+double R5_cp(double p, double T);
+double R5_cv(double p, double T);
+double R5_sound_speed(double p, double T);
+
 #endif /*IF97_H*/

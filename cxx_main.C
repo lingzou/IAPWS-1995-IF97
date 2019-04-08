@@ -195,5 +195,37 @@ int main()
   std::cout << "T_sat     = " << std::setprecision(8) << T_sat_from_p(1.0e6) << std::endl;
   std::cout << "T_sat     = " << std::setprecision(8) << T_sat_from_p(10.0e6) << std::endl << std::endl;
 
+  // R5
+  // R5
+  std::cout << "v = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R5_specific_volume(0.5e6, 1500) << " "
+      << R5_specific_volume(30.0e6, 1500) << " "
+      << R5_specific_volume(30.0e6, 2000) << std::endl;
+  std::cout << "h = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R5_specific_enthalpy(0.5e6, 1500) << " "
+      << R5_specific_enthalpy(30.0e6, 1500) << " "
+      << R5_specific_enthalpy(30.0e6, 2000) << std::endl;
+
+  std::cout << "u = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R5_specific_int_energy(0.5e6, 1500) << " "
+      << R5_specific_int_energy(30.0e6, 1500) << " "
+      << R5_specific_int_energy(30.0e6, 2000) << std::endl;
+
+  std::cout << "s = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R5_specific_entropy(0.5e6, 1500) << " "
+      << R5_specific_entropy(30.0e6, 1500) << " "
+      << R5_specific_entropy(30.0e6, 2000) << std::endl;
+
+  std::cout << "cp = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R5_cp(0.5e6, 1500) << " "
+      << R5_cp(30.0e6, 1500) << " "
+      << R5_cp(30.0e6, 2000) << std::endl;
+
+  std::cout << "w = " << std::scientific << std::setprecision(8) << std::setw(16)
+      << R5_sound_speed(0.5e6, 1500) << " "
+      << R5_sound_speed(30.0e6, 1500) << " "
+      << R5_sound_speed(30.0e6, 2000) << std::endl;
+  std::cout << std::endl;
+  
   return 0;
 }

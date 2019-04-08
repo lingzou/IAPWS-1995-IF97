@@ -579,4 +579,21 @@ double R3_cv(double rho, double T);
 double R3_cp(double rho, double T);
 double R3_sound_speed(double rho, double T);
 
+// Region 4
+static const double R4Coef[10] = {
+  0.11670521452767e4,
+ -0.72421316703206e6,
+ -0.17073846940092e2,
+  0.12020824702470e5,
+ -0.32325550322333e7,
+  0.14915108613530e2,
+ -0.48232657361591e4,
+  0.40511340542057e6,
+ -0.23855557567849,
+  0.65017534844798e3
+};
+
+double p_sat_from_T(double T);
+double T_sat_from_p(double p);
+
 #endif /*IF97_H*/

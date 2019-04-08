@@ -186,6 +186,14 @@ int main()
       << R3_sound_speed(200, 650) << " "
       << R3_sound_speed(500, 750) << std::endl;
   std::cout << std::endl;
-  
+
+  std::cout << "p_sat     = " << std::setprecision(8) << p_sat_from_T(300.0) << std::endl;
+  std::cout << "p_sat     = " << std::setprecision(8) << p_sat_from_T(500.0) << std::endl;
+  std::cout << "p_sat     = " << std::setprecision(8) << p_sat_from_T(600.0) << std::endl << std::endl;
+
+  std::cout << "T_sat     = " << std::setprecision(8) << T_sat_from_p(0.1e6) << std::endl;
+  std::cout << "T_sat     = " << std::setprecision(8) << T_sat_from_p(1.0e6) << std::endl;
+  std::cout << "T_sat     = " << std::setprecision(8) << T_sat_from_p(10.0e6) << std::endl << std::endl;
+
   return 0;
 }

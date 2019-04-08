@@ -737,3 +737,30 @@ double R3_sound_speed(double rho, double T)
 
   return std::sqrt(val * Rgas * T);
 }
+
+double p_sat_from_T(double T)
+{
+  double theta = T + R4Coef[8] / (T - R4Coef[9]);
+  double theta2 = theta * theta;
+  double A = theta2 + R4Coef[0] * theta + R4Coef[1];
+  double B = R4Coef[2] * theta2 + R4Coef[3] * theta + R4Coef[4];
+  double C = R4Coef[5] * theta2 + R4Coef[6] * theta + R4Coef[7];
+
+  double val = 2.0 * C / (-B + std::sqrt(B * B - 4.0 * A * C));
+
+  return std::pow(val, 4) * 1.0e6;
+}
+
+double T_sat_from_p(double p)
+{
+  double beta = std::pow(p * 1.0e-6, 0.25);
+  double beta2 = beta * beta;
+
+  double E = beta2 + R4Coef[2] * beta + R4Coef[5];
+  double F = R4Coef[0] * beta2 + R4Coef[3] * beta + R4Coef[6];
+  double G = R4Coef[1] * beta2 + R4Coef[4] * beta + R4Coef[7];
+  double D = 2.0 * G / (-F - std::sqrt(F * F - 4 * E * G));
+
+  double val = (R4Coef[9] + D) * (R4Coef[9] + D) - 4.0 * (R4Coef[8] + R4Coef[9] * D);
+  return 0.5 * (R4Coef[9] + D - std::sqrt(val));
+}

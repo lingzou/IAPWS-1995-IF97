@@ -607,3 +607,133 @@ double R2c_T_from_p_s(double p, double s)
 
   return theta; // theta = T
 }
+
+double R3_phi(double delta, double tau)
+{
+  double phi = R3Coef[0][2] * std::log(delta);
+
+  for (int i = 1; i < 40; i++)
+    phi += R3Coef[i][2] * std::pow(delta, R3Coef[i][0]) * std::pow(tau, R3Coef[i][1]);
+
+  return phi;
+}
+
+double R3_phi_delta(double delta, double tau)
+{
+  double der = R3Coef[0][2] / delta;
+
+  for (int i = 1; i < 40; i++)
+    der += R3Coef[i][2] * R3Coef[i][0] * std::pow(delta, R3Coef[i][0] - 1.0)
+            * std::pow(tau, R3Coef[i][1]);
+
+  return der;
+}
+
+double R3_phi_delta_delta(double delta, double tau)
+{
+  double der = -R3Coef[0][2] / (delta * delta);
+
+  for (int i = 1; i < 40; i++)
+    der += R3Coef[i][2] * R3Coef[i][0] * (R3Coef[i][0] - 1.0) * std::pow(delta, R3Coef[i][0] - 2.0)
+            * std::pow(tau, R3Coef[i][1]);
+
+  return der;
+}
+
+double R3_phi_tau(double delta, double tau)
+{
+  double der = 0.0;
+
+  for (int i = 1; i < 40; i++)
+    der += R3Coef[i][2] * std::pow(delta, R3Coef[i][0]) * R3Coef[i][1]
+            * std::pow(tau, R3Coef[i][1] - 1.0);
+
+  return der;
+}
+
+double R3_phi_tau_tau(double delta, double tau)
+{
+  double der = 0.0;
+
+  for (int i = 1; i < 40; i++)
+    der += R3Coef[i][2] * std::pow(delta, R3Coef[i][0]) * R3Coef[i][1] * (R3Coef[i][1] - 1.0)
+            * std::pow(tau, R3Coef[i][1] - 2.0);
+
+  return der;
+}
+double R3_phi_delta_tau(double delta, double tau)
+{
+  double der = 0.0;
+
+  for (int i = 1; i < 40; i++)
+    der += R3Coef[i][2] * R3Coef[i][0] * std::pow(delta, R3Coef[i][0] - 1.0)
+            * R3Coef[i][1] * std::pow(tau, R3Coef[i][1] - 1.0);
+
+  return der;
+}
+
+double R3_p(double rho, double T)
+{
+  double delta = rho / Rhocrit;
+  double tau = Tcrit / T;
+
+  return delta * R3_phi_delta(delta, tau) * rho * Rgas * T;
+}
+
+double R3_specific_int_energy(double rho, double T)
+{
+  double delta = rho / Rhocrit;
+  double tau = Tcrit / T;
+
+  return tau * R3_phi_tau(delta, tau) * Rgas * T;
+}
+
+double R3_specific_entropy(double rho, double T)
+{
+  double delta = rho / Rhocrit;
+  double tau = Tcrit / T;
+
+  return (tau * R3_phi_tau(delta, tau) - R3_phi(delta, tau)) * Rgas;
+}
+
+double R3_specific_enthalpy(double rho, double T)
+{
+  double delta = rho / Rhocrit;
+  double tau = Tcrit / T;
+
+  return (tau * R3_phi_tau(delta, tau) + delta * R3_phi_delta(delta, tau)) * Rgas * T;
+}
+
+double R3_cv(double rho, double T)
+{
+  double delta = rho / Rhocrit;
+  double tau = Tcrit / T;
+
+  return - tau * tau * R3_phi_tau_tau(delta, tau) * Rgas;
+}
+
+double R3_cp(double rho, double T)
+{
+  double delta = rho / Rhocrit;
+  double tau = Tcrit / T;
+
+  double val0 = - tau * tau * R3_phi_tau_tau(delta, tau);
+
+  double val1 = delta * R3_phi_delta(delta, tau) - delta * tau * R3_phi_delta_tau(delta, tau);
+  double val2 = 2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau);
+
+  return (val0 + val1 * val1 / val2) * Rgas;
+}
+
+double R3_sound_speed(double rho, double T)
+{
+  double delta = rho / Rhocrit;
+  double tau = Tcrit / T;
+
+  double val1 = delta * R3_phi_delta(delta, tau) - delta * tau * R3_phi_delta_tau(delta, tau);
+  double val2 = 2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau);
+
+  double val = val2 - val1 * val1 / (tau * tau * R3_phi_tau_tau(delta, tau));
+
+  return std::sqrt(val * Rgas * T);
+}

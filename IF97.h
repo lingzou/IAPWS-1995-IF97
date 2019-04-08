@@ -520,4 +520,63 @@ static const double R2c_ps_Coef[30][3] = {
 
 double R2c_T_from_p_s(double p, double s);
 
+// Region 3
+static const double R3Coef[40][3] = {
+  {0,   0,    0.10658070028513e1  },
+  {0,   0,   -0.15732845290239e2  },
+  {0,   1,    0.20944396974307e2  },
+  {0,   2,   -0.76867707878716e1  },
+  {0,   7,    0.26185947787954e1  },
+  {0,  10,   -0.28080781148620e1  },
+  {0,  12,    0.12053369696517e1  },
+  {0,  23,   -0.84566812812502e-2 },
+  {1,   2,   -0.12654315477714e1  },
+  {1,   6,   -0.11524407806681e1  },
+  {1,  15,    0.88521043984318    },
+  {1,  17,   -0.64207765181607    },
+  {2,   0,    0.38493460186671    },
+  {2,   2,   -0.85214708824206    },
+  {2,   6,    0.48972281541877e1  },
+  {2,   7,   -0.30502617256965e1  },
+  {2,  22,    0.39420536879154e-1 },
+  {2,  26,    0.12558408424308    },
+  {3,   0,   -0.27999329698710    },
+  {3,   2,    0.13899799569460e1  },
+  {3,   4,   -0.20189915023570e1  },
+  {3,  16,   -0.82147637173963e-2 },
+  {3,  26,   -0.47596035734923    },
+  {4,   0,    0.43984074473500e-1 },
+  {4,   2,   -0.44476435428739    },
+  {4,   4,    0.90572070719733    },
+  {4,  26,    0.70522450087967    },
+  {5,   1,    0.10770512626332    },
+  {5,   3,   -0.32913623258954    },
+  {5,  26,   -0.50871062041158    },
+  {6,   0,   -0.22175400873096e-1 },
+  {6,   2,    0.94260751665092e-1 },
+  {6,  26,    0.16436278447961    },
+  {7,   2,   -0.13503372241348e-1 },
+  {8,  26,   -0.14834345352472e-1 },
+  {9,   2,    0.57922953628084e-3 },
+  {9,  26,    0.32308904703711e-2 },
+  {10,  0,    0.80964802996215e-4 },
+  {10,  1,   -0.16557679795037e-3 },
+  {11, 26,   -0.44923899061815e-4 },
+};
+
+double R3_phi(double delta, double tau);
+double R3_phi_delta(double delta, double tau);
+double R3_phi_delta_delta(double delta, double tau);
+double R3_phi_tau(double delta, double tau);
+double R3_phi_tau_tau(double delta, double tau);
+double R3_phi_delta_tau(double delta, double tau);
+
+double R3_p(double rho, double T);
+double R3_specific_int_energy(double rho, double T);
+double R3_specific_entropy(double rho, double T);
+double R3_specific_enthalpy(double rho, double T);
+double R3_cv(double rho, double T);
+double R3_cp(double rho, double T);
+double R3_sound_speed(double rho, double T);
+
 #endif /*IF97_H*/

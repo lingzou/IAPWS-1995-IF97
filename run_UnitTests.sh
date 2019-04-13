@@ -1,20 +1,41 @@
 #!/bin/bash
-#"./IF97" -test_all
 declare -a unit_tests=("B23" "R1" "R1_PH" "R1_PS" "R2" "R2Meta" "B2bc" "R2_PH" "R2_PS" "R3" "R4" "R5")
-for i in "${unit_tests[@]}"
+ALL_CASES_SUCCEEDED=true
+result=""
+
+# remove already existing unit tests output files
+for case in "${unit_tests[@]}"
 do
-    cmp -s UnitTest/$i.dat UnitTest/expected/$i.dat
+    rm UnitTest/$case.dat
+done
+
+# run all cases
+"./IF97" -test_all
+
+# do diff for each case
+for case in "${unit_tests[@]}"
+do
+    temp=$(diff UnitTest/$case.dat UnitTest/expected/$case.dat)
     error=$?
     if [ $error -eq 0 ]
     then
-       #echo "R1 and R1 are the same file"
-       printf "%6b" $i "................" "\e[0;32m[OK]\e[m" "\n"
+       printf "%6b" $case "................" "\e[0;32m[OK]\e[m" "\n"
     elif [ $error -eq 1 ]
     then
-       #echo "R1 and R1 differ"
-       printf "%6b" $i "............" "\e[0;31m[FAILED]\e[m" "\n"
+       ALL_CASES_SUCCEEDED=false
+       printf "%6b" $case "............" "\e[0;31m[FAILED]\e[m" "\n"
     else
-       #echo "There was something wrong with the diff command"
-       printf "%6b" $i "........" "\e[1;31m[DIFF ERROR]\e[m" "\n"
+       ALL_CASES_SUCCEEDED=false
+       printf "%6b" $case "........" "\e[1;31m[DIFF ERROR]\e[m" "\n"
     fi
+    result=$result$temp
 done
+
+# check diff status
+if [ "$ALL_CASES_SUCCEEDED" = true ]
+then
+      printf "\e[0;32m[++++++++ All Unit Tests Succeed ++++++++]\e[m\n"
+else
+      printf "\e[0;31m[++++++ There Are Failed Unit Tests ++++++]\e[m\n"
+      printf "\e[1;33m$result\e[m\n"
+fi

@@ -63,12 +63,12 @@ static const double R1Coef[34][3] = {
 const static double R1_TStar = 1386.0;  // K
 const static double R1_pStar = 16.53e6; // Pa
 
-double R1_gamma(double p, double T);
-double R1_gamma_pi(double p, double T);
-double R1_gamma_tau(double p, double T);
-double R1_gamma_pi_pi(double p, double T);
-double R1_gamma_tau_tau(double p, double T);
-double R1_gamma_pi_tau(double p, double T);
+double R1_gamma(double pi, double tau);
+double R1_gamma_pi(double pi, double tau);
+double R1_gamma_tau(double pi, double tau);
+double R1_gamma_pi_pi(double pi, double tau);
+double R1_gamma_tau_tau(double pi, double tau);
+double R1_gamma_pi_tau(double pi, double tau);
 
 double R1_specific_volume(double p, double T);
 double R1_specific_int_energy(double p, double T);

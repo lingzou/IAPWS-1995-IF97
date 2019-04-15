@@ -7,9 +7,12 @@ const static double Pcrit   = 22.064e6;            // Pa
 const static double Rhocrit = 322.0;               // kg/m³
 const static double Tmin    = 273.15;              // K
 const static double Tmax    = 1073.15;             // K
+const static double Tmax2   = 2273.15;             // K
 const static double Pmin    = 0.000611213e6;       // Pa
 const static double Pmax    = 100.0e6;             // Pa
 const static double MW      = 0.018015268;         // kg/mol
+
+const static double T13     = 623.15;              // K
 
 static const double B23_n[] = {
     0.34805185628969e3,

@@ -1,5 +1,5 @@
 #!/bin/bash
-declare -a unit_tests=("B23" "R1" "R1_PH" "R1_PS" "R2" "R2Meta" "B2bc" "R2_PH" "R2_PS" "R3" "R4" "R5")
+declare -a unit_tests=("B23" "R1" "R1_PH" "R1_PS" "R2" "R2Meta" "B2bc" "R2_PH" "R2_PS" "R3" "R4" "R5" "R3_sat_line")
 ALL_CASES_SUCCEEDED=true
 result=""
 
@@ -19,14 +19,14 @@ do
     error=$?
     if [ $error -eq 0 ]
     then
-       printf "%6b" $case "................" "\e[0;32m[OK]\e[m" "\n"
+       printf "%12b" $case "................" "\e[0;32m[OK]\e[m" "\n"
     elif [ $error -eq 1 ]
     then
        ALL_CASES_SUCCEEDED=false
-       printf "%6b" $case "............" "\e[0;31m[FAILED]\e[m" "\n"
+       printf "%12b" $case "............" "\e[0;31m[FAILED]\e[m" "\n"
     else
        ALL_CASES_SUCCEEDED=false
-       printf "%6b" $case "........" "\e[1;31m[DIFF ERROR]\e[m" "\n"
+       printf "%12b" $case "........" "\e[1;31m[DIFF ERROR]\e[m" "\n"
     fi
     result=$result$temp
 done

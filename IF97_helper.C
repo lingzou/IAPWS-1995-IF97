@@ -1,104 +1,50 @@
 #include <iostream>
 #include <iomanip>
-#include <cstring>
 
-#include "IF97.h"
 #include "IF97_helper.h"
-#include "unit_tests.h"
 
-int main(int argc, char *argv[])
+int findRegion(double p, double T)
 {
-  std::cout << "Hello, IF97" << std::endl;
-
-  if ((argc == 2) && (strcmp(argv[1], "-test_all") == 0))
+  if (T < Tmin)
   {
-    Unit_Test_All();
-    return 0;
+    std::cerr << "Out of range: T < Tmin" << std::endl;
+    return -1;
   }
-  else if ((argc == 3) && (strcmp(argv[1], "-unit_test") == 0))
+
+  if (T > Tmax2)
   {
-    std::string str(argv[2]);
-    Unit_Test(str);
-    return 0;
+    std::cerr << "Out of range: T > Tmax2" << std::endl;
+    return -2;
   }
-/*
-  double p = Pcrit;
-  double rho = Rhocrit;
-  double T = Tcrit;
 
-  std::cout << "P_crit_cal = " << R3_p(rho, T) << std::endl;
-*/
-/*
-  double T13 = 623.15;
-  double p_sat13 = p_sat_from_T(T13);
-  //std::cout << "T13 = " << T13 << ";" << "p_sat = " << p_sat_from_T(T13) << std::endl;
-
-  double rho_1 = 1.0 / R1_specific_volume(p_sat13, T13);
-  double rho_2 = 1.0 / R2_specific_volume(p_sat13, T13);
-
-  std::cout << rho_1 << std::endl;
-  std::cout << rho_2 << std::endl;
-
-  std::cout << "p/(RT rho)_1 = " << std::scientific << std::setprecision(8)
-    << p_sat13 / (Rgas * T13 * rho_1) << std::endl;
-  std::cout << "delta * phi_delta = " << std::scientific << std::setprecision(8)
-    << rho_1 / Rhocrit * R3_phi_delta(rho_1 / Rhocrit, Tcrit / T13) << std::endl;
-
-  std::cout << "p/(RT rho)_2 = " << std::scientific << std::setprecision(8)
-    << p_sat13 / (Rgas * T13 * rho_2) << std::endl;
-  std::cout << "delta * phi_delta = " << std::scientific << std::setprecision(8)
-    << rho_2 / Rhocrit * R3_phi_delta(rho_2 / Rhocrit, Tcrit / T13) << std::endl;
-*/
-
-/*
-  double T13 = 623.15;
-  //std::cout << "T13 = " << T13 << ";" << "p_sat = " << p_sat_from_T(T13) << std::endl;
-
-  double p = 22.063e6;
-  double Ts = T_sat_from_p(p);
-  std::cout << "Ts = " << Ts << std::endl;
-  double T23 = B23_T_from_p(p);
-  std::cout << "T23 = " << T23 << std::endl;
-  double rho_13 = 1.0 / R1_specific_volume(p, T13);
-  double rho_23 = 1.0 / R2_specific_volume(p, T23);
-  std::cout << "rho_13 = " << rho_13 << std::endl;
-  std::cout << "rho_23 = " << rho_23 << std::endl;
-
-  rho_13 = 322.0 + 10.0;
-  rho_23 = 322.0 - 10.0;
-
-  for (int i = 0; i < 101; i++)
+  if (p > Pmax)
   {
-    double rho = rho_13 + (rho_23 - rho_13) / 100 * i;
-    double delta = rho / Rhocrit;
-    double tau = Tcrit / Ts;
+    std::cerr << "Out of range: p < Pmax" << std::endl;
+    return -3;
+  }
 
-    double val = p / Rgas / Ts / rho - delta * R3_phi_delta(delta, tau);
-
-    //std::cout << "i = " << i << "; rho = " << rho << " val = " << val << std::endl;
-    std::cout << rho << ";" << val << std::endl;
-  }*/
-/*
-  //double rho = 100.0;
-  double T_min = 273.15;
-  double T_max = 623.15;
-  double p_max = 100.0e6;
-  int N = 100;
-
-  for (double T = T_min; T <= T_max+0.001; T+=5.0)
+  if ((p > 50.0e6) && (T > Tmax))
   {
-    //std::cout << T << ";" << R3_p(rho, T) << std::endl;)
+    std::cerr << "Out of range: (p > 50.0e6) && (T > Tmax)" << std::endl;
+    return -4;
+  }
+
+  if (T <= T13)
+  {
     double ps = p_sat_from_T(T);
-    double dp = (p_max - ps) / N;
-    for (int i = 0; i < N+1; i++)
-    {
-      double p = ps + dp * i;
-      std::cout << std::scientific << std::setprecision(8) << std::setw(20) << T
-      << std::scientific << std::setprecision(8) << std::setw(20) << p
-      << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R1_specific_volume(p, T) << std::endl;
-    }
-  }*/
+    return (p > ps) ? 1 : 2;
+  }
+  else
+  {
+    double p_bc = B23_p_from_T(T);
+    return (p > p_bc) ? 3 : 2;
+  }
+}
 
+void genR3_sat_line()
+{
+  FILE * ptr_sat_line_File;
+  ptr_sat_line_File = fopen("UnitTest/R3_sat_line.dat", "w");
   for (int i = 0; i < 54; i++)
   {
     double bracket_size = (i < 49) ? 10.0 : 5.0;
@@ -146,8 +92,9 @@ int main(int argc, char *argv[])
       rho_error = max - min;
     }
 
-    std::cout << std::setprecision(8) << std::setw(20) << T << " "
-      << std::scientific << std::setprecision(8) << std::setw(20) << rho_l_find;
+    //std::cout << std::setprecision(8) << std::setw(20) << T << " "
+    //  << std::scientific << std::setprecision(8) << std::setw(20) << rho_l_find;
+
 
     rho_error = 1.0;
     min = rho_g_min;
@@ -164,7 +111,8 @@ int main(int argc, char *argv[])
 
       rho_error = max - min;
     }
-    std::cout << " " << std::scientific << std::setprecision(8) << std::setw(20) << rho_g_find << std::endl;
+    //std::cout << " " << std::scientific << std::setprecision(8) << std::setw(20) << rho_g_find << std::endl;
+    fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e\n", T, rho_l_find, rho_g_find);
 
     FILE * ptr_File;
     std::string file_name = "output/" + std::to_string(i) + ".dat";
@@ -199,7 +147,6 @@ int main(int argc, char *argv[])
 
     fclose(ptr_File);
   }
-
-
-  return 0;
+  fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e", Tcrit, Rhocrit, Rhocrit);
+  fclose(ptr_sat_line_File);
 }

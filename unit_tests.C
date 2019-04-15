@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "unit_tests.h"
+#include "IF97_helper.h"
 
 void Unit_Test_All()
 {
@@ -24,6 +25,8 @@ void Unit_Test_All()
   Unit_Test_R4();
 
   Unit_Test_R5();
+
+  genR3_sat_line();
 }
 
 void Unit_Test(std::string str)

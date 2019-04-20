@@ -48,5 +48,7 @@ const static double R3_rho_g_sat_guess[54] =
 
 int findRegion(double p, double T);
 void genR3_sat_line();
+void genR4_sat_line();
+double R3_rho_from_p_T_ITER(double p, double T);
 
 #endif /*IF97_HELPER_H*/

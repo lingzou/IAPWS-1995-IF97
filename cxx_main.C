@@ -4,6 +4,7 @@
 
 #include "IF97.h"
 #include "IF97_helper.h"
+#include "IF97_interpolation.h"
 #include "unit_tests.h"
 
 int main(int argc, char *argv[])
@@ -21,6 +22,63 @@ int main(int argc, char *argv[])
     Unit_Test(str);
     return 0;
   }
+
+  // genR4_sat_line();
+  IF97_Interpolation IF97InterP;
+  //IF97InterP.init();
+  double T = 250.0;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+  T = 700.0;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+  T = 273.5;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+  T = 300.0;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+  T = 410.0;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+  T = 555.0;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+  T = 623.0;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+  T = 6.47095550e+02;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+
+/*
+  double p = 50.0e6;
+  T = 650.0;
+  double p23 = B23_p_from_T(T);
+  double rho_min = 1.0 / R2_specific_volume(p23, T);
+  double rho_max = 1.0 / R1_specific_volume(100.0e6, T13);
+  double dRho = (rho_max - rho_min) / 100.0;
+  double tau = Tcrit / T;
+  for (int i = 0; i < 101; i++)
+  {
+    double rho = rho_min + dRho * i;
+    double delta = rho / Rhocrit;
+
+    std::cout << rho << "; " << R3_p(rho, T) << std::endl;
+  }*/
+
+  double p = 50.0e6;
+  T = 650.0;
+  std::cout << "p = " << p << "; T = " << T << "; rho = " << R3_rho_from_p_T_ITER(p, T) << std::endl;
+
+
 /*
   double p = Pcrit;
   double rho = Rhocrit;
@@ -98,108 +156,6 @@ int main(int argc, char *argv[])
       << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R1_specific_volume(p, T) << std::endl;
     }
   }*/
-
-  for (int i = 0; i < 54; i++)
-  {
-    double bracket_size = (i < 49) ? 10.0 : 5.0;
-    if (i == 53) bracket_size = 2.0;
-    double T = R3_T_list[i];
-    double ps = p_sat_from_T(T);
-    double rho_l_min = R3_rho_l_sat_guess[i] - bracket_size;
-    double rho_l_max = R3_rho_l_sat_guess[i] + bracket_size;
-    double rho_g_min = R3_rho_g_sat_guess[i] - bracket_size;
-    double rho_g_max = R3_rho_g_sat_guess[i] + bracket_size;
-
-    double delta_l_min = rho_l_min / Rhocrit;
-    double delta_l_max = rho_l_max / Rhocrit;
-    double delta_g_min = rho_g_min / Rhocrit;
-    double delta_g_max = rho_g_max / Rhocrit;
-    double tau = Tcrit / T;
-
-    double val_l_min = ps / Rgas / T / rho_l_min - delta_l_min * R3_phi_delta(delta_l_min, tau);
-    double val_l_max = ps / Rgas / T / rho_l_max - delta_l_max * R3_phi_delta(delta_l_max, tau);
-
-    double val_g_min = ps / Rgas / T / rho_g_min - delta_g_min * R3_phi_delta(delta_g_min, tau);
-    double val_g_max = ps / Rgas / T / rho_g_max - delta_g_max * R3_phi_delta(delta_g_max, tau);
-/*
-    std::cout << T << " " << val_l_min << " " << val_l_max << " " << val_g_min << " " << val_g_max;
-    if (val_l_min * val_l_max < 0.0) std::cout << " OK ";
-    else std::cout << " NO ";
-    if (val_g_min * val_g_max < 0.0) std::cout << " OK ";
-    else std::cout << " NO ";
-    std::cout << std::endl;
-*/
-    //double rho_l_sat = 0.5 * (rho_l_min + rho_l_max);
-    double rho_error = 1.0;
-    double min = rho_l_min;
-    double max = rho_l_max;
-    double rho_l_find = 0.0;
-    while (rho_error > 1.0e-9)
-    {
-      rho_l_find = 0.5 * (min + max);
-      double delta = rho_l_find / Rhocrit;
-      double val = ps / Rgas / T / rho_l_find - delta * R3_phi_delta(delta, tau);
-
-      if (val > 0.0) min = rho_l_find;
-      else           max = rho_l_find;
-
-      rho_error = max - min;
-    }
-
-    std::cout << std::setprecision(8) << std::setw(20) << T << " "
-      << std::scientific << std::setprecision(8) << std::setw(20) << rho_l_find;
-
-    rho_error = 1.0;
-    min = rho_g_min;
-    max = rho_g_max;
-    double rho_g_find = 0.0;
-    while (rho_error > 1.0e-9)
-    {
-      rho_g_find = 0.5 * (min + max);
-      double delta = rho_g_find / Rhocrit;
-      double val = ps / Rgas / T / rho_g_find - delta * R3_phi_delta(delta, tau);
-
-      if (val > 0.0) min = rho_g_find;
-      else           max = rho_g_find;
-
-      rho_error = max - min;
-    }
-    std::cout << " " << std::scientific << std::setprecision(8) << std::setw(20) << rho_g_find << std::endl;
-
-    FILE * ptr_File;
-    std::string file_name = "output/" + std::to_string(i) + ".dat";
-    ptr_File = fopen(file_name.c_str(), "w");
-    for (int j = 0; j < 51; j++)
-    {
-      double rho = rho_g_min + (rho_g_max - rho_g_min) / 50 * j;
-      double delta = rho / Rhocrit;
-      double val = ps / Rgas / T / rho - delta * R3_phi_delta(delta, tau);
-      fprintf (ptr_File, "%20.8e%20.8e\n", rho, val);
-    }
-    for (int j = 0; j < 51; j++)
-    {
-      double rho = rho_g_max + (rho_l_min - rho_g_max) / 50 * j;
-      double delta = rho / Rhocrit;
-      double val = ps / Rgas / T / rho - delta * R3_phi_delta(delta, tau);
-      fprintf (ptr_File, "%20.8e%20.8e\n", rho, val);
-    }
-    for (int j = 0; j < 51; j++)
-    {
-      double rho = rho_l_min + (rho_l_max - rho_l_min) / 50 * j;
-      double delta = rho / Rhocrit;
-      double val = ps / Rgas / T / rho - delta * R3_phi_delta(delta, tau);
-      fprintf (ptr_File, "%20.8e%20.8e\n", rho, val);
-    }
-
-    fprintf (ptr_File, "%20.8e%20.8e\n", rho_l_find,
-      ps / Rgas / T / rho_l_find - (rho_l_find / Rhocrit) * R3_phi_delta(rho_l_find / Rhocrit, tau));
-
-    fprintf (ptr_File, "%20.8e%20.8e\n", rho_g_find,
-      ps / Rgas / T / rho_g_find - (rho_g_find / Rhocrit) * R3_phi_delta(rho_g_find / Rhocrit, tau));
-
-    fclose(ptr_File);
-  }
-
 
   return 0;
 }

@@ -150,3 +150,40 @@ void genR3_sat_line()
   fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e", Tcrit, Rhocrit, Rhocrit);
   fclose(ptr_sat_line_File);
 }
+
+void genR4_sat_line()
+{
+  for (int i = 0; i < 351; i++)
+  {
+    double T = 273.15 + i;
+    double ps = p_sat_from_T(T);
+
+    std::cout << std::scientific << std::setprecision(8) << std::setw(20) << T
+      << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R1_specific_volume(ps, T)
+      << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R2_specific_volume(ps, T) << std::endl;
+  }
+}
+
+double R3_rho_from_p_T_ITER(double p, double T)
+{
+  double p23 = B23_p_from_T(T);
+  double rho_min = 1.0 / R2_specific_volume(p23, T);
+  double rho_max = 1.0 / R1_specific_volume(100.0e6, T13);
+
+  double tau = Tcrit / T;
+  double rho_find = 0.0;
+  double rho_error = 1.0;
+  while (rho_error > 1.0e-9)
+  {
+    rho_find = 0.5 * (rho_min + rho_max);
+    double delta = rho_find / Rhocrit;
+    double p_guess = R3_p(rho_find, T);
+
+    if (p_guess > p) rho_max = rho_find;
+    else             rho_min = rho_find;
+
+    rho_error = rho_max - rho_min;
+  }
+
+  return rho_find;
+}

@@ -20,3 +20,5 @@ void Unit_Test_R3();
 void Unit_Test_R4();
 
 void Unit_Test_R5();
+
+void Unit_Test_R3_rho_pT_ITER();

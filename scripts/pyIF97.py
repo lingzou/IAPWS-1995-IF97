@@ -16,13 +16,23 @@ lib_IF97.p_sat_from_T.restype = c_double
 lib_IF97.T_sat_from_p.argtypes = [c_double]
 lib_IF97.T_sat_from_p.restype = c_double
 
-sat_data = np.loadtxt(os.path.join(os.pardir, 'tables', 'rho_sat_from_T.dat'), skiprows = 1)
+sat_data = np.loadtxt(os.path.join(os.pardir, 'tables', 'sat_line.dat'), skiprows = 1)
 T_array = sat_data[:, 0]
 p_sat_array = sat_data[:, 1]
 #rho_g_sat_array = sat_data[:, 2]
+T23_array = np.arange(623.15, 863.15, 1.0)
+p23_array = np.arange(623.15, 863.15, 1.0)
+for i in xrange(0, T23_array.shape[0]) :
+  p23_array[i] = lib_IF97.B23_p_from_T(T23_array[i])
 
 fig, ax = plt.subplots()
-ax.plot(T_array, p_sat_array, color = "b", marker = ".", ls="-")
+ax.plot([273.15, 273.15], [100.0, 100.0e6], color = "r", marker = "None", ls = "-")
+ax.plot([273.15, 1073.15], [100.0e6, 100.0e6], color = "r", marker = "None", ls = "-")
+ax.plot([1073.15, 1073.15], [100.0e6, 100.0], color = "r", marker = "None", ls = "-")
+ax.plot([623.15, 623.15], [lib_IF97.p_sat_from_T(623.15), 100.0e6], color = "k", marker = "None", ls = "-")
+ax.plot(T23_array, p23_array, color = "k", marker = "None", ls="-")
+ax.plot(T_array, p_sat_array, color = "b", marker = "None", ls="-")
+#ax.set_yscale('log')
 plt.show()
 
 print lib_IF97.B23_p_from_T(0.62315e3)

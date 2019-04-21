@@ -23,11 +23,15 @@ int main(int argc, char *argv[])
     return 0;
   }
 
-  genR4_sat_line();
-
+  //genR4_sat_line();
+/*
   std::cout << R2_cp(1.22818387e3, 283.15) << std::endl;
   std::cout << R2_cv(1.22818387e3, 283.15) << std::endl;
+  std::cout << std::scientific << std::setprecision(8) << B23_p_from_T(863.15) << std::endl;
+  std::cout << std::scientific << std::setprecision(8) << B23_T_from_p(100.e6) << std::endl;
+*/
 
+/*
   IF97_Interpolation IF97InterP;
   //IF97InterP.init();
   double T = 250.0;
@@ -61,7 +65,7 @@ int main(int argc, char *argv[])
   T = 6.47095550e+02;
   std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
   std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
-
+*/
 /*
   double p = 50.0e6;
   T = 650.0;
@@ -78,9 +82,15 @@ int main(int argc, char *argv[])
     std::cout << rho << "; " << R3_p(rho, T) << std::endl;
   }*/
 
-  double p = 50.0e6;
-  T = 650.0;
-  std::cout << "p = " << p << "; T = " << T << "; rho = " << R3_rho_from_p_T_ITER(p, T) << std::endl;
+  //double p = 50.0e6;
+  //double T = 650.0;
+  //std::cout << "p = " << p << "; T = " << T << "; rho = " << R3_rho_from_p_T_ITER(p, T) << std::endl;
+
+  double T_array[8] = {630.0, 637.0, 647.0, 626.16, 629.0, 697.0, 636.0, 854.0};
+  double p_array[8] = {33.5e6, 20.e6, 21.0e6, 17.9e6, 17.37e6, 31.0e6, 97.0e6, 97.7e6};
+  for (int i = 0; i < 8; i++)
+    std::cout << "p = " << p_array[i] << "; T = " << T_array[i] << "; rho = "
+      << std::scientific << std::setprecision(8)<< R3_rho_from_p_T_ITER(p_array[i], T_array[i]) << std::endl;
 
 
 /*

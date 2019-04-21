@@ -28,6 +28,8 @@ void Unit_Test_All()
 
   genR3_sat_line();
   genR4_sat_line();
+
+  Unit_Test_R3_rho_pT_ITER();
 }
 
 void Unit_Test(std::string str)
@@ -417,5 +419,20 @@ void Unit_Test_R5()
       << std::setw(20) << R5_sound_speed(30.0e6, 2000) << std::endl;
 
   fprintf(ptr_File, "%s", out_ss.str().c_str());
+  fclose(ptr_File);
+}
+
+void Unit_Test_R3_rho_pT_ITER()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/R3_rho_pT.dat", "w");
+
+  double T_array[8] = {630.0, 637.0, 647.0, 626.16, 629.0, 697.0, 636.0, 854.0};
+  double p_array[8] = {33.5e6, 20.e6, 21.0e6, 17.9e6, 17.37e6, 31.0e6, 97.0e6, 97.7e6};
+
+  fprintf (ptr_File, "%20s%20s%20s\n", "T [K]", "p [Pa]", "rho [kg/m^3]");
+  for (int i = 0; i < 8; i++)
+    fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", T_array[i], p_array[i], R3_rho_from_p_T_ITER(p_array[i], T_array[i]));
+
   fclose(ptr_File);
 }

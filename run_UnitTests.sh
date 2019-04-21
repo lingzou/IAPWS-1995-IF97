@@ -1,5 +1,6 @@
 #!/bin/bash
-declare -a unit_tests=("B23" "R1" "R1_PH" "R1_PS" "R2" "R2Meta" "B2bc" "R2_PH" "R2_PS" "R3" "R4" "R5" "R3_sat_line" "R4_sat_line")
+declare -a unit_tests=("B23" "R1" "R1_PH" "R1_PS" "R2" "R2Meta" "B2bc" "R2_PH" "R2_PS" "R3" "R4" "R5"
+  "R3_sat_line" "R4_sat_line" "R3_rho_pT")
 ALL_CASES_SUCCEEDED=true
 result=""
 

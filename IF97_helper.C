@@ -45,6 +45,25 @@ void genR3_sat_line()
 {
   FILE * ptr_sat_line_File;
   ptr_sat_line_File = fopen("UnitTest/R3_sat_line.dat", "w");
+  fprintf (ptr_sat_line_File, "%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s\n",
+            "T [K]", "p_Sat [Pa]",
+            "rho_l_sat [kg/m^3]",
+            "v_l_sat [m^3/kg]",
+            "e_l_sat [J/kg]",
+            "s_l_sat [J/kg-K]",
+            "h_l_sat [J/kg]",
+            "cv_l_sat [J/kg-K]",
+            "cp_l_sat [J/kg-K]",
+            "c_l_sat [m/s]",
+            "rho_g_sat [kg/m^3]",
+            "v_g_sat [m^3/kg]",
+            "e_g_sat [J/kg]",
+            "s_g_sat [J/kg-K]",
+            "h_g_sat [J/kg]",
+            "cv_g_sat [J/kg-K]",
+            "cp_g_sat [J/kg-K]",
+            "c_g_sat [m/s]"
+          );
   for (int i = 0; i < 54; i++)
   {
     double bracket_size = (i < 49) ? 10.0 : 5.0;
@@ -67,15 +86,8 @@ void genR3_sat_line()
 
     double val_g_min = ps / Rgas / T / rho_g_min - delta_g_min * R3_phi_delta(delta_g_min, tau);
     double val_g_max = ps / Rgas / T / rho_g_max - delta_g_max * R3_phi_delta(delta_g_max, tau);
-/*
-    std::cout << T << " " << val_l_min << " " << val_l_max << " " << val_g_min << " " << val_g_max;
-    if (val_l_min * val_l_max < 0.0) std::cout << " OK ";
-    else std::cout << " NO ";
-    if (val_g_min * val_g_max < 0.0) std::cout << " OK ";
-    else std::cout << " NO ";
-    std::cout << std::endl;
-*/
-    //double rho_l_sat = 0.5 * (rho_l_min + rho_l_max);
+
+    // Iterate to find rho_l_sat
     double rho_error = 1.0;
     double min = rho_l_min;
     double max = rho_l_max;
@@ -92,10 +104,7 @@ void genR3_sat_line()
       rho_error = max - min;
     }
 
-    //std::cout << std::setprecision(8) << std::setw(20) << T << " "
-    //  << std::scientific << std::setprecision(8) << std::setw(20) << rho_l_find;
-
-
+    // Iterate to find rho_g_sat
     rho_error = 1.0;
     min = rho_g_min;
     max = rho_g_max;
@@ -111,9 +120,15 @@ void genR3_sat_line()
 
       rho_error = max - min;
     }
-    //std::cout << " " << std::scientific << std::setprecision(8) << std::setw(20) << rho_g_find << std::endl;
-    fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e\n", T, rho_l_find, rho_g_find);
+    fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e\n",
+              T, ps,
+              rho_l_find, 1.0/rho_l_find, R3_specific_int_energy(rho_l_find, T), R3_specific_entropy(rho_l_find, T),
+              R3_specific_enthalpy(rho_l_find, T), R3_cv(rho_l_find, T), R3_cp(rho_l_find, T), R3_sound_speed(rho_l_find, T),
+              rho_g_find, 1.0/rho_g_find, R3_specific_int_energy(rho_g_find, T), R3_specific_entropy(rho_g_find, T),
+              R3_specific_enthalpy(rho_g_find, T), R3_cv(rho_g_find, T), R3_cp(rho_g_find, T), R3_sound_speed(rho_g_find, T)
+            );
 
+    /*
     FILE * ptr_File;
     std::string file_name = "output/" + std::to_string(i) + ".dat";
     ptr_File = fopen(file_name.c_str(), "w");
@@ -145,7 +160,7 @@ void genR3_sat_line()
     fprintf (ptr_File, "%20.8e%20.8e\n", rho_g_find,
       ps / Rgas / T / rho_g_find - (rho_g_find / Rhocrit) * R3_phi_delta(rho_g_find / Rhocrit, tau));
 
-    fclose(ptr_File);
+    fclose(ptr_File);*/
   }
   fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e", Tcrit, Rhocrit, Rhocrit);
   fclose(ptr_sat_line_File);

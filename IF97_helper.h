@@ -18,6 +18,8 @@ const static double R3_T_list[54] =
   //647.096
 };
 
+// R3_rho_l_sat_guess and R3_rho_g_sat_guess are really not guessed, they are from
+// NIST webbook: https://webbook.nist.gov/chemistry/fluid/
 const static double R3_rho_l_sat_guess[54] =
 {
   570.64, 566.46, 562.15, 557.72, 553.14,

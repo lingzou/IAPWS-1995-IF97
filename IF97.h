@@ -1,6 +1,8 @@
 #ifndef IF97_H
 #define IF97_H
 
+extern "C"
+{
 const static double Rgas    = 0.461526e3;          // J/kg-K
 const static double Tcrit   = 647.096;             // K
 const static double Pcrit   = 22.064e6;            // Pa
@@ -640,5 +642,5 @@ double R5_specific_enthalpy(double p, double T);
 double R5_cp(double p, double T);
 double R5_cv(double p, double T);
 double R5_sound_speed(double p, double T);
-
+}
 #endif /*IF97_H*/

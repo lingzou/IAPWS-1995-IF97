@@ -16,16 +16,14 @@ lib_IF97.p_sat_from_T.restype = c_double
 lib_IF97.T_sat_from_p.argtypes = [c_double]
 lib_IF97.T_sat_from_p.restype = c_double
 
-'''
-rho_sat_data = np.loadtxt(os.path.join(os.pardir, 'tables', 'rho_sat_from_T.dat'))
-T_array = rho_sat_data[:, 0]
-rho_l_sat_array = rho_sat_data[:, 1]
-rho_g_sat_array = rho_sat_data[:, 2]
+sat_data = np.loadtxt(os.path.join(os.pardir, 'tables', 'rho_sat_from_T.dat'), skiprows = 1)
+T_array = sat_data[:, 0]
+p_sat_array = sat_data[:, 1]
+#rho_g_sat_array = sat_data[:, 2]
 
 fig, ax = plt.subplots()
-ax.plot(T_array, rho_l_sat_array, color = "b", marker = ".", ls="-")
-ax.plot(T_array, rho_g_sat_array, color = "k", marker = ".", ls="-")
-plt.show()'''
+ax.plot(T_array, p_sat_array, color = "b", marker = ".", ls="-")
+plt.show()
 
 print lib_IF97.B23_p_from_T(0.62315e3)
 print lib_IF97.p_sat_from_T(300.0)

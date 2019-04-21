@@ -23,7 +23,11 @@ int main(int argc, char *argv[])
     return 0;
   }
 
-  // genR4_sat_line();
+  genR4_sat_line();
+
+  std::cout << R2_cp(1.22818387e3, 283.15) << std::endl;
+  std::cout << R2_cv(1.22818387e3, 283.15) << std::endl;
+
   IF97_Interpolation IF97InterP;
   //IF97InterP.init();
   double T = 250.0;

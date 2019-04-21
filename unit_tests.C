@@ -27,6 +27,7 @@ void Unit_Test_All()
   Unit_Test_R5();
 
   genR3_sat_line();
+  genR4_sat_line();
 }
 
 void Unit_Test(std::string str)

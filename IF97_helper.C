@@ -120,6 +120,15 @@ void genR3_sat_line()
 
       rho_error = max - min;
     }
+    /*
+    double LEFT = ps / Rgas / T * (1.0 / rho_g_find - 1.0 / rho_l_find);
+    double RIGHT = R3_phi(rho_l_find / Rhocrit, tau) - R3_phi(rho_g_find / Rhocrit, tau);
+    std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(20) << T
+      << "LEFT = " << std::scientific << std::setprecision(8) << std::setw(20) << LEFT
+      << "; RIGHT = " << std::scientific << std::setprecision(8) << std::setw(20) << RIGHT
+      << "; DIFF = " << std::scientific << std::setprecision(8) << std::setw(20) << (LEFT - RIGHT)/LEFT
+      << std::endl;*/
+
     fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e\n",
               T, ps,
               rho_l_find, 1.0/rho_l_find, R3_specific_int_energy(rho_l_find, T), R3_specific_entropy(rho_l_find, T),
@@ -162,21 +171,58 @@ void genR3_sat_line()
 
     fclose(ptr_File);*/
   }
-  fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e", Tcrit, Rhocrit, Rhocrit);
+  fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e\n",
+    Tcrit, Pcrit,
+    Rhocrit, 1.0/Rhocrit, R3_specific_int_energy(Rhocrit, Tcrit), R3_specific_entropy(Rhocrit, Tcrit),
+    R3_specific_enthalpy(Rhocrit, Tcrit), R3_cv(Rhocrit, Tcrit), R3_cp(Rhocrit, Tcrit), R3_sound_speed(Rhocrit, Tcrit),
+    Rhocrit, 1.0/Rhocrit, R3_specific_int_energy(Rhocrit, Tcrit), R3_specific_entropy(Rhocrit, Tcrit),
+    R3_specific_enthalpy(Rhocrit, Tcrit), R3_cv(Rhocrit, Tcrit), R3_cp(Rhocrit, Tcrit), R3_sound_speed(Rhocrit, Tcrit)
+  );
   fclose(ptr_sat_line_File);
 }
 
 void genR4_sat_line()
 {
+  FILE * ptr_sat_line_File;
+  ptr_sat_line_File = fopen("UnitTest/R4_sat_line.dat", "w");
+  fprintf (ptr_sat_line_File, "%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s%20s\n",
+            "T [K]", "p_Sat [Pa]",
+            "rho_l_sat [kg/m^3]",
+            "v_l_sat [m^3/kg]",
+            "e_l_sat [J/kg]",
+            "s_l_sat [J/kg-K]",
+            "h_l_sat [J/kg]",
+            "cv_l_sat [J/kg-K]",
+            "cp_l_sat [J/kg-K]",
+            "c_l_sat [m/s]",
+            "rho_g_sat [kg/m^3]",
+            "v_g_sat [m^3/kg]",
+            "e_g_sat [J/kg]",
+            "s_g_sat [J/kg-K]",
+            "h_g_sat [J/kg]",
+            "cv_g_sat [J/kg-K]",
+            "cp_g_sat [J/kg-K]",
+            "c_g_sat [m/s]"
+          );
   for (int i = 0; i < 351; i++)
   {
     double T = 273.15 + i;
     double ps = p_sat_from_T(T);
 
-    std::cout << std::scientific << std::setprecision(8) << std::setw(20) << T
-      << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R1_specific_volume(ps, T)
-      << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R2_specific_volume(ps, T) << std::endl;
+    double v_l_sat = R1_specific_volume(ps, T);
+    double rho_l_sat = 1.0 / v_l_sat;
+    double v_g_sat = R2_specific_volume(ps, T);
+    double rho_g_sat = 1.0 / v_g_sat;
+
+    fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e\n",
+              T, ps,
+              rho_l_sat, v_l_sat, R1_specific_int_energy(ps, T), R1_specific_entropy(ps, T),
+              R1_specific_enthalpy(ps, T), R1_cv(ps, T), R1_cp(ps, T), R1_sound_speed(ps, T),
+              rho_g_sat, v_g_sat, R2_specific_int_energy(ps, T), R2_specific_entropy(ps, T),
+              R2_specific_enthalpy(ps, T), R2_cv(ps, T), R2_cp(ps, T), R2_sound_speed(ps, T)
+            );
   }
+  fclose(ptr_sat_line_File);
 }
 
 double R3_rho_from_p_T_ITER(double p, double T)

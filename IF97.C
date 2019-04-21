@@ -317,11 +317,11 @@ double R2_cv(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  double cp = -tau * tau * (R2_gamma_0_tau_tau(pi, tau) * R2_gamma_r_tau_tau(pi, tau)) * Rgas;
+  double cp = -tau * tau * (R2_gamma_0_tau_tau(pi, tau) + R2_gamma_r_tau_tau(pi, tau)) * Rgas;
   double val1 = 1.0 + pi * R2_gamma_r_pi(pi, tau) - tau * pi * R2_gamma_r_pi_tau(pi, tau);
   double val2 = 1.0 - pi * pi * R2_gamma_r_pi_pi(pi, tau);
 
-  return cp - val1 * val1 / val2;
+  return cp - (val1 * val1 / val2) * Rgas;
 }
 
 double R2_sound_speed(double p, double T)

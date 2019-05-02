@@ -31,41 +31,58 @@ int main(int argc, char *argv[])
   std::cout << std::scientific << std::setprecision(8) << B23_T_from_p(100.e6) << std::endl;
 */
 
-/*
+
   IF97_Interpolation IF97InterP;
   //IF97InterP.init();
+  std::cout << std::scientific << std::setprecision(8);
   double T = 250.0;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
 
   T = 700.0;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
 
   T = 273.5;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
 
   T = 300.0;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
 
   T = 410.0;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
 
   T = 555.0;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
 
   T = 623.0;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
 
   T = 6.47095550e+02;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
-  std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
-*/
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_l_sat_from_T(T) << std::endl;
+  //std::cout << "T = " << T << IF97InterP.INTPL_rho_g_sat_from_T(T) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_L) << std::endl;
+  std::cout << IF97InterP.INTPL_property_from_T(T, IF97_Interpolation::RHO_G) << std::endl;
+
 /*
   double p = 50.0e6;
   T = 650.0;
@@ -89,8 +106,37 @@ int main(int argc, char *argv[])
   double T_array[8] = {630.0, 637.0, 647.0, 626.16, 629.0, 697.0, 636.0, 854.0};
   double p_array[8] = {33.5e6, 20.e6, 21.0e6, 17.9e6, 17.37e6, 31.0e6, 97.0e6, 97.7e6};
   for (int i = 0; i < 8; i++)
-    std::cout << "p = " << p_array[i] << "; T = " << T_array[i] << "; rho = "
-      << std::scientific << std::setprecision(8)<< R3_rho_from_p_T_ITER(p_array[i], T_array[i]) << std::endl;
+  {
+    double rho = R3_rho_from_p_T_ITER(p_array[i], T_array[i]);
+    std::cout
+      << "    p = " << std::scientific << std::setprecision(8) << p_array[i]
+      << ";   T = " << std::scientific << std::setprecision(8) << T_array[i]
+      << "; rho = " << std::scientific << std::setprecision(8) << rho
+      << ";   h = " << std::scientific << std::setprecision(8) << R3_specific_enthalpy(rho, T_array[i])
+      << std::endl;
+  }
+
+  std::cout << std::endl;
+  double TT, xx;
+  R3_T_x_from_p_h_ITER(3.35e7, 1.64344943e6, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_h_ITER(2.0e7, 1.79130276e6, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_h_ITER(2.1e7, 2.48929822e+06, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_h_ITER(1.79e7, 1.68821864e+06, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_h_ITER(1.737e7, 2.56582491e+06, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_h_ITER(3.1e7, 2.55197817e+06, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_h_ITER(9.7e7, 1.61414193e+06, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_h_ITER(9.77e7, 2.77581149e+06, TT, xx);
+  std::cout << TT << std::endl;
+  std::cout << R3_p(1.19044937e2, 629.0) << std::endl;
+  std::cout << R3_p(1.0/8.400177202e-3, 629.0) << std::endl;
+
 
 
 /*

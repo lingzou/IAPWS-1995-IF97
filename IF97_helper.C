@@ -3,6 +3,8 @@
 
 #include "IF97_helper.h"
 
+IF97_Interpolation global_IF97_INTPL;
+
 int findRegion(double p, double T)
 {
   if (T < Tmin)
@@ -227,9 +229,29 @@ void genR4_sat_line()
 
 double R3_rho_from_p_T_ITER(double p, double T)
 {
+  //IF97_Interpolation global_IF97_INTPL;
+
   double p23 = B23_p_from_T(T);
-  double rho_min = 1.0 / R2_specific_volume(p23, T);
-  double rho_max = 1.0 / R1_specific_volume(100.0e6, T13);
+  double rho_min = 0.0, rho_max = 0.0;
+  if (p < Pcrit)
+  {
+    double Ts = T_sat_from_p(p);
+    if (T > Ts) // vapor phase
+    {
+      rho_min = 1.0 / R2_specific_volume(p23, T);
+      rho_max = global_IF97_INTPL.INTPL_property_from_T(Ts, IF97_Interpolation::RHO_G);
+    }
+    else
+    {
+      rho_min = global_IF97_INTPL.INTPL_property_from_T(Ts, IF97_Interpolation::RHO_L);
+      rho_max = 1.0 / R1_specific_volume(p, T13);
+    }
+  }
+  else
+  {
+    rho_min = 1.0 / R2_specific_volume(p23, T);
+    rho_max = 1.0 / R1_specific_volume(p, T13);
+  }
 
   double tau = Tcrit / T;
   double rho_find = 0.0;
@@ -243,8 +265,82 @@ double R3_rho_from_p_T_ITER(double p, double T)
     if (p_guess > p) rho_max = rho_find;
     else             rho_min = rho_find;
 
-    rho_error = rho_max - rho_min;
+    rho_error = std::abs((rho_max - rho_min) / rho_find);
   }
 
   return rho_find;
+}
+
+void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
+{
+  //IF97_Interpolation global_IF97_INTPL;
+  double T_min = T13;
+  double T_max = B23_T_from_p(p);
+
+  if (p < Pcrit)
+  {
+    double Ts = T_sat_from_p(p);
+    double h_l_sat = global_IF97_INTPL.INTPL_property_from_T(Ts, IF97_Interpolation::H_L);
+    double h_g_sat = global_IF97_INTPL.INTPL_property_from_T(Ts, IF97_Interpolation::H_G);
+/*
+    std::cout << "p = " << p << std::endl;
+    std::cout << "Ts = " << Ts << std::endl;
+    std::cout << "h_l_sat = " << h_l_sat << std::endl;
+    std::cout << "h_g_sat = " << h_g_sat << std::endl;*/
+
+    if ((h >= h_l_sat) && (h <= h_g_sat))
+    {
+      T = Ts;
+      x = (h - h_l_sat) / (h_g_sat - h_l_sat);
+    }
+    else
+    {
+      double h_min, h_max;
+      if (h < h_l_sat)
+      {
+        h_min = R1_specific_enthalpy(p, T_min);
+        h_max = h_l_sat;
+        T_max = Ts;
+      }
+      else
+      {
+        T_min = Ts;
+        h_min = h_g_sat;
+        h_max = R2_specific_enthalpy(p, T_max);
+      }
+
+      double T_error = 1.0;
+      while (T_error > 1.0e-9)
+      {
+        T = 0.5 * (T_min + T_max);
+        double rho = R3_rho_from_p_T_ITER(p, T);
+        double h_find = R3_specific_enthalpy(rho, T);
+
+        if (h_find > h)   T_max = T;
+        else              T_min = T;
+
+        T_error = std::abs((T_max - T_min) / T);
+      }
+      x = -1.0;
+    }
+  }
+  else
+  {
+    double T_error = 1.0;
+    double h_min = R1_specific_enthalpy(p, T_min);
+    double h_max = R2_specific_enthalpy(p, T_max);
+    while (T_error > 1.0e-9)
+    {
+      T = 0.5 * (T_min + T_max);
+      double rho = R3_rho_from_p_T_ITER(p, T);
+      double h_find = R3_specific_enthalpy(rho, T);
+
+      if (h_find > h)   T_max = T;
+      else              T_min = T;
+
+      T_error = std::abs((T_max - T_min) / T);
+    }
+
+    x = -1.0;
+  }
 }

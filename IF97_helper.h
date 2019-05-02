@@ -2,6 +2,9 @@
 #define IF97_HELPER_H
 
 #include "IF97.h"
+#include "IF97_interpolation.h"
+
+struct IF97_Interpolation;
 
 const static double R3_T_list[54] =
 {
@@ -52,5 +55,6 @@ int findRegion(double p, double T);
 void genR3_sat_line();
 void genR4_sat_line();
 double R3_rho_from_p_T_ITER(double p, double T);
+void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x);
 
 #endif /*IF97_HELPER_H*/

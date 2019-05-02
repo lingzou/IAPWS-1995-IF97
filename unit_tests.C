@@ -30,6 +30,7 @@ void Unit_Test_All()
   genR4_sat_line();
 
   Unit_Test_R3_rho_pT_ITER();
+  Unit_Test_R3_Tx_ph_ITER();
 }
 
 void Unit_Test(std::string str)
@@ -433,6 +434,25 @@ void Unit_Test_R3_rho_pT_ITER()
   fprintf (ptr_File, "%20s%20s%20s\n", "T [K]", "p [Pa]", "rho [kg/m^3]");
   for (int i = 0; i < 8; i++)
     fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", T_array[i], p_array[i], R3_rho_from_p_T_ITER(p_array[i], T_array[i]));
+
+  fclose(ptr_File);
+}
+
+void Unit_Test_R3_Tx_ph_ITER()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/R3_Tx_ph.dat", "w");
+
+  double h_array[8] = {1.64344943e6, 1.79130276e6, 2.48929822e6, 1.68821864e6, 2.56582491e6, 2.55197817e6, 1.61414193e6, 2.77581149e6};
+  double p_array[8] = {33.5e6, 20.e6, 21.0e6, 17.9e6, 17.37e6, 31.0e6, 97.0e6, 97.7e6};
+
+  fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "h [J/kg]", "T [K]");
+  for (int i = 0; i < 8; i++)
+  {
+    double T = 0.0, x = 0.0;
+    R3_T_x_from_p_h_ITER(p_array[i], h_array[i], T, x);
+    fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", p_array[i], h_array[i], T);
+  }
 
   fclose(ptr_File);
 }

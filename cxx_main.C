@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
   //double p = 50.0e6;
   //double T = 650.0;
   //std::cout << "p = " << p << "; T = " << T << "; rho = " << R3_rho_from_p_T_ITER(p, T) << std::endl;
-
+/*
   double T_array[8] = {630.0, 637.0, 647.0, 626.16, 629.0, 697.0, 636.0, 854.0};
   double p_array[8] = {33.5e6, 20.e6, 21.0e6, 17.9e6, 17.37e6, 31.0e6, 97.0e6, 97.7e6};
   for (int i = 0; i < 8; i++)
@@ -116,6 +116,7 @@ int main(int argc, char *argv[])
       << ";   s = " << std::scientific << std::setprecision(8) << R3_specific_entropy(rho, T_array[i])
       << std::endl;
   }
+*/
 /*
   std::cout << std::endl;
   double TT, xx;
@@ -138,7 +139,7 @@ int main(int argc, char *argv[])
   std::cout << R3_p(1.19044937e2, 629.0) << std::endl;
   std::cout << R3_p(1.0/8.400177202e-3, 629.0) << std::endl;
 */
-
+/*
   std::cout << std::endl;
   double TT, xx;
   R3_T_x_from_p_s_ITER(3.35e7, 3.69009147e+03, TT, xx);
@@ -157,7 +158,7 @@ int main(int argc, char *argv[])
   std::cout << TT << std::endl;
   R3_T_x_from_p_s_ITER(9.77e7, 5.06161454e+03, TT, xx);
   std::cout << TT << std::endl;
-
+*/
 
 
 /*
@@ -237,6 +238,41 @@ int main(int argc, char *argv[])
       << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R1_specific_volume(p, T) << std::endl;
     }
   }*/
+
+  double T_array[8] = {1100.0, 1200.0, 1400.0, 1600.0, 1800.0, 2000.0, 2200.0, 2250.0};
+  double p_array[8] = {1.0e3, 1.0e6, 5.0e6, 10.0e6, 20.0e6, 30.0e6, 40.0e6, 50.0e6};
+  //double h[64], s[64];
+  for (int i = 0; i < 8; i++)
+  {
+    //for (int j = 0; j < 8; j++)
+    //{
+      //h[i*8+j] = R5_specific_enthalpy(p_array[i], T_array[j]);
+      //s[i*8+j] = R5_specific_entropy(p_array[i], T_array[j]);
+      std::cout
+        << "    p = " << std::scientific << std::setprecision(8) << p_array[i]
+        << ";   T = " << std::scientific << std::setprecision(8) << T_array[i]
+        << "; rho = " << std::scientific << std::setprecision(8) << 1.0 / R5_specific_volume(p_array[i], T_array[i])
+        << ";   h = " << std::scientific << std::setprecision(8) << R5_specific_enthalpy(p_array[i], T_array[i])
+        << ";   s = " << std::scientific << std::setprecision(8) << R5_specific_entropy(p_array[i], T_array[i])
+        << std::endl;
+    //}
+  }
+/*
+  for (int i = 0; i < 8; i++)
+  {
+    for (int j = 0; j < 8; j++)
+    {
+      std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_h_ITER(p_array[i], h[i*8+j]) << std::endl;
+      std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_s_ITER(p_array[i], s[i*8+j]) << std::endl;
+    }
+  }*/
+/*
+  std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_h_ITER(1.0e3, 7.30921691e6) << std::endl;
+  std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_s_ITER(1.0e3, 1.36477789e4) << std::endl;
+
+  std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_h_ITER(2.0e7, 7.15701330e6) << std::endl;
+  std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_s_ITER(2.0e7, 9.00461822e3) << std::endl;
+  */
 
   return 0;
 }

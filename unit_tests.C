@@ -32,6 +32,9 @@ void Unit_Test_All()
   Unit_Test_R3_rho_pT_ITER();
   Unit_Test_R3_Tx_ph_ITER();
   Unit_Test_R3_Tx_ps_ITER();
+
+  Unit_Test_R5_T_ph_ITER();
+  Unit_Test_R5_T_ps_ITER();
 }
 
 void Unit_Test(std::string str)
@@ -466,13 +469,43 @@ void Unit_Test_R3_Tx_ps_ITER()
   double s_array[8] = {3.69009147e3, 3.95927258e3, 5.04168152e3, 3.80223220e3, 5.20290950e3, 5.05425538e3, 3.49976082e3, 5.06161454e3};
   double p_array[8] = {33.5e6, 20.e6, 21.0e6, 17.9e6, 17.37e6, 31.0e6, 97.0e6, 97.7e6};
 
-  fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "h [J/kg]", "T [K]");
+  fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "s [J/kg-K]", "T [K]");
   for (int i = 0; i < 8; i++)
   {
     double T = 0.0, x = 0.0;
     R3_T_x_from_p_s_ITER(p_array[i], s_array[i], T, x);
     fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", p_array[i], s_array[i], T);
   }
+
+  fclose(ptr_File);
+}
+
+void Unit_Test_R5_T_ph_ITER()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/R5_T_ph.dat", "w");
+
+  double h_array[8] = {4.22385130e6, 4.45997671e6, 4.95097566e6, 5.47017439e6, 6.00919444e6, 6.57122604e6, 7.15113591e6, 7.29686729e6};
+  double p_array[8] = {1.0e3, 1.0e6, 5.0e6, 10.0e6, 20.0e6, 30.0e6, 40.0e6, 50.0e6};
+
+  fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "h [J/kg]", "T [K]");
+  for (int i = 0; i < 8; i++)
+    fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", p_array[i], h_array[i], R5_T_from_p_h_ITER(p_array[i], h_array[i]));
+
+  fclose(ptr_File);
+}
+
+void Unit_Test_R5_T_ps_ITER()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/R5_T_ps.dat", "w");
+
+  double s_array[8] = {1.17519976e4, 8.76987588e3, 8.40622438e3, 8.43285518e3, 8.42920714e3, 8.53640523e3, 8.67795842e3, 8.63838510e3};
+  double p_array[8] = {1.0e3, 1.0e6, 5.0e6, 10.0e6, 20.0e6, 30.0e6, 40.0e6, 50.0e6};
+
+  fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "s [J/kg-K]", "T [K]");
+  for (int i = 0; i < 8; i++)
+    fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", p_array[i], s_array[i], R5_T_from_p_s_ITER(p_array[i], s_array[i]));
 
   fclose(ptr_File);
 }

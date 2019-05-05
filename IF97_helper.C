@@ -414,3 +414,43 @@ void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
     x = -1.0;
   }
 }
+
+double R5_T_from_p_h_ITER(double p, double h)
+{
+  double T_min = Tmax;
+  double T_max = Tmax2;
+  double T_find, T_error = 1.0;
+
+  while (T_error > 1.0e-9)
+  {
+    T_find = 0.5 * (T_min + T_max);
+    double h_find = R5_specific_enthalpy(p, T_find);
+
+    if (h_find > h)   T_max = T_find;
+    else              T_min = T_find;
+
+    T_error = std::abs((T_max - T_min) / T_find);
+  }
+
+  return T_find;
+}
+
+double R5_T_from_p_s_ITER(double p, double s)
+{
+  double T_min = Tmax;
+  double T_max = Tmax2;
+  double T_find, T_error = 1.0;
+
+  while (T_error > 1.0e-9)
+  {
+    T_find = 0.5 * (T_min + T_max);
+    double s_find = R5_specific_entropy(p, T_find);
+
+    if (s_find > s)   T_max = T_find;
+    else              T_min = T_find;
+
+    T_error = std::abs((T_max - T_min) / T_find);
+  }
+
+  return T_find;
+}

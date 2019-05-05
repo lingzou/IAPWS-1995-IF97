@@ -23,3 +23,4 @@ void Unit_Test_R5();
 
 void Unit_Test_R3_rho_pT_ITER();
 void Unit_Test_R3_Tx_ph_ITER();
+void Unit_Test_R3_Tx_ps_ITER();

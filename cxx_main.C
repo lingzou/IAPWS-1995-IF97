@@ -113,9 +113,10 @@ int main(int argc, char *argv[])
       << ";   T = " << std::scientific << std::setprecision(8) << T_array[i]
       << "; rho = " << std::scientific << std::setprecision(8) << rho
       << ";   h = " << std::scientific << std::setprecision(8) << R3_specific_enthalpy(rho, T_array[i])
+      << ";   s = " << std::scientific << std::setprecision(8) << R3_specific_entropy(rho, T_array[i])
       << std::endl;
   }
-
+/*
   std::cout << std::endl;
   double TT, xx;
   R3_T_x_from_p_h_ITER(3.35e7, 1.64344943e6, TT, xx);
@@ -136,6 +137,26 @@ int main(int argc, char *argv[])
   std::cout << TT << std::endl;
   std::cout << R3_p(1.19044937e2, 629.0) << std::endl;
   std::cout << R3_p(1.0/8.400177202e-3, 629.0) << std::endl;
+*/
+
+  std::cout << std::endl;
+  double TT, xx;
+  R3_T_x_from_p_s_ITER(3.35e7, 3.69009147e+03, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_s_ITER(2.0e7, 3.95927258e+03, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_s_ITER(2.1e7, 5.04168152e+03, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_s_ITER(1.79e7, 3.80223220e+03, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_s_ITER(1.737e7, 5.20290950e+03, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_s_ITER(3.1e7, 5.05425538e+03, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_s_ITER(9.7e7, 3.49976082e+03, TT, xx);
+  std::cout << TT << std::endl;
+  R3_T_x_from_p_s_ITER(9.77e7, 5.06161454e+03, TT, xx);
+  std::cout << TT << std::endl;
 
 
 

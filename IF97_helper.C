@@ -301,12 +301,14 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
         h_min = R1_specific_enthalpy(p, T_min);
         h_max = h_l_sat;
         T_max = Ts;
+        x = 0.0;
       }
       else
       {
         T_min = Ts;
         h_min = h_g_sat;
         h_max = R2_specific_enthalpy(p, T_max);
+        x = 1.0;
       }
 
       double T_error = 1.0;
@@ -321,7 +323,6 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
 
         T_error = std::abs((T_max - T_min) / T);
       }
-      x = -1.0;
     }
   }
   else
@@ -336,6 +337,75 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
       double h_find = R3_specific_enthalpy(rho, T);
 
       if (h_find > h)   T_max = T;
+      else              T_min = T;
+
+      T_error = std::abs((T_max - T_min) / T);
+    }
+
+    x = -1.0;
+  }
+}
+
+void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
+{
+  double T_min = T13;
+  double T_max = B23_T_from_p(p);
+
+  if (p < Pcrit)
+  {
+    double Ts = T_sat_from_p(p);
+    double s_l_sat = global_IF97_INTPL.INTPL_property_from_T(Ts, IF97_Interpolation::S_L);
+    double s_g_sat = global_IF97_INTPL.INTPL_property_from_T(Ts, IF97_Interpolation::S_G);
+
+    if ((s >= s_l_sat) && (s <= s_g_sat))
+    {
+      T = Ts;
+      x = (s - s_l_sat) / (s_g_sat - s_l_sat);
+    }
+    else
+    {
+      double s_min, s_max;
+      if (s < s_l_sat)
+      {
+        s_min = R1_specific_entropy(p, T_min);
+        s_max = s_l_sat;
+        T_max = Ts;
+        x = 0.0;
+      }
+      else
+      {
+        T_min = Ts;
+        s_min = s_g_sat;
+        s_max = R2_specific_entropy(p, T_max);
+        x = 1.0;
+      }
+
+      double T_error = 1.0;
+      while (T_error > 1.0e-9)
+      {
+        T = 0.5 * (T_min + T_max);
+        double rho = R3_rho_from_p_T_ITER(p, T);
+        double s_find = R3_specific_entropy(rho, T);
+
+        if (s_find > s)   T_max = T;
+        else              T_min = T;
+
+        T_error = std::abs((T_max - T_min) / T);
+      }
+    }
+  }
+  else
+  {
+    double T_error = 1.0;
+    double s_min = R1_specific_entropy(p, T_min);
+    double s_max = R2_specific_entropy(p, T_max);
+    while (T_error > 1.0e-9)
+    {
+      T = 0.5 * (T_min + T_max);
+      double rho = R3_rho_from_p_T_ITER(p, T);
+      double s_find = R3_specific_entropy(rho, T);
+
+      if (s_find > s)   T_max = T;
       else              T_min = T;
 
       T_error = std::abs((T_max - T_min) / T);

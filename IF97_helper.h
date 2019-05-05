@@ -56,5 +56,6 @@ void genR3_sat_line();
 void genR4_sat_line();
 double R3_rho_from_p_T_ITER(double p, double T);
 void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x);
+void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x);
 
 #endif /*IF97_HELPER_H*/

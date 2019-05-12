@@ -6,6 +6,8 @@
 #include "IF97_helper.h"
 #include "IF97_interpolation.h"
 #include "unit_tests.h"
+#include "SurfaceTension.h"
+#include "Viscosity.h"
 
 int main(int argc, char *argv[])
 {
@@ -238,7 +240,7 @@ int main(int argc, char *argv[])
       << std::scientific << std::setprecision(8) << std::setw(20) << 1.0 / R1_specific_volume(p, T) << std::endl;
     }
   }*/
-
+/*
   double T_array[8] = {1100.0, 1200.0, 1400.0, 1600.0, 1800.0, 2000.0, 2200.0, 2250.0};
   double p_array[8] = {1.0e3, 1.0e6, 5.0e6, 10.0e6, 20.0e6, 30.0e6, 40.0e6, 50.0e6};
   //double h[64], s[64];
@@ -256,7 +258,7 @@ int main(int argc, char *argv[])
         << ";   s = " << std::scientific << std::setprecision(8) << R5_specific_entropy(p_array[i], T_array[i])
         << std::endl;
     //}
-  }
+  }*/
 /*
   for (int i = 0; i < 8; i++)
   {
@@ -273,6 +275,18 @@ int main(int argc, char *argv[])
   std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_h_ITER(2.0e7, 7.15701330e6) << std::endl;
   std::cout << std::scientific << std::setprecision(8) << R5_T_from_p_s_ITER(2.0e7, 9.00461822e3) << std::endl;
   */
+/*
+  double T_array[9] = {0.01, 75.0, 100.0, 145.0, 195.0, 225.0, 300.0, 350.0, 370.0}; // in [C]
+  for (int i = 0; i < 9; i++)
+  {
+    std::cout << T_array[i] << "; ";
+    std::cout << std::scientific << std::setprecision(3) << SURF_TENSION::surf_tension(T_array[i] + 273.15) << std::endl;
+  }
+*/
+  double T_array[11] = {298.15, 298.15, 373.15, 433.15, 433.15, 873.15, 873.15, 873.15, 1173.15, 1173.15, 1173.15};
+  double rho_array[11] = {998, 1200, 1000, 1, 1000, 1, 100, 600, 1, 100, 400};
+  for (int i = 0; i < 11; i++)
+    std::cout << std::scientific << std::setprecision(9) << viscosity(rho_array[i], T_array[i]) << std::endl;
 
   return 0;
 }

@@ -5,6 +5,8 @@
 
 #include "unit_tests.h"
 #include "IF97_helper.h"
+#include "SurfaceTension.h"
+#include "Viscosity.h"
 
 void Unit_Test_All()
 {
@@ -35,6 +37,9 @@ void Unit_Test_All()
 
   Unit_Test_R5_T_ph_ITER();
   Unit_Test_R5_T_ps_ITER();
+
+  Unit_Test_SurfTension();
+  Unit_Test_ViscNoEnhancement();
 }
 
 void Unit_Test(std::string str)
@@ -506,6 +511,35 @@ void Unit_Test_R5_T_ps_ITER()
   fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "s [J/kg-K]", "T [K]");
   for (int i = 0; i < 8; i++)
     fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", p_array[i], s_array[i], R5_T_from_p_s_ITER(p_array[i], s_array[i]));
+
+  fclose(ptr_File);
+}
+
+void Unit_Test_SurfTension()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/SurfTension.dat", "w");
+
+  double TC_array[9] = {0.01, 75.0, 100.0, 145.0, 195.0, 225.0, 300.0, 350.0, 370.0}; // in [C]
+
+  fprintf (ptr_File, "%20s%20s\n", "T [K]", "SurfTension [N/m]");
+  for (int i = 0; i < 9; i++)
+    fprintf (ptr_File, "%20.8e%20.8e\n", TC_array[i] + 273.15, surf_tension(TC_array[i] + 273.15));
+
+  fclose(ptr_File);
+}
+
+void Unit_Test_ViscNoEnhancement()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/ViscNoEnhancement.dat", "w");
+
+  double T_array[11] = {298.15, 298.15, 373.15, 433.15, 433.15, 873.15, 873.15, 873.15, 1173.15, 1173.15, 1173.15};
+  double rho_array[11] = {998, 1200, 1000, 1, 1000, 1, 100, 600, 1, 100, 400};
+
+  fprintf (ptr_File, "%20s%20s%20s\n", "rho [kg/m^3]", "T [K]", "Vics [Pa*s]");
+  for (int i = 0; i < 11; i++)
+    fprintf (ptr_File, "%20.8e%20.8e%20.9e\n", rho_array[i], T_array[i], viscosity(rho_array[i], T_array[i]));
 
   fclose(ptr_File);
 }

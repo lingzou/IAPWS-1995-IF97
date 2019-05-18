@@ -1,6 +1,8 @@
 #ifndef VISCOSITY_H
 #define VISCOSITY_H
 
+#include "IF97_helper.h"
+
 static const double MU0_H[4] = {1.67752, 2.20462, 0.6366564, -0.241605};
 double mu0_bar(double T_bar);
 
@@ -54,5 +56,8 @@ static const double MU1_H[21] = {
 double mu1_bar(double rho_bar, double T_bar); // Follow IF97 function arguments sequence
 
 double viscosity(double rho, double T, bool critical_enhancement = false); // Follow IF97 function arguments sequence
+double zeta(double rho_bar, double T_bar);
+double correlation_length(double rho_bar, double T_bar); /*in nm */
+double mu2_bar(double rho_bar, double T_bar);
 
 #endif /*VISCOSITY_H*/

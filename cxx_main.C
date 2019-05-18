@@ -283,10 +283,21 @@ int main(int argc, char *argv[])
     std::cout << std::scientific << std::setprecision(3) << SURF_TENSION::surf_tension(T_array[i] + 273.15) << std::endl;
   }
 */
+/*
   double T_array[11] = {298.15, 298.15, 373.15, 433.15, 433.15, 873.15, 873.15, 873.15, 1173.15, 1173.15, 1173.15};
   double rho_array[11] = {998, 1200, 1000, 1, 1000, 1, 100, 600, 1, 100, 400};
   for (int i = 0; i < 11; i++)
     std::cout << std::scientific << std::setprecision(9) << viscosity(rho_array[i], T_array[i]) << std::endl;
+
+  std::cout << std::endl << std::endl;
+  std::cout << viscosity(122.0, 647.35, true) << std::endl;
+*/
+
+  double rho_array[6] = {122, 222, 272, 322, 372, 422};
+  double xi_array[6] = {0.309247, 1.571405, 5.266522, 16.590209, 5.603768, 1.876244};
+  for (int i = 0; i < 6; i++)
+    std::cout << viscosity(rho_array[i], 647.35, true) << std::endl << std::endl;
+    //std::cout << mu2_bar(rho_array[i]/322.0, 647.35/647.096, xi_array[i]) << std::endl << std::endl;
 
   return 0;
 }

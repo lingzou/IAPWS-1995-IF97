@@ -57,6 +57,7 @@ void genR4_sat_line();
 double R3_rho_from_p_T_ITER(double p, double T);
 void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x);
 void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x);
+double R3_dp_ddelta(double delta, double tau);
 
 double R5_T_from_p_h_ITER(double p, double h);
 double R5_T_from_p_s_ITER(double p, double s);

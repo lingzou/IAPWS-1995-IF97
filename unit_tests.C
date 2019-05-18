@@ -40,6 +40,7 @@ void Unit_Test_All()
 
   Unit_Test_SurfTension();
   Unit_Test_ViscNoEnhancement();
+  Unit_Test_ViscWithEnhancement();
 }
 
 void Unit_Test(std::string str)
@@ -540,6 +541,20 @@ void Unit_Test_ViscNoEnhancement()
   fprintf (ptr_File, "%20s%20s%20s\n", "rho [kg/m^3]", "T [K]", "Vics [Pa*s]");
   for (int i = 0; i < 11; i++)
     fprintf (ptr_File, "%20.8e%20.8e%20.9e\n", rho_array[i], T_array[i], viscosity(rho_array[i], T_array[i]));
+
+  fclose(ptr_File);
+}
+
+void Unit_Test_ViscWithEnhancement()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/ViscWithEnhancement.dat", "w");
+
+  double rho_array[6] = {122, 222, 272, 322, 372, 422};
+
+  fprintf (ptr_File, "%20s%20s%20s\n", "rho [kg/m^3]", "T [K]", "Vics [Pa*s]");
+  for (int i = 0; i < 6; i++)
+    fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", rho_array[i], 647.35, viscosity(rho_array[i], 647.35, true));
 
   fclose(ptr_File);
 }

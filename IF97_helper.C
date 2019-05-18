@@ -415,6 +415,11 @@ void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
   }
 }
 
+double R3_dp_ddelta(double delta, double tau)
+{
+  return Rhocrit * Rgas * Tcrit / tau * (2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau));
+}
+
 double R5_T_from_p_h_ITER(double p, double h)
 {
   double T_min = Tmax;

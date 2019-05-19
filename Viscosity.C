@@ -52,13 +52,11 @@ double correlation_length(double rho_bar, double T_bar)
   return 0.13 * std::pow(dchi_bar / 0.06, 0.630 / 1.239);
 }
 
-double mu2_bar(double rho_bar, double T_bar)
+double mu2_bar(double rho_bar, double T_bar, double xi)
 {
-  double Y = 0.0;
-  double xi = correlation_length(rho_bar, T_bar);
-
   double qC_xi = xi / 1.9;
   double qD_xi = xi / 1.1;
+  double Y = 0.0;
 
   if (xi < 0.3817016416)
     Y = 0.2 * qC_xi * std::pow(qD_xi, 5) * (1.0 - qC_xi + qC_xi * qC_xi - 765.0 / 504.0 * qD_xi * qD_xi);
@@ -74,4 +72,11 @@ double mu2_bar(double rho_bar, double T_bar)
   }
 
   return std::exp(0.068 * Y);
+}
+
+double mu2_bar(double rho_bar, double T_bar)
+{
+  double xi = correlation_length(rho_bar, T_bar);
+
+  return mu2_bar(rho_bar, T_bar, xi);
 }

@@ -31,3 +31,8 @@ void Unit_Test_R5_T_ps_ITER();
 void Unit_Test_SurfTension();
 void Unit_Test_ViscNoEnhancement();
 void Unit_Test_ViscWithEnhancement();
+
+void Unit_Test_ThermCond_NoEnhancement();
+void Unit_Test_ThermCond_R1();
+void Unit_Test_ThermCond_R2();
+void Unit_Test_ThermCond_R3();

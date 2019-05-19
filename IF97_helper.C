@@ -420,6 +420,24 @@ double R3_dp_ddelta(double delta, double tau)
   return Rhocrit * Rgas * Tcrit / tau * (2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau));
 }
 
+double R1_drho_dp(double p, double T)
+{
+  double pi  = p / R1_pStar;
+  double tau = R1_TStar / T;
+  double gamma_pi = R1_gamma_pi(pi, tau);
+
+  return -R1_gamma_pi_pi(pi, tau) / (Rgas * T * gamma_pi * gamma_pi);
+}
+
+double R2_drho_dp(double p, double T)
+{
+  double pi  = p / R2_pStar;
+  double tau = R2_TStar / T;
+  double denom = R2_gamma_0_pi(pi, tau) + R2_gamma_r_pi(pi, tau);
+
+  return -(R2_gamma_0_pi_pi(pi, tau) + R2_gamma_r_pi_pi(pi, tau)) / (Rgas * T * denom * denom);
+}
+
 double R5_T_from_p_h_ITER(double p, double h)
 {
   double T_min = Tmax;

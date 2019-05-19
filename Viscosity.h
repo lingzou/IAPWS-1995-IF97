@@ -60,4 +60,6 @@ double zeta(double rho_bar, double T_bar);
 double correlation_length(double rho_bar, double T_bar); /*in nm */
 double mu2_bar(double rho_bar, double T_bar);
 
+double mu2_bar(double rho_bar, double T_bar, double xi);
+
 #endif /*VISCOSITY_H*/

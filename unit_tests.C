@@ -589,7 +589,7 @@ void Unit_Test_ThermCond_R1()
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_1_bar", labmda1_bar(rho_bar, T_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "rho [kg/m^3]", rho);
     fprintf (ptr_File, "%24s%20.8e\n", "drho_dp [kg/m^3/Pa]", R1_drho_dp(p_array[i], T_array[i]));
-    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_R(rho_bar));
+    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_REF(rho_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "xi [nm]", xi);
     fprintf (ptr_File, "%24s%20.8e\n", "cp [J/(kg-K)]", cp);
     fprintf (ptr_File, "%24s%20.8e\n", "cv [J/(kg-K)]", cv);
@@ -624,7 +624,7 @@ void Unit_Test_ThermCond_R2()
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_1_bar", labmda1_bar(rho_bar, T_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "rho [kg/m^3]", rho);
     fprintf (ptr_File, "%24s%20.8e\n", "drho_dp [kg/m^3/Pa]", R2_drho_dp(p_array[i], T_array[i]));
-    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_R(rho_bar));
+    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_REF(rho_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "xi [nm]", xi);
     fprintf (ptr_File, "%24s%20.8e\n", "cp [J/(kg-K)]", cp);
     fprintf (ptr_File, "%24s%20.8e\n", "cv [J/(kg-K)]", cv);
@@ -657,7 +657,7 @@ void Unit_Test_ThermCond_R3()
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_0_bar", labmda0_bar(T_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_1_bar", labmda1_bar(rho_bar, T_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "drho_dp [kg/m^3/Pa]", Rhocrit / R3_dp_ddelta(rho_bar, 1.0 / T_bar));
-    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_R(rho_bar));
+    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_REF(rho_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "xi [nm]", xi);
     fprintf (ptr_File, "%24s%20.8e\n", "cp [J/(kg-K)]", cp);
     fprintf (ptr_File, "%24s%20.8e\n", "cv [J/(kg-K)]", cv);

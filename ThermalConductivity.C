@@ -1,8 +1,6 @@
 #include <iostream>
-
 #include "ThermalConductivity.h"
 #include "Viscosity.h"
-
 
 double labmda0_bar(double T_bar)
 {
@@ -49,7 +47,12 @@ double zeta_R2(double p, double T)
   return Pcrit / Rhocrit * R2_drho_dp(p, T);
 }
 
-double zeta_R(double rho_bar)
+double zeta_R3(double rho_bar, double T_bar)
+{
+  return Pcrit / R3_dp_ddelta(rho_bar, 1.0 / T_bar);
+}
+
+double zeta_REF(double rho_bar)
 {
   int j = -1;
   if      (rho_bar <= 0.310559006)    j = 0;
@@ -68,7 +71,7 @@ double zeta_R(double rho_bar)
 double correlation_length_TC(double rho_bar, double T_bar, double zeta)
 {
   //double dchi_bar = std::max(rho_bar * (zeta(rho_bar, T_bar) - zeta_R(rho_bar) * 1.5 / T_bar), 0.0);
-  double dchi_bar = std::max(rho_bar * (zeta - zeta_R(rho_bar) * 1.5 / T_bar), 0.0);
+  double dchi_bar = std::max(rho_bar * (zeta - zeta_REF(rho_bar) * 1.5 / T_bar), 0.0);
 
   return 0.13 * std::pow(dchi_bar / 0.06, 0.630 / 1.239);
 }
@@ -105,7 +108,6 @@ double thermal_conductivity_R1(double p, double T)
   double zeta = zeta_R1(p, T);
   double xi = correlation_length_TC(rho_bar, T_bar, zeta);
   double mu_bar = mu0_bar(T_bar) * mu1_bar(rho_bar, T_bar);
-  //double lambda2_bar = labmda2_bar(rho_bar, T_bar, cp, cv, mu_bar);
 
   double y = xi / 0.40;
   double zy_val = Zy(y, rho_bar, cp / cv);
@@ -125,16 +127,10 @@ double thermal_conductivity_R2(double p, double T)
   double zeta = zeta_R2(p, T); // change to R2
   double xi = correlation_length_TC(rho_bar, T_bar, zeta);
   double mu_bar = mu0_bar(T_bar) * mu1_bar(rho_bar, T_bar);
-  //double lambda2_bar = labmda2_bar(rho_bar, T_bar, cp, cv, mu_bar);
 
   double y = xi / 0.40;
   double zy_val = Zy(y, rho_bar, cp / cv);
-
-  //std::cout << rho_bar << "; " << T_bar << "; " << cp << "; " << zy_val << std::endl;
-
   double lambda2_bar = 177.8514 * rho_bar * T_bar * cp * zy_val / (0.46151805e3 * mu_bar);
-
-  std::cout << "lambda2_bar = " << lambda2_bar << std::endl;
 
   return (lambda_bar_part1 + lambda2_bar) * 1.0e-3;
 }
@@ -146,23 +142,15 @@ double thermal_conductivity_R3(double rho, double T)
 
   double lambda_bar_part1 = labmda0_bar(T_bar) * labmda1_bar(rho_bar, T_bar);
 
-  //std::cout << "lambda_bar_part1 = " << lambda_bar_part1 << std::endl;
-
   double cp = R3_cp(rho, T);
   double cv = R3_cv(rho, T);
-  double zeta_val = zeta(rho_bar, T_bar);
+  double zeta_val = zeta_R3(rho_bar, T_bar);
   double xi = correlation_length_TC(rho_bar, T_bar, zeta_val);
   double mu_bar = mu0_bar(T_bar) * mu1_bar(rho_bar, T_bar);
-  //double mu_bar = mu0_bar(T_bar) * mu1_bar(rho_bar, T_bar) * mu2_bar(rho_bar, T_bar);
-  //double mu_bar = mu0_bar(T_bar) * mu1_bar(rho_bar, T_bar) * mu2_bar(rho_bar, T_bar, xi);
-  //std::cout << "mu_bar = " << mu_bar << std::endl;
-  //double lambda2_bar = labmda2_bar(rho_bar, T_bar, cp, cv, mu_bar);
 
   double y = xi / 0.40;
   double zy_val = Zy(y, rho_bar, cp / cv);
   double lambda2_bar = 177.8514 * rho_bar * T_bar * cp * zy_val / (0.46151805e3 * mu_bar);
-
-  //std::cout << "lambda2_bar = " << lambda2_bar << std::endl;
 
   return (lambda_bar_part1 + lambda2_bar) * 1.0e-3;
 }

@@ -1,5 +1,4 @@
 #include <cmath>
-#include "Viscosity.h"
 
 static const double PI = acos(-1);
 
@@ -34,7 +33,8 @@ double labmda2_bar(double rho_bar, double T_bar, double cp, double cv, double mu
 
 double zeta_R1(double p, double T);
 double zeta_R2(double p, double T);
-double zeta_R(double rho_bar);
+double zeta_R3(double rho_bar, double T_bar);
+double zeta_REF(double rho_bar);
 double correlation_length_TC(double rho_bar, double T_bar, double zeta);
 double Zy(double y, double rho_bar, double kappa);
 

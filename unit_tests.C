@@ -40,8 +40,7 @@ void Unit_Test_All()
   Unit_Test_R5_T_ps_ITER();
 
   Unit_Test_SurfTension();
-  Unit_Test_ViscNoEnhancement();
-  Unit_Test_ViscWithEnhancement();
+  Unit_Test_Viscosity();
 
   Unit_Test_ThermCond_NoEnhancement();
   Unit_Test_ThermCond_R1();
@@ -536,10 +535,10 @@ void Unit_Test_SurfTension()
   fclose(ptr_File);
 }
 
-void Unit_Test_ViscNoEnhancement()
+void Unit_Test_Viscosity()
 {
   FILE * ptr_File;
-  ptr_File = fopen("UnitTest/ViscNoEnhancement.dat", "w");
+  ptr_File = fopen("UnitTest/Viscosity.dat", "w");
 
   double T_array[11] = {298.15, 298.15, 373.15, 433.15, 433.15, 873.15, 873.15, 873.15, 1173.15, 1173.15, 1173.15};
   double rho_array[11] = {998, 1200, 1000, 1, 1000, 1, 100, 600, 1, 100, 400};
@@ -547,20 +546,6 @@ void Unit_Test_ViscNoEnhancement()
   fprintf (ptr_File, "%20s%20s%20s\n", "rho [kg/m^3]", "T [K]", "Vics [Pa*s]");
   for (int i = 0; i < 11; i++)
     fprintf (ptr_File, "%20.8e%20.8e%20.9e\n", rho_array[i], T_array[i], viscosity(rho_array[i], T_array[i]));
-
-  fclose(ptr_File);
-}
-
-void Unit_Test_ViscWithEnhancement()
-{
-  FILE * ptr_File;
-  ptr_File = fopen("UnitTest/ViscWithEnhancement.dat", "w");
-
-  double rho_array[6] = {122, 222, 272, 322, 372, 422};
-
-  fprintf (ptr_File, "%20s%20s%20s\n", "rho [kg/m^3]", "T [K]", "Vics [Pa*s]");
-  for (int i = 0; i < 6; i++)
-    fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", rho_array[i], 647.35, viscosity(rho_array[i], 647.35, true));
 
   fclose(ptr_File);
 }
@@ -662,7 +647,7 @@ void Unit_Test_ThermCond_R3()
   {
     double rho_bar = rho_array[i] / Rhocrit;
     double T_bar = T_array[i] / Tcrit;
-    double xi = correlation_length_TC(rho_bar, T_bar, zeta(rho_bar, T_bar));
+    double xi = correlation_length_TC(rho_bar, T_bar, zeta_R3(rho_bar, T_bar));
     double cp = R3_cp(rho_array[i], T_array[i]);
     double cv = R3_cv(rho_array[i], T_array[i]);
 

@@ -26,6 +26,8 @@ int main(int argc, char *argv[])
     return 0;
   }
 
+  genR3_sat_line();
+
   IF97_Interpolation IF97InterP;
   //IF97InterP.init();
   std::cout << std::scientific << std::setprecision(8);

@@ -43,6 +43,28 @@ int findRegion(double p, double T)
   }
 }
 
+double rho_l_sat_from_T(double T)
+{
+  if (T > Tcrit)
+  {
+    fprintf(stderr, "%s", "Temperature is out of bound!\n");
+    exit(1);
+  }
+  if (T <= 623.15)
+    return 1.0 / R1_specific_volume(p_sat_from_T(T), T);
+  else
+  {
+    // TODO
+    return 0.0;
+  }
+}
+
+double rho_g_sat_from_T(double T)
+{
+  // TODO
+  return 0.0;
+}
+
 void genR3_sat_line()
 {
   FILE * ptr_sat_line_File;
@@ -66,10 +88,9 @@ void genR3_sat_line()
             "cp_g_sat [J/kg-K]",
             "c_g_sat [m/s]"
           );
-  for (int i = 0; i < 54; i++)
+  for (int i = 0; i < 51; i++)
   {
-    double bracket_size = (i < 49) ? 10.0 : 5.0;
-    if (i == 53) bracket_size = 2.0;
+    double bracket_size = (i < 50) ? 8.0 : 2.0;
     double T = R3_T_list[i];
     double ps = p_sat_from_T(T);
     double rho_l_min = R3_rho_l_sat_guess[i] - bracket_size;

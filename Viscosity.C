@@ -1,12 +1,11 @@
-#include <cmath>
-#include <iostream>
+#include <math.h>
 #include "Viscosity.h"
 
 double mu0_bar(double T_bar)
 {
   double denom = MU0_H[0] + MU0_H[1] / T_bar + MU0_H[2] / (T_bar * T_bar) + MU0_H[3] / (T_bar * T_bar * T_bar);
 
-  return 100.0 * std::sqrt(T_bar) / denom;
+  return 100.0 * sqrt(T_bar) / denom;
 }
 
 double mu1_bar(double rho_bar, double T_bar)
@@ -17,14 +16,14 @@ double mu1_bar(double rho_bar, double T_bar)
     // MU1_POS[k][0] -> i
     // MU1_POS[k][1] -> j
     // MU1_H[k] -> H_ij
-    SecTerm[MU1_POS[k][0]] += MU1_H[k] * std::pow(rho_bar - 1.0, MU1_POS[k][1]);
+    SecTerm[MU1_POS[k][0]] += MU1_H[k] * pow(rho_bar - 1.0, MU1_POS[k][1]);
   }
 
   double sum = 0.0;
   for (int i = 0; i < 6; i++)
-    sum += std::pow(1.0 / T_bar - 1.0, i) * SecTerm[i];
+    sum += pow(1.0 / T_bar - 1.0, i) * SecTerm[i];
 
-  return std::exp(rho_bar * sum);
+  return exp(rho_bar * sum);
 }
 
 double viscosity(double rho, double T)

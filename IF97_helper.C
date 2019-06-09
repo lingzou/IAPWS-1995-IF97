@@ -6,31 +6,31 @@
 
 int findRegion(double p, double T)
 {
-  if (T < Tmin)
+  if (T < T_MIN)
   {
-    fprintf(stderr, "%s", "Out of range: T < Tmin!\n");
+    fprintf(stderr, "%s", "Out of range: T < T_MIN!\n");
     return -1;
   }
 
-  if (T > Tmax2)
+  if (T > T_MAX2)
   {
-    fprintf(stderr, "%s", "Out of range: T > Tmax2!\n");
+    fprintf(stderr, "%s", "Out of range: T > T_MAX2!\n");
     return -2;
   }
 
-  if (p > Pmax)
+  if (p > P_MAX)
   {
-    fprintf(stderr, "%s", "Out of range: p > Pmax!\n");
+    fprintf(stderr, "%s", "Out of range: p > P_MAX!\n");
     return -3;
   }
 
-  if ((p > 50.0e6) && (T > Tmax))
+  if ((p > 50.0e6) && (T > T_MAX))
   {
-    fprintf(stderr, "%s", "Out of range: (p > 50.0e6) && (T > Tmax)!\n");
+    fprintf(stderr, "%s", "Out of range: (p > 50.0e6) && (T > T_MAX)!\n");
     return -4;
   }
 
-  if (T <= T13)
+  if (T <= T_13)
   {
     double ps = p_sat_from_T(T);
     return (p > ps) ? 1 : 2;
@@ -61,7 +61,7 @@ find_T_lower_bound(double T)
 
 double rho_l_sat_from_T(double T)
 {
-  if ((T < Tmin) || (T > Tcrit))
+  if ((T < T_MIN) || (T > T_CRIT))
   {
     fprintf(stderr, "%s", "Temperature is out of bound!\n");
     exit(1);
@@ -74,7 +74,7 @@ double rho_l_sat_from_T(double T)
 
 double rho_g_sat_from_T(double T)
 {
-  if ((T < Tmin) || (T > Tcrit))
+  if ((T < T_MIN) || (T > T_CRIT))
   {
     fprintf(stderr, "%s", "Temperature is out of bound!\n");
     exit(1);
@@ -118,17 +118,17 @@ void genR3_sat_line()
     double rho_g_min = R3_rho_g_sat_guess[i] - bracket_size;
     double rho_g_max = R3_rho_g_sat_guess[i] + bracket_size;
 
-    double delta_l_min = rho_l_min / Rhocrit;
-    double delta_l_max = rho_l_max / Rhocrit;
-    double delta_g_min = rho_g_min / Rhocrit;
-    double delta_g_max = rho_g_max / Rhocrit;
-    double tau = Tcrit / T;
+    double delta_l_min = rho_l_min / RHO_CRIT;
+    double delta_l_max = rho_l_max / RHO_CRIT;
+    double delta_g_min = rho_g_min / RHO_CRIT;
+    double delta_g_max = rho_g_max / RHO_CRIT;
+    double tau = T_CRIT / T;
 
-    double val_l_min = ps / Rgas / T / rho_l_min - delta_l_min * R3_phi_delta(delta_l_min, tau);
-    double val_l_max = ps / Rgas / T / rho_l_max - delta_l_max * R3_phi_delta(delta_l_max, tau);
+    double val_l_min = ps / R_GAS / T / rho_l_min - delta_l_min * R3_phi_delta(delta_l_min, tau);
+    double val_l_max = ps / R_GAS / T / rho_l_max - delta_l_max * R3_phi_delta(delta_l_max, tau);
 
-    double val_g_min = ps / Rgas / T / rho_g_min - delta_g_min * R3_phi_delta(delta_g_min, tau);
-    double val_g_max = ps / Rgas / T / rho_g_max - delta_g_max * R3_phi_delta(delta_g_max, tau);
+    double val_g_min = ps / R_GAS / T / rho_g_min - delta_g_min * R3_phi_delta(delta_g_min, tau);
+    double val_g_max = ps / R_GAS / T / rho_g_max - delta_g_max * R3_phi_delta(delta_g_max, tau);
 
     // Iterate to find rho_l_sat
     double rho_error = 1.0;
@@ -138,8 +138,8 @@ void genR3_sat_line()
     while (rho_error > 1.0e-9)
     {
       rho_l_find = 0.5 * (min + max);
-      double delta = rho_l_find / Rhocrit;
-      double val = ps / Rgas / T / rho_l_find - delta * R3_phi_delta(delta, tau);
+      double delta = rho_l_find / RHO_CRIT;
+      double val = ps / R_GAS / T / rho_l_find - delta * R3_phi_delta(delta, tau);
 
       if (val > 0.0) min = rho_l_find;
       else           max = rho_l_find;
@@ -155,8 +155,8 @@ void genR3_sat_line()
     while (rho_error > 1.0e-9)
     {
       rho_g_find = 0.5 * (min + max);
-      double delta = rho_g_find / Rhocrit;
-      double val = ps / Rgas / T / rho_g_find - delta * R3_phi_delta(delta, tau);
+      double delta = rho_g_find / RHO_CRIT;
+      double val = ps / R_GAS / T / rho_g_find - delta * R3_phi_delta(delta, tau);
 
       if (val > 0.0) min = rho_g_find;
       else           max = rho_g_find;
@@ -164,8 +164,8 @@ void genR3_sat_line()
       rho_error = max - min;
     }
     /*
-    double LEFT = ps / Rgas / T * (1.0 / rho_g_find - 1.0 / rho_l_find);
-    double RIGHT = R3_phi(rho_l_find / Rhocrit, tau) - R3_phi(rho_g_find / Rhocrit, tau);
+    double LEFT = ps / R_GAS / T * (1.0 / rho_g_find - 1.0 / rho_l_find);
+    double RIGHT = R3_phi(rho_l_find / RHO_CRIT, tau) - R3_phi(rho_g_find / RHO_CRIT, tau);
     std::cout << "T = " << std::scientific << std::setprecision(8) << std::setw(20) << T
       << "LEFT = " << std::scientific << std::setprecision(8) << std::setw(20) << LEFT
       << "; RIGHT = " << std::scientific << std::setprecision(8) << std::setw(20) << RIGHT
@@ -187,39 +187,39 @@ void genR3_sat_line()
     for (int j = 0; j < 51; j++)
     {
       double rho = rho_g_min + (rho_g_max - rho_g_min) / 50 * j;
-      double delta = rho / Rhocrit;
-      double val = ps / Rgas / T / rho - delta * R3_phi_delta(delta, tau);
+      double delta = rho / RHO_CRIT;
+      double val = ps / R_GAS / T / rho - delta * R3_phi_delta(delta, tau);
       fprintf (ptr_File, "%20.8e%20.8e\n", rho, val);
     }
     for (int j = 0; j < 51; j++)
     {
       double rho = rho_g_max + (rho_l_min - rho_g_max) / 50 * j;
-      double delta = rho / Rhocrit;
-      double val = ps / Rgas / T / rho - delta * R3_phi_delta(delta, tau);
+      double delta = rho / RHO_CRIT;
+      double val = ps / R_GAS / T / rho - delta * R3_phi_delta(delta, tau);
       fprintf (ptr_File, "%20.8e%20.8e\n", rho, val);
     }
     for (int j = 0; j < 51; j++)
     {
       double rho = rho_l_min + (rho_l_max - rho_l_min) / 50 * j;
-      double delta = rho / Rhocrit;
-      double val = ps / Rgas / T / rho - delta * R3_phi_delta(delta, tau);
+      double delta = rho / RHO_CRIT;
+      double val = ps / R_GAS / T / rho - delta * R3_phi_delta(delta, tau);
       fprintf (ptr_File, "%20.8e%20.8e\n", rho, val);
     }
 
     fprintf (ptr_File, "%20.8e%20.8e\n", rho_l_find,
-      ps / Rgas / T / rho_l_find - (rho_l_find / Rhocrit) * R3_phi_delta(rho_l_find / Rhocrit, tau));
+      ps / R_GAS / T / rho_l_find - (rho_l_find / RHO_CRIT) * R3_phi_delta(rho_l_find / RHO_CRIT, tau));
 
     fprintf (ptr_File, "%20.8e%20.8e\n", rho_g_find,
-      ps / Rgas / T / rho_g_find - (rho_g_find / Rhocrit) * R3_phi_delta(rho_g_find / Rhocrit, tau));
+      ps / R_GAS / T / rho_g_find - (rho_g_find / RHO_CRIT) * R3_phi_delta(rho_g_find / RHO_CRIT, tau));
 
     fclose(ptr_File);*/
   }
   fprintf (ptr_sat_line_File, "%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e\n",
-    Tcrit, Pcrit,
-    Rhocrit, 1.0/Rhocrit, R3_specific_int_energy(Rhocrit, Tcrit), R3_specific_entropy(Rhocrit, Tcrit),
-    R3_specific_enthalpy(Rhocrit, Tcrit), R3_cv(Rhocrit, Tcrit), R3_cp(Rhocrit, Tcrit), R3_sound_speed(Rhocrit, Tcrit),
-    Rhocrit, 1.0/Rhocrit, R3_specific_int_energy(Rhocrit, Tcrit), R3_specific_entropy(Rhocrit, Tcrit),
-    R3_specific_enthalpy(Rhocrit, Tcrit), R3_cv(Rhocrit, Tcrit), R3_cp(Rhocrit, Tcrit), R3_sound_speed(Rhocrit, Tcrit)
+    T_CRIT, P_CRIT,
+    RHO_CRIT, 1.0/RHO_CRIT, R3_specific_int_energy(RHO_CRIT, T_CRIT), R3_specific_entropy(RHO_CRIT, T_CRIT),
+    R3_specific_enthalpy(RHO_CRIT, T_CRIT), R3_cv(RHO_CRIT, T_CRIT), R3_cp(RHO_CRIT, T_CRIT), R3_sound_speed(RHO_CRIT, T_CRIT),
+    RHO_CRIT, 1.0/RHO_CRIT, R3_specific_int_energy(RHO_CRIT, T_CRIT), R3_specific_entropy(RHO_CRIT, T_CRIT),
+    R3_specific_enthalpy(RHO_CRIT, T_CRIT), R3_cv(RHO_CRIT, T_CRIT), R3_cp(RHO_CRIT, T_CRIT), R3_sound_speed(RHO_CRIT, T_CRIT)
   );
   fclose(ptr_sat_line_File);
 }
@@ -284,13 +284,13 @@ double R3_rho_l_sat_from_T_ITER(double T)
     double rho_error = 1.0;
 
     double rho_l_find = 0.0;
-    double tau = Tcrit / T;
+    double tau = T_CRIT / T;
     double ps = p_sat_from_T(T);
     while (rho_error > 1.0e-9)
     {
       rho_l_find = 0.5 * (min + max);
-      double delta = rho_l_find / Rhocrit;
-      double val = ps / Rgas / T / rho_l_find - delta * R3_phi_delta(delta, tau);
+      double delta = rho_l_find / RHO_CRIT;
+      double val = ps / R_GAS / T / rho_l_find - delta * R3_phi_delta(delta, tau);
 
       if (val > 0.0) min = rho_l_find;
       else           max = rho_l_find;
@@ -318,13 +318,13 @@ double R3_rho_g_sat_from_T_ITER(double T)
     double rho_error = 1.0;
 
     double rho_g_find = 0.0;
-    double tau = Tcrit / T;
+    double tau = T_CRIT / T;
     double ps = p_sat_from_T(T);
     while (rho_error > 1.0e-9)
     {
       rho_g_find = 0.5 * (min + max);
-      double delta = rho_g_find / Rhocrit;
-      double val = ps / Rgas / T / rho_g_find - delta * R3_phi_delta(delta, tau);
+      double delta = rho_g_find / RHO_CRIT;
+      double val = ps / R_GAS / T / rho_g_find - delta * R3_phi_delta(delta, tau);
 
       if (val > 0.0) max = rho_g_find;
       else           min = rho_g_find;
@@ -340,7 +340,7 @@ double R3_rho_from_p_T_ITER(double p, double T)
 {
   double p23 = B23_p_from_T(T);
   double rho_min = 0.0, rho_max = 0.0;
-  if (p < Pcrit)
+  if (p < P_CRIT)
   {
     double Ts = T_sat_from_p(p);
     if (T > Ts) // vapor phase
@@ -351,22 +351,22 @@ double R3_rho_from_p_T_ITER(double p, double T)
     else
     {
       rho_min = R3_rho_l_sat_from_T_ITER(Ts);
-      rho_max = 1.0 / R1_specific_volume(p, T13);
+      rho_max = 1.0 / R1_specific_volume(p, T_13);
     }
   }
   else
   {
     rho_min = 1.0 / R2_specific_volume(p23, T);
-    rho_max = 1.0 / R1_specific_volume(p, T13);
+    rho_max = 1.0 / R1_specific_volume(p, T_13);
   }
 
-  double tau = Tcrit / T;
+  double tau = T_CRIT / T;
   double rho_find = 0.0;
   double rho_error = 1.0;
   while (rho_error > 1.0e-9)
   {
     rho_find = 0.5 * (rho_min + rho_max);
-    double delta = rho_find / Rhocrit;
+    double delta = rho_find / RHO_CRIT;
     double p_guess = R3_p(rho_find, T);
 
     if (p_guess > p) rho_max = rho_find;
@@ -380,10 +380,10 @@ double R3_rho_from_p_T_ITER(double p, double T)
 
 void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
 {
-  double T_min = T13;
+  double T_min = T_13;
   double T_max = B23_T_from_p(p);
 
-  if (p < Pcrit)
+  if (p < P_CRIT)
   {
     double Ts = T_sat_from_p(p);
     double rho_l_sat = R3_rho_l_sat_from_T_ITER(Ts);
@@ -451,10 +451,10 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
 
 void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
 {
-  double T_min = T13;
+  double T_min = T_13;
   double T_max = B23_T_from_p(p);
 
-  if (p < Pcrit)
+  if (p < P_CRIT)
   {
     double Ts = T_sat_from_p(p);
     double rho_l_sat = R3_rho_l_sat_from_T_ITER(Ts);
@@ -522,7 +522,7 @@ void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
 
 double R3_dp_ddelta(double delta, double tau)
 {
-  return Rhocrit * Rgas * Tcrit / tau * (2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau));
+  return RHO_CRIT * R_GAS * T_CRIT / tau * (2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau));
 }
 
 double R1_drho_dp(double p, double T)
@@ -531,7 +531,7 @@ double R1_drho_dp(double p, double T)
   double tau = R1_TStar / T;
   double gamma_pi = R1_gamma_pi(pi, tau);
 
-  return -R1_gamma_pi_pi(pi, tau) / (Rgas * T * gamma_pi * gamma_pi);
+  return -R1_gamma_pi_pi(pi, tau) / (R_GAS * T * gamma_pi * gamma_pi);
 }
 
 double R2_drho_dp(double p, double T)
@@ -540,13 +540,13 @@ double R2_drho_dp(double p, double T)
   double tau = R2_TStar / T;
   double denom = R2_gamma_0_pi(pi, tau) + R2_gamma_r_pi(pi, tau);
 
-  return -(R2_gamma_0_pi_pi(pi, tau) + R2_gamma_r_pi_pi(pi, tau)) / (Rgas * T * denom * denom);
+  return -(R2_gamma_0_pi_pi(pi, tau) + R2_gamma_r_pi_pi(pi, tau)) / (R_GAS * T * denom * denom);
 }
 
 double R5_T_from_p_h_ITER(double p, double h)
 {
-  double T_min = Tmax;
-  double T_max = Tmax2;
+  double T_min = T_MAX;
+  double T_max = T_MAX2;
   double T_find, T_error = 1.0;
 
   while (T_error > 1.0e-9)
@@ -565,8 +565,8 @@ double R5_T_from_p_h_ITER(double p, double h)
 
 double R5_T_from_p_s_ITER(double p, double s)
 {
-  double T_min = Tmax;
-  double T_max = Tmax2;
+  double T_min = T_MAX;
+  double T_max = T_MAX2;
   double T_find, T_error = 1.0;
 
   while (T_error > 1.0e-9)

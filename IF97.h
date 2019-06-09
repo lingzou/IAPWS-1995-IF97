@@ -1,22 +1,32 @@
 #ifndef IF97_H
 #define IF97_H
 
+/*
+ *  Reference [1]
+ *
+ * "Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam",
+ *    IAPWS R7-97, The International Association for the Properties of Water and Steam (IAPWS), August, 2007.
+ */
+
 extern "C"
 {
-const static double Rgas    = 0.461526e3;          // J/kg-K
-const static double Tcrit   = 647.096;             // K
-const static double Pcrit   = 22.064e6;            // Pa
-const static double Rhocrit = 322.0;               // kg/m³
-const static double Tmin    = 273.15;              // K
-const static double Tmax    = 1073.15;             // K
-const static double Tmax2   = 2273.15;             // K
-const static double Pmin    = 0.000611213e6;       // Pa
-const static double Pmax    = 100.0e6;             // Pa
-const static double MW      = 0.018015268;         // kg/mol
+// Eqn. (1)-(4), constants on Fig. 1 of Ref. [1], page 4-5
+const static double R_GAS    = 0.461526e3;          // J/kg-K
+const static double T_CRIT   = 647.096;             // K
+const static double P_CRIT   = 22.064e6;            // Pa
+const static double RHO_CRIT = 322.0;               // kg/m³
+const static double T_MIN    = 273.15;              // K
+const static double T_13     = 623.15;              // K
+const static double T_MAX    = 1073.15;             // K
+const static double T_MAX2   = 2273.15;             // K
+const static double P_MIN    = 0.000611213e6;       // Pa
+const static double P_MAX    = 100.0e6;             // Pa
 
-const static double T13     = 623.15;              // K
-
-static const double B23_n[] = {
+/***************************************************************
+ * Region 1
+ ***************************************************************/
+// Table 1, Ref. [1], page 6
+static const double B23_n[5] = {
     0.34805185628969e3,
    -0.11671859879975e1,
     0.10192970039326e-2,
@@ -24,10 +34,11 @@ static const double B23_n[] = {
     0.13918839778870e2
 };
 
-void a_func();
+// Eqn. (5) and (6), Refs. [1], page 5-6
 double B23_p_from_T(double T);
 double B23_T_from_p(double p);
 
+// Table 2, Ref. [1], page 7
 static const double R1Coef[34][3] = {
   {0,   -2,  0.14632971213167     },
   {0,   -1, -0.84548187169114     },
@@ -65,9 +76,11 @@ static const double R1Coef[34][3] = {
   {32, -41, -0.93537087292458e-25 }
 };
 
+// Region 1 reference values, page 6, Ref. [1]
 const static double R1_TStar = 1386.0;  // K
 const static double R1_pStar = 16.53e6; // Pa
 
+// Table 4, Ref. [1], page 8
 double R1_gamma(double pi, double tau);
 double R1_gamma_pi(double pi, double tau);
 double R1_gamma_tau(double pi, double tau);
@@ -75,6 +88,7 @@ double R1_gamma_pi_pi(double pi, double tau);
 double R1_gamma_tau_tau(double pi, double tau);
 double R1_gamma_pi_tau(double pi, double tau);
 
+// Table 3, Ref. [1], page 8
 double R1_specific_volume(double p, double T);
 double R1_specific_int_energy(double p, double T);
 double R1_specific_entropy(double p, double T);
@@ -83,6 +97,7 @@ double R1_cp(double p, double T);
 double R1_cv(double p, double T);
 double R1_sound_speed(double p, double T);
 
+// Table 6, Ref. [1], page 10
 static const double R1_ph_Coef[20][3] = {
   {0,  0, -0.23872489924521e3   },
   {0,  1,  0.40421188637945e3   },
@@ -106,8 +121,10 @@ static const double R1_ph_Coef[20][3] = {
   {6, 32, -0.15020185953503e-16 }
 };
 
+// Eqn. (11), Ref. [1], page 10
 double R1_T_from_p_h(double p, double h);
 
+// Table 8, Ref. [1], page 11
 static const double R1_ps_Coef[20][3] = {
   {0,  0,  0.17478268058307e3   },
   {0,  1,  0.34806930892873e2   },
@@ -131,12 +148,17 @@ static const double R1_ps_Coef[20][3] = {
   {4, 32, -0.30732199903668e-30 }
 };
 
+// Eqn. (13), Ref. [1], page 11
 double R1_T_from_p_s(double p, double s);
 
-
+/***************************************************************
+ * Region 2
+ ***************************************************************/
+// Region 2 reference values, page 13
 const static double R2_TStar = 540.0;  // K
 const static double R2_pStar = 1.0e6; // Pa
 
+// Table 10, Ref. [1], page 13
 static const double R2Coef0[9][2] = {
   { 0, -0.96927686500217e1  },
   { 1,  0.10086655968018e2  },
@@ -149,6 +171,7 @@ static const double R2Coef0[9][2] = {
   { 3,  0.21268463753307e-1 },
 };
 
+// Table 11, Ref. [1], page 14
 static const double R2Coefr[43][3] = {
   {1,   0, -0.17731742473213e-2   },
   {1,   1, -0.17834862292358e-1   },
@@ -195,21 +218,25 @@ static const double R2Coefr[43][3] = {
   {24, 58, -0.94369707241210e-6   }
 };
 
+// Eqn. (16)-(17), Ref. [1], page 13
 double R2_gamma_0(double pi, double tau);
 double R2_gamma_r(double pi, double tau);
 
+// Table 13, Ref. [1], page 16
 double R2_gamma_0_pi(double pi, double tau);
 double R2_gamma_0_pi_pi(double pi, double tau);
 double R2_gamma_0_tau(double pi, double tau);
 double R2_gamma_0_tau_tau(double pi, double tau);
 double R2_gamma_0_pi_tau(double pi, double tau);
 
+// Table 14, Ref. [1], page 16
 double R2_gamma_r_pi(double pi, double tau);
 double R2_gamma_r_pi_pi(double pi, double tau);
 double R2_gamma_r_tau(double pi, double tau);
 double R2_gamma_r_tau_tau(double pi, double tau);
 double R2_gamma_r_pi_tau(double pi, double tau);
 
+// Table 12, Ref. [1], page 15
 double R2_specific_volume(double p, double T);
 double R2_specific_int_energy(double p, double T);
 double R2_specific_entropy(double p, double T);
@@ -218,6 +245,10 @@ double R2_cp(double p, double T);
 double R2_cv(double p, double T);
 double R2_sound_speed(double p, double T);
 
+/***************************************************************
+ * Region 2 (Metastable)
+ ***************************************************************/
+// Table 10, Ref. [1], page 13 (with addjusted n^o_1 and n^o_2)
 static const double R2MetaCoef0[9][2] = {
   { 0, -0.96937268393049e1  },
   { 1,  0.10087275970006e2  },
@@ -230,6 +261,7 @@ static const double R2MetaCoef0[9][2] = {
   { 3,  0.21268463753307e-1 },
 };
 
+// Table 16, Ref. [1], page 18
 static const double R2MetaCoefr[13][3] = {
   {1,   0, -0.73362260186506e-2   },
   {1,   2, -0.88223831943146e-1   },
@@ -246,21 +278,26 @@ static const double R2MetaCoefr[13][3] = {
   {5,  10, -0.26456501482810e-2   }
 };
 
+// Eqn. (16) with adjusted n^o_1 and n^o_2, Ref. [1], page 13
 double R2Meta_gamma_0(double pi, double tau);
+// Eqn. (19), Ref. [1], page 18
 double R2Meta_gamma_r(double pi, double tau);
 
+// Table 13, Ref. [1], page 16
 double R2Meta_gamma_0_pi(double pi, double tau);
 double R2Meta_gamma_0_pi_pi(double pi, double tau);
 double R2Meta_gamma_0_tau(double pi, double tau);
 double R2Meta_gamma_0_tau_tau(double pi, double tau);
 double R2Meta_gamma_0_pi_tau(double pi, double tau);
 
+// Table 17, Ref. [1], page 19
 double R2Meta_gamma_r_pi(double pi, double tau);
 double R2Meta_gamma_r_pi_pi(double pi, double tau);
 double R2Meta_gamma_r_tau(double pi, double tau);
 double R2Meta_gamma_r_tau_tau(double pi, double tau);
 double R2Meta_gamma_r_pi_tau(double pi, double tau);
 
+// Table 12, Ref. [1], page 15
 double R2Meta_specific_volume(double p, double T);
 double R2Meta_specific_int_energy(double p, double T);
 double R2Meta_specific_entropy(double p, double T);
@@ -269,6 +306,7 @@ double R2Meta_cp(double p, double T);
 double R2Meta_cv(double p, double T);
 double R2Meta_sound_speed(double p, double T);
 
+// Table 19, Ref. [1], page 22
 static const double B2bc_n[5] = {
   0.90584278514723e3,
  -0.67955786399241e0,
@@ -277,9 +315,11 @@ static const double B2bc_n[5] = {
   0.45257578905948e1
 };
 
+// Eqn. (20)-(21), Ref. [1], page 21
 double B2bc_p_from_h(double h);
 double B2bc_h_from_p(double p);
 
+// Table 20, Ref. [1], page 22
 static const double R2a_ph_Coef[34][3] = {
   {0,  0,  0.10898952318288e4   },
   {0,  1,  0.84951654495535e3   },
@@ -317,8 +357,10 @@ static const double R2a_ph_Coef[34][3] = {
   {7, 28, -0.62459855192507e2   }
 };
 
+// Eqn. (22), Ref. [1], page 22
 double R2a_T_from_p_h(double p, double h);
 
+// Table 21, Ref. [1], page 23
 static const double R2b_ph_Coef[38][3] = {
   {0,  0,  0.14895041079516e4   },
   {0,  1,  0.74307798314034e3   },
@@ -360,8 +402,10 @@ static const double R2b_ph_Coef[38][3] = {
   {9, 40,  0.86934156344163e-14 }
 };
 
+// Eqn. (23), Ref. [1], page 23
 double R2b_T_from_p_h(double p, double h);
 
+// Table 22, Ref. [1], page 24
 static const double R2c_ph_Coef[23][3] = {
   {-7,  0, -0.32368398555242e13 },
   {-7,  4,  0.73263350902181e13 },
@@ -388,8 +432,10 @@ static const double R2c_ph_Coef[23][3] = {
   { 6, 22,  0.12918582991878e-2 }
 };
 
+// Eqn. (24), Ref. [1], page 23
 double R2c_T_from_p_h(double p, double h);
 
+// Table 25, Ref. [1], page 26
 static const double R2a_ps_Coef[46][3] = {
   {-1.50, -24, -0.39235983861984e6  },
   {-1.50, -23,  0.51526573827270e6  },
@@ -439,8 +485,10 @@ static const double R2a_ps_Coef[46][3] = {
   { 1.50,  18, -0.82198102652018e-5 }
 };
 
+// Eqn. (25), Ref. [1], page 25
 double R2a_T_from_p_s(double p, double s);
 
+// Table 26, Ref. [1], page 27
 static const double R2b_ps_Coef[44][3] = {
   {-6,  0,  0.31687665083497e6  },
   {-6, 11,  0.20864175881858e2  },
@@ -488,8 +536,10 @@ static const double R2b_ps_Coef[44][3] = {
   { 5,  2,  0.16409393674725e-8 }
 };
 
+// Eqn. (26), Ref. [1], page 26
 double R2b_T_from_p_s(double p, double s);
 
+// Table 27, Ref. [1], page 28
 static const double R2c_ps_Coef[30][3] = {
   {-2, 0,  0.90968501005365e3   },
   {-2, 1,  0.24045667088420e4   },
@@ -523,9 +573,13 @@ static const double R2c_ps_Coef[30][3] = {
   { 7, 5, -0.16429828281347e-9  }
 };
 
+// Eqn. (27), Ref. [1], page 27
 double R2c_T_from_p_s(double p, double s);
 
-// Region 3
+/***************************************************************
+ * Region 3
+ ***************************************************************/
+// Table 30, Ref. [1], page 30
 static const double R3Coef[40][3] = {
   {0,   0,    0.10658070028513e1  },
   {0,   0,   -0.15732845290239e2  },
@@ -569,6 +623,7 @@ static const double R3Coef[40][3] = {
   {11, 26,   -0.44923899061815e-4 },
 };
 
+// Table 32, Ref. [1], page 32
 double R3_phi(double delta, double tau);
 double R3_phi_delta(double delta, double tau);
 double R3_phi_delta_delta(double delta, double tau);
@@ -576,6 +631,7 @@ double R3_phi_tau(double delta, double tau);
 double R3_phi_tau_tau(double delta, double tau);
 double R3_phi_delta_tau(double delta, double tau);
 
+// Table 31, Ref. [1], page 31
 double R3_p(double rho, double T);
 double R3_specific_int_energy(double rho, double T);
 double R3_specific_entropy(double rho, double T);
@@ -584,7 +640,10 @@ double R3_cv(double rho, double T);
 double R3_cp(double rho, double T);
 double R3_sound_speed(double rho, double T);
 
-// Region 4
+/***************************************************************
+ * Region 4
+ ***************************************************************/
+// Table 34, Ref. [1], page 34
 static const double R4Coef[10] = {
   0.11670521452767e4,
  -0.72421316703206e6,
@@ -598,10 +657,14 @@ static const double R4Coef[10] = {
   0.65017534844798e3
 };
 
+// Eqn. (30), page 33; Eqn. (31), page 35, Ref. [1]
 double p_sat_from_T(double T);
 double T_sat_from_p(double p);
 
-// Region 5
+/***************************************************************
+ * Region 5
+ ***************************************************************/
+// Table 37, Ref. [1], page 37
 static const double R5Coef0[6][2] = {
   { 0, -0.13179983674201e2  },
   { 1,  0.68540841634434e1  },
@@ -611,6 +674,7 @@ static const double R5Coef0[6][2] = {
   { 2, -0.32961626538917    }
 };
 
+// Table 38, Ref. [1], page 37
 static const double R5Coefr[6][3] = {
   {1, 1,  0.15736404855259e-2},
   {1, 2,  0.90153761673944e-3},
@@ -620,21 +684,25 @@ static const double R5Coefr[6][3] = {
   {3, 7,  0.37919454822955e-7}
 };
 
+// Eqn. (33), page 36; Eqn. (34), page 37, Ref. [1]
 double R5_gamma_0(double pi, double tau);
 double R5_gamma_r(double pi, double tau);
 
+// Table 40, Ref. [1], page 39
 double R5_gamma_0_pi(double pi, double tau);
 double R5_gamma_0_pi_pi(double pi, double tau);
 double R5_gamma_0_tau(double pi, double tau);
 double R5_gamma_0_tau_tau(double pi, double tau);
 double R5_gamma_0_pi_tau(double pi, double tau);
 
+// Table 41, Ref. [1], page 39
 double R5_gamma_r_pi(double pi, double tau);
 double R5_gamma_r_pi_pi(double pi, double tau);
 double R5_gamma_r_tau(double pi, double tau);
 double R5_gamma_r_tau_tau(double pi, double tau);
 double R5_gamma_r_pi_tau(double pi, double tau);
 
+// Table 39, Ref. [1], page 38
 double R5_specific_volume(double p, double T);
 double R5_specific_int_energy(double p, double T);
 double R5_specific_entropy(double p, double T);

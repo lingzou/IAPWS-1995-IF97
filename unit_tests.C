@@ -576,8 +576,8 @@ void Unit_Test_ThermCond_R1()
   for (int i = 0; i < 2; i++)
   {
     double rho = 1.0 / R1_specific_volume(p_array[i], T_array[i]);
-    double rho_bar = rho / Rhocrit;
-    double T_bar = T_array[i] / Tcrit;
+    double rho_bar = rho / RHO_CRIT;
+    double T_bar = T_array[i] / T_CRIT;
     double xi = correlation_length_TC(rho_bar, T_bar, zeta_R1(p_array[i], T_array[i]));
     double cp = R1_cp(p_array[i], T_array[i]);
     double cv = R1_cv(p_array[i], T_array[i]);
@@ -589,7 +589,7 @@ void Unit_Test_ThermCond_R1()
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_1_bar", labmda1_bar(rho_bar, T_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "rho [kg/m^3]", rho);
     fprintf (ptr_File, "%24s%20.8e\n", "drho_dp [kg/m^3/Pa]", R1_drho_dp(p_array[i], T_array[i]));
-    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_REF(rho_bar));
+    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", RHO_CRIT / P_CRIT * zeta_REF(rho_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "xi [nm]", xi);
     fprintf (ptr_File, "%24s%20.8e\n", "cp [J/(kg-K)]", cp);
     fprintf (ptr_File, "%24s%20.8e\n", "cv [J/(kg-K)]", cv);
@@ -611,8 +611,8 @@ void Unit_Test_ThermCond_R2()
   for (int i = 0; i < 2; i++)
   {
     double rho = 1.0 / R2_specific_volume(p_array[i], T_array[i]);
-    double rho_bar = rho / Rhocrit;
-    double T_bar = T_array[i] / Tcrit;
+    double rho_bar = rho / RHO_CRIT;
+    double T_bar = T_array[i] / T_CRIT;
     double xi = correlation_length_TC(rho_bar, T_bar, zeta_R2(p_array[i], T_array[i]));
     double cp = R2_cp(p_array[i], T_array[i]);
     double cv = R2_cv(p_array[i], T_array[i]);
@@ -624,7 +624,7 @@ void Unit_Test_ThermCond_R2()
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_1_bar", labmda1_bar(rho_bar, T_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "rho [kg/m^3]", rho);
     fprintf (ptr_File, "%24s%20.8e\n", "drho_dp [kg/m^3/Pa]", R2_drho_dp(p_array[i], T_array[i]));
-    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_REF(rho_bar));
+    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", RHO_CRIT / P_CRIT * zeta_REF(rho_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "xi [nm]", xi);
     fprintf (ptr_File, "%24s%20.8e\n", "cp [J/(kg-K)]", cp);
     fprintf (ptr_File, "%24s%20.8e\n", "cv [J/(kg-K)]", cv);
@@ -645,8 +645,8 @@ void Unit_Test_ThermCond_R3()
 
   for (int i = 0; i < 2; i++)
   {
-    double rho_bar = rho_array[i] / Rhocrit;
-    double T_bar = T_array[i] / Tcrit;
+    double rho_bar = rho_array[i] / RHO_CRIT;
+    double T_bar = T_array[i] / T_CRIT;
     double xi = correlation_length_TC(rho_bar, T_bar, zeta_R3(rho_bar, T_bar));
     double cp = R3_cp(rho_array[i], T_array[i]);
     double cv = R3_cv(rho_array[i], T_array[i]);
@@ -656,8 +656,8 @@ void Unit_Test_ThermCond_R3()
     fprintf (ptr_File, "%24s%20.8e\n", "lambda", thermal_conductivity_R3(rho_array[i], T_array[i]));
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_0_bar", labmda0_bar(T_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "lambda_1_bar", labmda1_bar(rho_bar, T_bar));
-    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp [kg/m^3/Pa]", Rhocrit / R3_dp_ddelta(rho_bar, 1.0 / T_bar));
-    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", Rhocrit / Pcrit * zeta_REF(rho_bar));
+    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp [kg/m^3/Pa]", RHO_CRIT / R3_dp_ddelta(rho_bar, 1.0 / T_bar));
+    fprintf (ptr_File, "%24s%20.8e\n", "drho_dp(R) [kg/m^3/Pa]", RHO_CRIT / P_CRIT * zeta_REF(rho_bar));
     fprintf (ptr_File, "%24s%20.8e\n", "xi [nm]", xi);
     fprintf (ptr_File, "%24s%20.8e\n", "cp [J/(kg-K)]", cp);
     fprintf (ptr_File, "%24s%20.8e\n", "cv [J/(kg-K)]", cv);

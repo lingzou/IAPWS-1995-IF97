@@ -1,4 +1,3 @@
-#include <iostream>
 #include "ThermalConductivity.h"
 #include "Viscosity.h"
 
@@ -39,17 +38,17 @@ double labmda2_bar(double rho_bar, double T_bar, double cp, double cv, double mu
 
 double zeta_R1(double p, double T)
 {
-  return Pcrit / Rhocrit * R1_drho_dp(p, T);
+  return P_CRIT / RHO_CRIT * R1_drho_dp(p, T);
 }
 
 double zeta_R2(double p, double T)
 {
-  return Pcrit / Rhocrit * R2_drho_dp(p, T);
+  return P_CRIT / RHO_CRIT * R2_drho_dp(p, T);
 }
 
 double zeta_R3(double rho_bar, double T_bar)
 {
-  return Pcrit / R3_dp_ddelta(rho_bar, 1.0 / T_bar);
+  return P_CRIT / R3_dp_ddelta(rho_bar, 1.0 / T_bar);
 }
 
 double zeta_REF(double rho_bar)
@@ -70,8 +69,8 @@ double zeta_REF(double rho_bar)
 
 double correlation_length_TC(double rho_bar, double T_bar, double zeta)
 {
-  //double dchi_bar = std::max(rho_bar * (zeta(rho_bar, T_bar) - zeta_R(rho_bar) * 1.5 / T_bar), 0.0);
-  double dchi_bar = std::max(rho_bar * (zeta - zeta_REF(rho_bar) * 1.5 / T_bar), 0.0);
+  double dchi_bar = rho_bar * (zeta - zeta_REF(rho_bar) * 1.5 / T_bar);
+  dchi_bar = (dchi_bar > 0.0) ? dchi_bar : 0.0;
 
   return 0.13 * std::pow(dchi_bar / 0.06, 0.630 / 1.239);
 }

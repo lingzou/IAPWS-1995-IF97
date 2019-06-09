@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   for (int i = 0; i < 100; i++)
   {
     double r = ((double) rand()) / (double) RAND_MAX;
-    double T = 623.15 + (Tcrit - 623.15) * r;
+    double T = 623.15 + (T_CRIT - 623.15) * r;
 
     std::cout << T << "; " << rho_l_sat_from_T(T) << std::endl;
   }

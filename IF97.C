@@ -1,8 +1,5 @@
 #include <cmath>
-
 #include "IF97.h"
-
-void a_func() {}
 
 double
 B23_p_from_T(double T)
@@ -86,7 +83,7 @@ double R1_specific_volume(double p, double T)
   double pi  = p / R1_pStar;
   double tau = R1_TStar / T;
 
-  return pi * R1_gamma_pi(pi, tau) * Rgas * T / p;
+  return pi * R1_gamma_pi(pi, tau) * R_GAS * T / p;
 }
 
 double R1_specific_int_energy(double p, double T)
@@ -94,7 +91,7 @@ double R1_specific_int_energy(double p, double T)
   double pi  = p / R1_pStar;
   double tau = R1_TStar / T;
 
-  return (tau * R1_gamma_tau(pi, tau) - pi * R1_gamma_pi(pi, tau)) * Rgas * T;
+  return (tau * R1_gamma_tau(pi, tau) - pi * R1_gamma_pi(pi, tau)) * R_GAS * T;
 }
 
 double R1_specific_entropy(double p, double T)
@@ -102,7 +99,7 @@ double R1_specific_entropy(double p, double T)
   double pi  = p / R1_pStar;
   double tau = R1_TStar / T;
 
-  return (tau * R1_gamma_tau(pi, tau) - R1_gamma(pi, tau)) * Rgas;
+  return (tau * R1_gamma_tau(pi, tau) - R1_gamma(pi, tau)) * R_GAS;
 }
 
 double R1_specific_enthalpy(double p, double T)
@@ -110,7 +107,7 @@ double R1_specific_enthalpy(double p, double T)
   double pi  = p / R1_pStar;
   double tau = R1_TStar / T;
 
-  return tau * R1_gamma_tau(pi, tau) * Rgas * T;
+  return tau * R1_gamma_tau(pi, tau) * R_GAS * T;
 }
 
 double R1_cp(double p, double T)
@@ -118,7 +115,7 @@ double R1_cp(double p, double T)
   double pi  = p / R1_pStar;
   double tau = R1_TStar / T;
 
-  return -tau * tau * R1_gamma_tau_tau(pi, tau) * Rgas;
+  return -tau * tau * R1_gamma_tau_tau(pi, tau) * R_GAS;
 }
 
 double R1_cv(double p, double T)
@@ -128,7 +125,7 @@ double R1_cv(double p, double T)
 
   double val = R1_gamma_pi(pi, tau) - tau * R1_gamma_pi_tau(pi, tau);
   double val2 = -tau * tau * R1_gamma_tau_tau(pi, tau) + val * val / R1_gamma_pi_pi(pi, tau);
-  return val2 * Rgas;
+  return val2 * R_GAS;
 }
 
 double R1_sound_speed(double p, double T)
@@ -140,7 +137,7 @@ double R1_sound_speed(double p, double T)
 
   double val = gamma_pi - tau * R1_gamma_pi_tau(pi, tau);
   double val2 = gamma_pi * gamma_pi / (val * val / (tau * tau * R1_gamma_tau_tau(pi, tau)) - R1_gamma_pi_pi(pi, tau));
-  return std::sqrt(val2 * Rgas * T);
+  return std::sqrt(val2 * R_GAS * T);
 }
 
 double R1_T_from_p_h(double p, double h)
@@ -271,7 +268,7 @@ double R2_specific_volume(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  return pi * (R2_gamma_0_pi(pi, tau) + R2_gamma_r_pi(pi, tau)) * Rgas * T / p;
+  return pi * (R2_gamma_0_pi(pi, tau) + R2_gamma_r_pi(pi, tau)) * R_GAS * T / p;
 }
 
 double R2_specific_int_energy(double p, double T)
@@ -282,7 +279,7 @@ double R2_specific_int_energy(double p, double T)
   double val = tau * (R2_gamma_0_tau(pi, tau) + R2_gamma_r_tau(pi, tau))
               - pi * (R2_gamma_0_pi(pi, tau)  + R2_gamma_r_pi(pi, tau));
 
-  return val * Rgas * T;
+  return val * R_GAS * T;
 }
 
 double R2_specific_entropy(double p, double T)
@@ -293,7 +290,7 @@ double R2_specific_entropy(double p, double T)
   double val = tau * (R2_gamma_0_tau(pi, tau) + R2_gamma_r_tau(pi, tau))
               - (R2_gamma_0(pi, tau)  + R2_gamma_r(pi, tau));
 
-  return val * Rgas;
+  return val * R_GAS;
 }
 
 double R2_specific_enthalpy(double p, double T)
@@ -301,7 +298,7 @@ double R2_specific_enthalpy(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  return tau * (R2_gamma_0_tau(pi, tau) + R2_gamma_r_tau(pi, tau)) * Rgas * T;
+  return tau * (R2_gamma_0_tau(pi, tau) + R2_gamma_r_tau(pi, tau)) * R_GAS * T;
 }
 
 double R2_cp(double p, double T)
@@ -309,7 +306,7 @@ double R2_cp(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  return -tau * tau * (R2_gamma_0_tau_tau(pi, tau) + R2_gamma_r_tau_tau(pi, tau)) * Rgas;
+  return -tau * tau * (R2_gamma_0_tau_tau(pi, tau) + R2_gamma_r_tau_tau(pi, tau)) * R_GAS;
 }
 
 double R2_cv(double p, double T)
@@ -317,11 +314,11 @@ double R2_cv(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  double cp = -tau * tau * (R2_gamma_0_tau_tau(pi, tau) + R2_gamma_r_tau_tau(pi, tau)) * Rgas;
+  double cp = -tau * tau * (R2_gamma_0_tau_tau(pi, tau) + R2_gamma_r_tau_tau(pi, tau)) * R_GAS;
   double val1 = 1.0 + pi * R2_gamma_r_pi(pi, tau) - tau * pi * R2_gamma_r_pi_tau(pi, tau);
   double val2 = 1.0 - pi * pi * R2_gamma_r_pi_pi(pi, tau);
 
-  return cp - (val1 * val1 / val2) * Rgas;
+  return cp - (val1 * val1 / val2) * R_GAS;
 }
 
 double R2_sound_speed(double p, double T)
@@ -335,7 +332,7 @@ double R2_sound_speed(double p, double T)
   double val3 = 1.0 + pi * R2_gamma_r_pi(pi, tau) - tau * pi * R2_gamma_r_pi_tau(pi, tau);
   double val4 = tau * tau * (R2_gamma_0_tau_tau(pi, tau) + R2_gamma_r_tau_tau(pi, tau));
 
-  double w2 = val1 / (val2 + val3 * val3 / val4) * Rgas * T;
+  double w2 = val1 / (val2 + val3 * val3 / val4) * R_GAS * T;
 
   return std::sqrt(w2);
 }
@@ -445,7 +442,7 @@ double R2Meta_specific_volume(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  return pi * (R2Meta_gamma_0_pi(pi, tau) + R2Meta_gamma_r_pi(pi, tau)) * Rgas * T / p;
+  return pi * (R2Meta_gamma_0_pi(pi, tau) + R2Meta_gamma_r_pi(pi, tau)) * R_GAS * T / p;
 }
 
 double R2Meta_specific_int_energy(double p, double T)
@@ -456,7 +453,7 @@ double R2Meta_specific_int_energy(double p, double T)
   double val = tau * (R2Meta_gamma_0_tau(pi, tau) + R2Meta_gamma_r_tau(pi, tau))
               - pi * (R2Meta_gamma_0_pi(pi, tau)  + R2Meta_gamma_r_pi(pi, tau));
 
-  return val * Rgas * T;
+  return val * R_GAS * T;
 }
 
 double R2Meta_specific_entropy(double p, double T)
@@ -467,7 +464,7 @@ double R2Meta_specific_entropy(double p, double T)
   double val = tau * (R2Meta_gamma_0_tau(pi, tau) + R2Meta_gamma_r_tau(pi, tau))
               - (R2Meta_gamma_0(pi, tau)  + R2Meta_gamma_r(pi, tau));
 
-  return val * Rgas;
+  return val * R_GAS;
 }
 
 double R2Meta_specific_enthalpy(double p, double T)
@@ -475,7 +472,7 @@ double R2Meta_specific_enthalpy(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  return tau * (R2Meta_gamma_0_tau(pi, tau) + R2Meta_gamma_r_tau(pi, tau)) * Rgas * T;
+  return tau * (R2Meta_gamma_0_tau(pi, tau) + R2Meta_gamma_r_tau(pi, tau)) * R_GAS * T;
 }
 
 double R2Meta_cp(double p, double T)
@@ -483,7 +480,7 @@ double R2Meta_cp(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  return -tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) + R2Meta_gamma_r_tau_tau(pi, tau)) * Rgas;
+  return -tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) + R2Meta_gamma_r_tau_tau(pi, tau)) * R_GAS;
 }
 
 double R2Meta_cv(double p, double T)
@@ -491,7 +488,7 @@ double R2Meta_cv(double p, double T)
   double pi = p / R2_pStar;
   double tau = R2_TStar / T;
 
-  double cp = -tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) * R2Meta_gamma_r_tau_tau(pi, tau)) * Rgas;
+  double cp = -tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) * R2Meta_gamma_r_tau_tau(pi, tau)) * R_GAS;
   double val1 = 1.0 + pi * R2Meta_gamma_r_pi(pi, tau) - tau * pi * R2Meta_gamma_r_pi_tau(pi, tau);
   double val2 = 1.0 - pi * pi * R2Meta_gamma_r_pi_pi(pi, tau);
 
@@ -509,7 +506,7 @@ double R2Meta_sound_speed(double p, double T)
   double val3 = 1.0 + pi * R2Meta_gamma_r_pi(pi, tau) - tau * pi * R2Meta_gamma_r_pi_tau(pi, tau);
   double val4 = tau * tau * (R2Meta_gamma_0_tau_tau(pi, tau) + R2Meta_gamma_r_tau_tau(pi, tau));
 
-  double w2 = val1 / (val2 + val3 * val3 / val4) * Rgas * T;
+  double w2 = val1 / (val2 + val3 * val3 / val4) * R_GAS * T;
 
   return std::sqrt(w2);
 }
@@ -668,68 +665,68 @@ double R3_phi_delta_tau(double delta, double tau)
 
 double R3_p(double rho, double T)
 {
-  double delta = rho / Rhocrit;
-  double tau = Tcrit / T;
+  double delta = rho / RHO_CRIT;
+  double tau = T_CRIT / T;
 
-  return delta * R3_phi_delta(delta, tau) * rho * Rgas * T;
+  return delta * R3_phi_delta(delta, tau) * rho * R_GAS * T;
 }
 
 double R3_specific_int_energy(double rho, double T)
 {
-  double delta = rho / Rhocrit;
-  double tau = Tcrit / T;
+  double delta = rho / RHO_CRIT;
+  double tau = T_CRIT / T;
 
-  return tau * R3_phi_tau(delta, tau) * Rgas * T;
+  return tau * R3_phi_tau(delta, tau) * R_GAS * T;
 }
 
 double R3_specific_entropy(double rho, double T)
 {
-  double delta = rho / Rhocrit;
-  double tau = Tcrit / T;
+  double delta = rho / RHO_CRIT;
+  double tau = T_CRIT / T;
 
-  return (tau * R3_phi_tau(delta, tau) - R3_phi(delta, tau)) * Rgas;
+  return (tau * R3_phi_tau(delta, tau) - R3_phi(delta, tau)) * R_GAS;
 }
 
 double R3_specific_enthalpy(double rho, double T)
 {
-  double delta = rho / Rhocrit;
-  double tau = Tcrit / T;
+  double delta = rho / RHO_CRIT;
+  double tau = T_CRIT / T;
 
-  return (tau * R3_phi_tau(delta, tau) + delta * R3_phi_delta(delta, tau)) * Rgas * T;
+  return (tau * R3_phi_tau(delta, tau) + delta * R3_phi_delta(delta, tau)) * R_GAS * T;
 }
 
 double R3_cv(double rho, double T)
 {
-  double delta = rho / Rhocrit;
-  double tau = Tcrit / T;
+  double delta = rho / RHO_CRIT;
+  double tau = T_CRIT / T;
 
-  return - tau * tau * R3_phi_tau_tau(delta, tau) * Rgas;
+  return - tau * tau * R3_phi_tau_tau(delta, tau) * R_GAS;
 }
 
 double R3_cp(double rho, double T)
 {
-  double delta = rho / Rhocrit;
-  double tau = Tcrit / T;
+  double delta = rho / RHO_CRIT;
+  double tau = T_CRIT / T;
 
   double val0 = - tau * tau * R3_phi_tau_tau(delta, tau);
 
   double val1 = delta * R3_phi_delta(delta, tau) - delta * tau * R3_phi_delta_tau(delta, tau);
   double val2 = 2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau);
 
-  return (val0 + val1 * val1 / val2) * Rgas;
+  return (val0 + val1 * val1 / val2) * R_GAS;
 }
 
 double R3_sound_speed(double rho, double T)
 {
-  double delta = rho / Rhocrit;
-  double tau = Tcrit / T;
+  double delta = rho / RHO_CRIT;
+  double tau = T_CRIT / T;
 
   double val1 = delta * R3_phi_delta(delta, tau) - delta * tau * R3_phi_delta_tau(delta, tau);
   double val2 = 2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau);
 
   double val = val2 - val1 * val1 / (tau * tau * R3_phi_tau_tau(delta, tau));
 
-  return std::sqrt(val * Rgas * T);
+  return std::sqrt(val * R_GAS * T);
 }
 
 double p_sat_from_T(double T)
@@ -867,7 +864,7 @@ double R5_specific_volume(double p, double T)
   double pi = p * 1.0e-6;
   double tau = 1000.0 / T;
 
-  return pi * (R5_gamma_0_pi(pi, tau) + R5_gamma_r_pi(pi, tau)) * Rgas * T / p;
+  return pi * (R5_gamma_0_pi(pi, tau) + R5_gamma_r_pi(pi, tau)) * R_GAS * T / p;
 }
 
 double R5_specific_int_energy(double p, double T)
@@ -878,7 +875,7 @@ double R5_specific_int_energy(double p, double T)
   double val = tau * (R5_gamma_0_tau(pi, tau) + R5_gamma_r_tau(pi, tau))
               - pi * (R5_gamma_0_pi(pi, tau)  + R5_gamma_r_pi(pi, tau));
 
-  return val * Rgas * T;
+  return val * R_GAS * T;
 }
 
 double R5_specific_entropy(double p, double T)
@@ -889,7 +886,7 @@ double R5_specific_entropy(double p, double T)
   double val = tau * (R5_gamma_0_tau(pi, tau) + R5_gamma_r_tau(pi, tau))
               - (R5_gamma_0(pi, tau)  + R5_gamma_r(pi, tau));
 
-  return val * Rgas;
+  return val * R_GAS;
 }
 
 double R5_specific_enthalpy(double p, double T)
@@ -897,7 +894,7 @@ double R5_specific_enthalpy(double p, double T)
   double pi = p * 1.0e-6;
   double tau = 1000.0 / T;
 
-  return tau * (R5_gamma_0_tau(pi, tau) + R5_gamma_r_tau(pi, tau)) * Rgas * T;
+  return tau * (R5_gamma_0_tau(pi, tau) + R5_gamma_r_tau(pi, tau)) * R_GAS * T;
 }
 
 double R5_cp(double p, double T)
@@ -905,7 +902,7 @@ double R5_cp(double p, double T)
   double pi = p * 1.0e-6;
   double tau = 1000.0 / T;
 
-  return -tau * tau * (R5_gamma_0_tau_tau(pi, tau) + R5_gamma_r_tau_tau(pi, tau)) * Rgas;
+  return -tau * tau * (R5_gamma_0_tau_tau(pi, tau) + R5_gamma_r_tau_tau(pi, tau)) * R_GAS;
 }
 
 double R5_cv(double p, double T)
@@ -913,7 +910,7 @@ double R5_cv(double p, double T)
   double pi = p * 1.0e-6;
   double tau = 1000.0 / T;
 
-  double cp = -tau * tau * (R5_gamma_0_tau_tau(pi, tau) * R5_gamma_r_tau_tau(pi, tau)) * Rgas;
+  double cp = -tau * tau * (R5_gamma_0_tau_tau(pi, tau) * R5_gamma_r_tau_tau(pi, tau)) * R_GAS;
   double val1 = 1.0 + pi * R5_gamma_r_pi(pi, tau) - tau * pi * R5_gamma_r_pi_tau(pi, tau);
   double val2 = 1.0 - pi * pi * R5_gamma_r_pi_pi(pi, tau);
 
@@ -931,7 +928,7 @@ double R5_sound_speed(double p, double T)
   double val3 = 1.0 + pi * R5_gamma_r_pi(pi, tau) - tau * pi * R5_gamma_r_pi_tau(pi, tau);
   double val4 = tau * tau * (R5_gamma_0_tau_tau(pi, tau) + R5_gamma_r_tau_tau(pi, tau));
 
-  double w2 = val1 / (val2 + val3 * val3 / val4) * Rgas * T;
+  double w2 = val1 / (val2 + val3 * val3 / val4) * R_GAS * T;
 
   return std::sqrt(w2);
 }

@@ -4,7 +4,7 @@
 
 #include "IF97.h"
 #include "IF97_helper.h"
-#include "IF97_interpolation.h"
+//#include "IF97_interpolation.h"
 #include "unit_tests.h"
 #include "SurfaceTension.h"
 #include "Viscosity.h"
@@ -26,6 +26,15 @@ int main(int argc, char *argv[])
     return 0;
   }
 
+  std::cout << std::scientific << std::setprecision(8);
+  for (int i = 0; i < 100; i++)
+  {
+    double r = ((double) rand()) / (double) RAND_MAX;
+    double T = 623.15 + (Tcrit - 623.15) * r;
+
+    std::cout << T << "; " << rho_l_sat_from_T(T) << std::endl;
+  }
+/*
   genR3_sat_line();
 
   IF97_Interpolation IF97InterP;
@@ -84,6 +93,6 @@ int main(int argc, char *argv[])
   double rho_array[4] = {0.0, 998.0, 1200.0, 0.0};
   for (int i = 0; i < 4; i++)
     std::cout << thermal_conductivity_no_enhancement(rho_array[i], T_array[i]) << std::endl;
-
+*/
   return 0;
 }

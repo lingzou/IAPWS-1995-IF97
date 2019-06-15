@@ -17,7 +17,11 @@ lib_IF97.T_sat_from_p.argtypes = [c_double]
 lib_IF97.T_sat_from_p.restype = c_double
 lib_IF97.R3_rho_l_sat_from_T_ITER.argtypes = [c_double]
 lib_IF97.R3_rho_l_sat_from_T_ITER.restype = c_double
-
+lib_IF97.rho_l_sat_from_T.argtypes = [c_double]
+lib_IF97.rho_l_sat_from_T.restype = c_double
+lib_IF97.rho_g_sat_from_T.argtypes = [c_double]
+lib_IF97.rho_g_sat_from_T.restype = c_double
+'''
 sat_data = np.loadtxt(os.path.join(os.pardir, 'tables', 'sat_line.dat'), skiprows = 1)
 T_array = sat_data[:, 0]
 p_sat_array = sat_data[:, 1]
@@ -40,7 +44,23 @@ plt.show()
 print lib_IF97.B23_p_from_T(0.62315e3)
 print lib_IF97.p_sat_from_T(300.0)
 print lib_IF97.T_sat_from_p(10.0e6)
-
+'''
 print lib_IF97.R3_rho_l_sat_from_T_ITER(623.149)
 print lib_IF97.R3_rho_l_sat_from_T_ITER(623.15)
 print lib_IF97.R3_rho_l_sat_from_T_ITER(623.151)
+
+N = 100000
+T = np.random.uniform(273.15, 647.096, N)
+rho_l = np.zeros(N)
+rho_g = np.zeros(N)
+for i in xrange(0, N) :
+  rho_l[i] = lib_IF97.rho_l_sat_from_T(T[i])
+  rho_g[i] = lib_IF97.rho_g_sat_from_T(T[i])
+  if (rho_g[i] < 0.0) :
+    print T[i], rho_g[i]
+
+#print T, rho_l, rho_g
+fig, ax = plt.subplots()
+ax.plot(T, rho_l, color='r', marker='+', markersize=1, ls='')
+ax.plot(T, rho_g, color='b', marker='+', markersize=1, ls='')
+plt.show()

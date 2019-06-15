@@ -326,8 +326,8 @@ double R3_rho_g_sat_from_T_ITER(double T)
       double delta = rho_g_find / RHO_CRIT;
       double val = ps / R_GAS / T / rho_g_find - delta * R3_phi_delta(delta, tau);
 
-      if (val > 0.0) max = rho_g_find;
-      else           min = rho_g_find;
+      if (val > 0.0) min = rho_g_find;
+      else           max = rho_g_find;
 
       rho_error = max - min;
     }

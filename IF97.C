@@ -729,7 +729,7 @@ double R3_sound_speed(double rho, double T)
   return std::sqrt(val * R_GAS * T);
 }
 
-double p_sat_from_T(double T)
+double R4_p_sat_from_T(double T)
 {
   double theta = T + R4Coef[8] / (T - R4Coef[9]);
   double theta2 = theta * theta;
@@ -742,7 +742,7 @@ double p_sat_from_T(double T)
   return std::pow(val, 4) * 1.0e6;
 }
 
-double T_sat_from_p(double p)
+double R4_T_sat_from_p(double p)
 {
   double beta = std::pow(p * 1.0e-6, 0.25);
   double beta2 = beta * beta;

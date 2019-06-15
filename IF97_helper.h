@@ -89,8 +89,8 @@ const static double R3_rho_g_sat_exact[53] =
 
 int findRegion(double p, double T);
 unsigned int find_T_lower_bound(double T);
-double rho_l_sat_from_T(double T);
-double rho_g_sat_from_T(double T);
+//double rho_l_sat_from_T(double T);
+//double rho_g_sat_from_T(double T);
 
 void genR3_sat_line();
 void genR4_sat_line();

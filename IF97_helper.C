@@ -32,7 +32,7 @@ int findRegion(double p, double T)
 
   if (T <= T_13)
   {
-    double ps = p_sat_from_T(T);
+    double ps = R4_p_sat_from_T(T);
     return (p > ps) ? 1 : 2;
   }
   else
@@ -58,7 +58,7 @@ find_T_lower_bound(double T)
   else
     return 51;
 }
-
+/*
 double rho_l_sat_from_T(double T)
 {
   if ((T < T_MIN) || (T > T_CRIT))
@@ -67,7 +67,7 @@ double rho_l_sat_from_T(double T)
     exit(1);
   }
   else if (T <= 623.15)
-    return 1.0 / R1_specific_volume(p_sat_from_T(T), T);
+    return 1.0 / R1_specific_volume(R4_p_sat_from_T(T), T);
   else
     return R3_rho_l_sat_from_T_ITER(T);
 }
@@ -80,10 +80,10 @@ double rho_g_sat_from_T(double T)
     exit(1);
   }
   else if (T <= 623.15)
-    return 1.0 / R2_specific_volume(p_sat_from_T(T), T);
+    return 1.0 / R2_specific_volume(R4_p_sat_from_T(T), T);
   else
     return R3_rho_g_sat_from_T_ITER(T);
-}
+}*/
 
 void genR3_sat_line()
 {
@@ -112,7 +112,7 @@ void genR3_sat_line()
   {
     double bracket_size = (i < 50) ? 8.0 : 2.0;
     double T = R3_T_list[i];
-    double ps = p_sat_from_T(T);
+    double ps = R4_p_sat_from_T(T);
     double rho_l_min = R3_rho_l_sat_guess[i] - bracket_size;
     double rho_l_max = R3_rho_l_sat_guess[i] + bracket_size;
     double rho_g_min = R3_rho_g_sat_guess[i] - bracket_size;
@@ -250,7 +250,7 @@ void genR4_sat_line()
   for (int i = 0; i < 351; i++)
   {
     double T = 273.15 + i;
-    double ps = p_sat_from_T(T);
+    double ps = R4_p_sat_from_T(T);
 
     double v_l_sat = R1_specific_volume(ps, T);
     double rho_l_sat = 1.0 / v_l_sat;
@@ -285,7 +285,7 @@ double R3_rho_l_sat_from_T_ITER(double T)
 
     double rho_l_find = 0.0;
     double tau = T_CRIT / T;
-    double ps = p_sat_from_T(T);
+    double ps = R4_p_sat_from_T(T);
     while (rho_error > 1.0e-9)
     {
       rho_l_find = 0.5 * (min + max);
@@ -319,7 +319,7 @@ double R3_rho_g_sat_from_T_ITER(double T)
 
     double rho_g_find = 0.0;
     double tau = T_CRIT / T;
-    double ps = p_sat_from_T(T);
+    double ps = R4_p_sat_from_T(T);
     while (rho_error > 1.0e-9)
     {
       rho_g_find = 0.5 * (min + max);
@@ -342,7 +342,7 @@ double R3_rho_from_p_T_ITER(double p, double T)
   double rho_min = 0.0, rho_max = 0.0;
   if (p < P_CRIT)
   {
-    double Ts = T_sat_from_p(p);
+    double Ts = R4_T_sat_from_p(p);
     if (T > Ts) // vapor phase
     {
       rho_min = 1.0 / R2_specific_volume(p23, T);
@@ -385,7 +385,7 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
 
   if (p < P_CRIT)
   {
-    double Ts = T_sat_from_p(p);
+    double Ts = R4_T_sat_from_p(p);
     double rho_l_sat = R3_rho_l_sat_from_T_ITER(Ts);
     double h_l_sat = R3_specific_enthalpy(rho_l_sat, Ts);
     double rho_g_sat = R3_rho_g_sat_from_T_ITER(Ts);
@@ -456,7 +456,7 @@ void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
 
   if (p < P_CRIT)
   {
-    double Ts = T_sat_from_p(p);
+    double Ts = R4_T_sat_from_p(p);
     double rho_l_sat = R3_rho_l_sat_from_T_ITER(Ts);
     double s_l_sat = R3_specific_entropy(rho_l_sat, Ts);
     double rho_g_sat = R3_rho_g_sat_from_T_ITER(Ts);

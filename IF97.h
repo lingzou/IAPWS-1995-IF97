@@ -1,6 +1,6 @@
 #ifndef IF97_H
 #define IF97_H
-
+#include <stdlib.h>
 /*
  *  Reference [1]
  *
@@ -11,16 +11,16 @@
 extern "C"
 {
 // Eqn. (1)-(4), constants on Fig. 1 of Ref. [1], page 4-5
-const static double R_GAS    = 0.461526e3;          // J/kg-K
-const static double T_CRIT   = 647.096;             // K
-const static double P_CRIT   = 22.064e6;            // Pa
-const static double RHO_CRIT = 322.0;               // kg/m³
-const static double T_MIN    = 273.15;              // K
-const static double T_13     = 623.15;              // K
-const static double T_MAX    = 1073.15;             // K
-const static double T_MAX2   = 2273.15;             // K
-const static double P_MIN    = 0.000611213e6;       // Pa
-const static double P_MAX    = 100.0e6;             // Pa
+const static double R_GAS     = 0.461526e3;          // J/kg-K
+const static double T_CRIT    = 647.096;             // K
+const static double P_CRIT    = 22.064e6;            // Pa
+const static double RHO_CRIT  = 322.0;               // kg/m³
+const static double T_MIN     = 273.15;              // K
+const static double T_13      = 623.15;              // K
+const static double T_MAX     = 1073.15;             // K
+const static double T_MAX2    = 2273.15;             // K
+const static double SAT_P_MIN = 611.213;             // Pa; See page 35, Ref. [1]
+const static double P_MAX     = 100.0e6;             // Pa
 
 /***************************************************************
  * Region 1
@@ -658,8 +658,16 @@ static const double R4Coef[10] = {
 };
 
 // Eqn. (30), page 33; Eqn. (31), page 35, Ref. [1]
-double p_sat_from_T(double T);
-double T_sat_from_p(double p);
+double R4_p_sat_from_T(double T);
+double R4_T_sat_from_p(double p);
+inline void checkTSatValid(double T)
+{
+  if ((T < T_MIN) || (T > T_CRIT)) exit(1);
+}
+inline void checkPSatValid(double p)
+{
+  if ((p < SAT_P_MIN) || (p > P_CRIT)) exit(1);
+}
 
 /***************************************************************
  * Region 5

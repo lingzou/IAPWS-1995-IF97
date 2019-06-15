@@ -9,6 +9,7 @@
 #include "SurfaceTension.h"
 #include "Viscosity.h"
 #include "ThermalConductivity.h"
+#include "IF97_interface.h"
 
 int main(int argc, char *argv[])
 {

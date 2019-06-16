@@ -1,6 +1,7 @@
 #ifndef IF97_H
 #define IF97_H
 #include <stdlib.h>
+#include <stdio.h>
 /*
  *  Reference [1]
  *
@@ -662,11 +663,20 @@ double R4_p_sat_from_T(double T);
 double R4_T_sat_from_p(double p);
 inline void checkTSatValid(double T)
 {
-  if ((T < T_MIN) || (T > T_CRIT)) exit(1);
+  if ((T < T_MIN) || (T > T_CRIT))
+  {
+    fprintf(stderr, "%s", "Invalid T_sat value!\n");
+    exit(1);
+  }
 }
+
 inline void checkPSatValid(double p)
 {
-  if ((p < SAT_P_MIN) || (p > P_CRIT)) exit(1);
+  if ((p < SAT_P_MIN) || (p > P_CRIT))
+  {
+    fprintf(stderr, "%s", "Invalid P_sat value!\n");
+    exit(1);
+  }
 }
 
 /***************************************************************

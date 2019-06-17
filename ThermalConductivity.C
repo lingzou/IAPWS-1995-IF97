@@ -142,8 +142,10 @@ double thermal_conductivity_R3(double rho, double T)
   double lambda_bar_part1 = labmda0_bar(T_bar) * labmda1_bar(rho_bar, T_bar);
 
   double cp = R3_cp(rho, T);
+  if ((cp < 0.0) || (cp > 1.0e13)) cp = 1.0e13;
   double cv = R3_cv(rho, T);
   double zeta_val = zeta_R3(rho_bar, T_bar);
+  if ((zeta_val < 0.0) || (zeta_val > 1.0e13)) zeta_val = 1.0e13;
   double xi = correlation_length_TC(rho_bar, T_bar, zeta_val);
   double mu_bar = mu0_bar(T_bar) * mu1_bar(rho_bar, T_bar);
 
@@ -152,4 +154,10 @@ double thermal_conductivity_R3(double rho, double T)
   double lambda2_bar = 177.8514 * rho_bar * T_bar * cp * zy_val / (0.46151805e3 * mu_bar);
 
   return (lambda_bar_part1 + lambda2_bar) * 1.0e-3;
+}
+
+double thermal_conductivity_R5(double p, double T)
+{
+  double rho = 1.0 / R5_specific_volume(p, T);
+  return thermal_conductivity_no_enhancement(rho, T);
 }

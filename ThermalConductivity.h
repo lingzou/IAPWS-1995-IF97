@@ -65,5 +65,6 @@ double thermal_conductivity_no_enhancement(double rho, double T);
 double thermal_conductivity_R1(double p, double T);
 double thermal_conductivity_R2(double p, double T);
 double thermal_conductivity_R3(double rho, double T);
+double thermal_conductivity_R5(double p, double T);
 }
 #endif /*THERMAL_CONDUCTIVITY_H*/

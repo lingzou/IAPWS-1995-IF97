@@ -425,3 +425,186 @@ void vapor_sat_properties_from_p(double p, double & T, double & v, double & rho,
     k = thermal_conductivity_R3(rho, T);
   }
 }
+
+/***************************************************************
+ * (p, T)-based properties
+ ***************************************************************/
+double v_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return R1_specific_volume(p, T);
+    case 2:
+      return R2_specific_volume(p, T);
+    case 3:
+      return 1.0 / R3_rho_from_p_T_ITER(p, T);
+    case 5:
+      return R5_specific_volume(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+  //return (*v_func_from_pT_ptr[region - 1])(p, T);
+}
+
+double rho_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return 1.0 / R1_specific_volume(p, T);
+    case 2:
+      return 1.0 / R2_specific_volume(p, T);
+    case 3:
+      return R3_rho_from_p_T_ITER(p, T);
+    case 5:
+      return 1.0 / R5_specific_volume(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+  //return (*rho_func_from_pT_ptr[region - 1])(p, T);
+}
+
+
+double e_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return R1_specific_int_energy(p, T);
+    case 2:
+      return R2_specific_int_energy(p, T);
+    case 3:
+      return R3_specific_int_energy(R3_rho_from_p_T_ITER(p, T), T);
+    case 5:
+      return R5_specific_int_energy(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double h_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return R1_specific_enthalpy(p, T);
+    case 2:
+      return R2_specific_enthalpy(p, T);
+    case 3:
+      return R3_specific_enthalpy(R3_rho_from_p_T_ITER(p, T), T);
+    case 5:
+      return R5_specific_enthalpy(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double s_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return R1_specific_entropy(p, T);
+    case 2:
+      return R2_specific_entropy(p, T);
+    case 3:
+      return R3_specific_entropy(R3_rho_from_p_T_ITER(p, T), T);
+    case 5:
+      return R5_specific_entropy(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double cv_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return R1_cv(p, T);
+    case 2:
+      return R2_cv(p, T);
+    case 3:
+      return R3_cv(R3_rho_from_p_T_ITER(p, T), T);
+    case 5:
+      return R5_cv(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double cp_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return R1_cp(p, T);
+    case 2:
+      return R2_cp(p, T);
+    case 3:
+      return R3_cp(R3_rho_from_p_T_ITER(p, T), T);
+    case 5:
+      return R5_cp(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double c_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return R1_sound_speed(p, T);
+    case 2:
+      return R2_sound_speed(p, T);
+    case 3:
+      return R3_sound_speed(R3_rho_from_p_T_ITER(p, T), T);
+    case 5:
+      return R5_sound_speed(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double k_from_pT(double p, double T)
+{
+  int region = locateRegion_from_pT(p, T);
+  switch (region) {
+    case 1:
+      return thermal_conductivity_R1(p, T);
+    case 2:
+      return thermal_conductivity_R2(p, T);
+    case 3:
+      return thermal_conductivity_R3(R3_rho_from_p_T_ITER(p, T), T);
+    case 5:
+      return thermal_conductivity_R5(p, T);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double mu_from_pT(double p, double T)
+{
+  double rho = rho_from_pT(p, T);
+  return viscosity(rho, T);
+}

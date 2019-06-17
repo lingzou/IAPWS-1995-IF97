@@ -87,7 +87,7 @@ const static double R3_rho_g_sat_exact[53] =
   3.22000000e+02
 };
 
-int findRegion(double p, double T);
+int locateRegion_from_pT(double p, double T);
 unsigned int find_T_lower_bound(double T);
 //double rho_l_sat_from_T(double T);
 //double rho_g_sat_from_T(double T);
@@ -99,13 +99,18 @@ double R3_rho_l_sat_from_T_ITER(double T);
 double R3_rho_g_sat_from_T_ITER(double T);
 
 double R3_rho_from_p_T_ITER(double p, double T);
+double R3_specific_volume_from_pT(double p, double T);// { return 1.0 / R3_rho_from_p_T_ITER(p, T); }
 void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x);
 void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x);
 double R3_dp_ddelta(double delta, double tau);
 
+double R1_rho_from_pT(double p, double T); //{ return 1.0 / R1_specific_volume(p, T); }
 double R1_drho_dp(double p, double T);
 double R2_drho_dp(double p, double T);
 
+double R2_rho_from_pT(double p, double T); //{ return 1.0 / R2_specific_volume(p, T); }
+
+double R5_rho_from_pT(double p, double T); //{ return 1.0 / R5_specific_volume(p, T); }
 double R5_T_from_p_h_ITER(double p, double h);
 double R5_T_from_p_s_ITER(double p, double s);
 }

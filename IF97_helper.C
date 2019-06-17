@@ -4,7 +4,7 @@
 #include "IF97_helper.h"
 
 
-int findRegion(double p, double T)
+int locateRegion_from_pT(double p, double T)
 {
   if (T < T_MIN)
   {
@@ -378,6 +378,8 @@ double R3_rho_from_p_T_ITER(double p, double T)
   return rho_find;
 }
 
+double R3_specific_volume_from_pT(double p, double T) { return 1.0 / R3_rho_from_p_T_ITER(p, T); }
+
 void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
 {
   double T_min = T_13;
@@ -525,6 +527,8 @@ double R3_dp_ddelta(double delta, double tau)
   return RHO_CRIT * R_GAS * T_CRIT / tau * (2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau));
 }
 
+double R1_rho_from_pT(double p, double T) { return 1.0 / R1_specific_volume(p, T); }
+
 double R1_drho_dp(double p, double T)
 {
   double pi  = p / R1_pStar;
@@ -534,6 +538,8 @@ double R1_drho_dp(double p, double T)
   return -R1_gamma_pi_pi(pi, tau) / (R_GAS * T * gamma_pi * gamma_pi);
 }
 
+double R2_rho_from_pT(double p, double T) { return 1.0 / R2_specific_volume(p, T); }
+
 double R2_drho_dp(double p, double T)
 {
   double pi  = p / R2_pStar;
@@ -542,6 +548,8 @@ double R2_drho_dp(double p, double T)
 
   return -(R2_gamma_0_pi_pi(pi, tau) + R2_gamma_r_pi_pi(pi, tau)) / (R_GAS * T * denom * denom);
 }
+
+double R5_rho_from_pT(double p, double T) { return 1.0 / R5_specific_volume(p, T); }
 
 double R5_T_from_p_h_ITER(double p, double h)
 {

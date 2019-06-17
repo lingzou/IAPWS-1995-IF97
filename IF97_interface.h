@@ -63,5 +63,21 @@ double mu_g_sat_from_p(double p);
 void vapor_sat_properties_from_p(double p, double & T, double & v, double & rho, double & e, double & h,
                                   double & s, double & cv, double & cp, double & c, double & k, double & mu);
 
+/***************************************************************
+ * (p, T)-based properties
+ ***************************************************************/
+//static double (*v_from_pT_funcPtr[5])(double, double) = {R1_specific_volume, R2_specific_volume, R3_specific_volume_from_pT, NULL, R5_specific_volume};
+double v_from_pT(double p, double T);
+//static double (*rho_from_pT_funcPtr[5])(double, double) = {R1_rho_from_pT, R2_rho_from_pT, R3_rho_from_p_T_ITER, NULL, R5_rho_from_pT};
+double rho_from_pT(double p, double T);
+//static double (*e_from_pT_funcPtr[5])(double, double) = {R1_specific_int_energy, R2_rho_from_pT, R3_rho_from_p_T_ITER, NULL, R5_rho_from_pT};
+double e_from_pT(double p, double T);
+double h_from_pT(double p, double T);
+double s_from_pT(double p, double T);
+double cv_from_pT(double p, double T);
+double cp_from_pT(double p, double T);
+double c_from_pT(double p, double T);
+double k_from_pT(double p, double T);
+double mu_from_pT(double p, double T);
 }
 #endif /*IF97_INTERFACE_H*/

@@ -380,7 +380,7 @@ double R3_rho_from_p_T_ITER(double p, double T)
 
 double R3_specific_volume_from_pT(double p, double T) { return 1.0 / R3_rho_from_p_T_ITER(p, T); }
 
-void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
+void R3_rho_T_x_from_p_h_ITER(double p, double h, double &rho, double &T, double &x)
 {
   double T_min = T_13;
   double T_max = B23_T_from_p(p);
@@ -397,6 +397,7 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
     {
       T = Ts;
       x = (h - h_l_sat) / (h_g_sat - h_l_sat);
+      rho = rho_l_sat * (1.0 - x) + rho_g_sat * x;
     }
     else
     {
@@ -420,7 +421,7 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
       while (T_error > 1.0e-9)
       {
         T = 0.5 * (T_min + T_max);
-        double rho = R3_rho_from_p_T_ITER(p, T);
+        rho = R3_rho_from_p_T_ITER(p, T);
         double h_find = R3_specific_enthalpy(rho, T);
 
         if (h_find > h)   T_max = T;
@@ -438,7 +439,7 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
     while (T_error > 1.0e-9)
     {
       T = 0.5 * (T_min + T_max);
-      double rho = R3_rho_from_p_T_ITER(p, T);
+      rho = R3_rho_from_p_T_ITER(p, T);
       double h_find = R3_specific_enthalpy(rho, T);
 
       if (h_find > h)   T_max = T;
@@ -451,7 +452,7 @@ void R3_T_x_from_p_h_ITER(double p, double h, double &T, double &x)
   }
 }
 
-void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
+void R3_rho_T_x_from_p_s_ITER(double p, double s, double &rho, double &T, double &x)
 {
   double T_min = T_13;
   double T_max = B23_T_from_p(p);
@@ -468,6 +469,7 @@ void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
     {
       T = Ts;
       x = (s - s_l_sat) / (s_g_sat - s_l_sat);
+      rho = rho_l_sat * (1.0 - x) + rho_g_sat * x;
     }
     else
     {
@@ -491,7 +493,7 @@ void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
       while (T_error > 1.0e-9)
       {
         T = 0.5 * (T_min + T_max);
-        double rho = R3_rho_from_p_T_ITER(p, T);
+        rho = R3_rho_from_p_T_ITER(p, T);
         double s_find = R3_specific_entropy(rho, T);
 
         if (s_find > s)   T_max = T;
@@ -509,7 +511,7 @@ void R3_T_x_from_p_s_ITER(double p, double s, double &T, double &x)
     while (T_error > 1.0e-9)
     {
       T = 0.5 * (T_min + T_max);
-      double rho = R3_rho_from_p_T_ITER(p, T);
+      rho = R3_rho_from_p_T_ITER(p, T);
       double s_find = R3_specific_entropy(rho, T);
 
       if (s_find > s)   T_max = T;

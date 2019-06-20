@@ -464,8 +464,8 @@ void Unit_Test_R3_Tx_ph_ITER()
   fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "h [J/kg]", "T [K]");
   for (int i = 0; i < 8; i++)
   {
-    double T = 0.0, x = 0.0;
-    R3_T_x_from_p_h_ITER(p_array[i], h_array[i], T, x);
+    double rho = 0.0, T = 0.0, x = 0.0;
+    R3_rho_T_x_from_p_h_ITER(p_array[i], h_array[i], rho, T, x);
     fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", p_array[i], h_array[i], T);
   }
 
@@ -483,8 +483,8 @@ void Unit_Test_R3_Tx_ps_ITER()
   fprintf (ptr_File, "%20s%20s%20s\n", "p [Pa]", "s [J/kg-K]", "T [K]");
   for (int i = 0; i < 8; i++)
   {
-    double T = 0.0, x = 0.0;
-    R3_T_x_from_p_s_ITER(p_array[i], s_array[i], T, x);
+    double rho = 0.0, T = 0.0, x = 0.0;
+    R3_rho_T_x_from_p_s_ITER(p_array[i], s_array[i], rho, T, x);
     fprintf (ptr_File, "%20.8e%20.8e%20.8e\n", p_array[i], s_array[i], T);
   }
 

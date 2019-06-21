@@ -27,7 +27,7 @@ double rho_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return 1.0 / R1_specific_volume(R4_p_sat_from_T(T), T);
   else
     return R3_rho_l_sat_from_T_ITER(T);
@@ -37,7 +37,7 @@ double e_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R1_specific_int_energy(R4_p_sat_from_T(T), T);
   else
     return R3_specific_int_energy(R3_rho_l_sat_from_T_ITER(T), T);
@@ -47,7 +47,7 @@ double h_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R1_specific_enthalpy(R4_p_sat_from_T(T), T);
   else
     return R3_specific_enthalpy(R3_rho_l_sat_from_T_ITER(T), T);
@@ -57,7 +57,7 @@ double s_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R1_specific_entropy(R4_p_sat_from_T(T), T);
   else
     return R3_specific_entropy(R3_rho_l_sat_from_T_ITER(T), T);
@@ -67,7 +67,7 @@ double cv_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R1_cv(R4_p_sat_from_T(T), T);
   else
     return R3_cv(R3_rho_l_sat_from_T_ITER(T), T);
@@ -77,7 +77,7 @@ double cp_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R1_cp(R4_p_sat_from_T(T), T);
   else
     return R3_cp(R3_rho_l_sat_from_T_ITER(T), T);
@@ -87,7 +87,7 @@ double c_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R1_sound_speed(R4_p_sat_from_T(T), T);
   else
     return R3_sound_speed(R3_rho_l_sat_from_T_ITER(T), T);
@@ -97,7 +97,7 @@ double k_l_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return thermal_conductivity_R1(R4_p_sat_from_T(T), T);
   else
     return thermal_conductivity_R3(R3_rho_l_sat_from_T_ITER(T), T);
@@ -118,7 +118,7 @@ void liquid_sat_properties_from_T(double T, double & p, double & v, double & rho
   v = 1.0 / rho;
   mu = viscosity(rho, T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
   {
     e = R1_specific_int_energy(p, T);
     h = R1_specific_enthalpy(p, T);
@@ -159,7 +159,7 @@ double e_g_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R2_specific_int_energy(R4_p_sat_from_T(T), T);
   else
     return R3_specific_int_energy(R3_rho_g_sat_from_T_ITER(T), T);
@@ -169,7 +169,7 @@ double h_g_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R2_specific_enthalpy(R4_p_sat_from_T(T), T);
   else
     return R3_specific_enthalpy(R3_rho_g_sat_from_T_ITER(T), T);
@@ -179,7 +179,7 @@ double s_g_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R2_specific_entropy(R4_p_sat_from_T(T), T);
   else
     return R3_specific_entropy(R3_rho_g_sat_from_T_ITER(T), T);
@@ -189,7 +189,7 @@ double cv_g_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R2_cv(R4_p_sat_from_T(T), T);
   else
     return R3_cv(R3_rho_g_sat_from_T_ITER(T), T);
@@ -199,7 +199,7 @@ double cp_g_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R2_cp(R4_p_sat_from_T(T), T);
   else
     return R3_cp(R3_rho_g_sat_from_T_ITER(T), T);
@@ -209,7 +209,7 @@ double c_g_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return R2_sound_speed(R4_p_sat_from_T(T), T);
   else
     return R3_sound_speed(R3_rho_g_sat_from_T_ITER(T), T);
@@ -219,7 +219,7 @@ double k_g_sat_from_T(double T)
 {
   checkTSatValid(T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
     return thermal_conductivity_R2(R4_p_sat_from_T(T), T);
   else
     return thermal_conductivity_R3(R3_rho_g_sat_from_T_ITER(T), T);
@@ -240,7 +240,7 @@ void vapor_sat_properties_from_T(double T, double & p, double & v, double & rho,
   v = 1.0 / rho;
   mu = viscosity(rho, T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
   {
     e = R2_specific_int_energy(p, T);
     h = R2_specific_enthalpy(p, T);
@@ -324,7 +324,7 @@ void liquid_sat_properties_from_p(double p, double & T, double & v, double & rho
   v = 1.0 / rho;
   mu = viscosity(rho, T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
   {
     e = R1_specific_int_energy(p, T);
     h = R1_specific_enthalpy(p, T);
@@ -404,7 +404,7 @@ void vapor_sat_properties_from_p(double p, double & T, double & v, double & rho,
   v = 1.0 / rho;
   mu = viscosity(rho, T);
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
   {
     e = R2_specific_int_energy(p, T);
     h = R2_specific_enthalpy(p, T);

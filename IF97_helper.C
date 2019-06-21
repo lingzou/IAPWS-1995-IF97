@@ -6,31 +6,31 @@
 
 int locateRegion_from_pT(double p, double T)
 {
-  if (T < T_MIN)
+  if (T < IF97_T_MIN)
   {
-    fprintf(stderr, "%s", "Out of range: T < T_MIN!\n");
+    fprintf(stderr, "%s", "Out of range: T < IF97_T_MIN!\n");
     return -1;
   }
 
-  if (T > T_MAX2)
+  if (T > IF97_T_MAX)
   {
-    fprintf(stderr, "%s", "Out of range: T > T_MAX2!\n");
+    fprintf(stderr, "%s", "Out of range: T > IF97_T_MAX!\n");
     return -2;
   }
 
-  if (p > P_MAX)
+  if (p > IF97_P_MAX)
   {
-    fprintf(stderr, "%s", "Out of range: p > P_MAX!\n");
+    fprintf(stderr, "%s", "Out of range: p > IF97_P_MAX!\n");
     return -3;
   }
 
-  if ((p > 50.0e6) && (T > T_MAX))
+  if ((p > 50.0e6) && (T > IF97_T_25))
   {
-    fprintf(stderr, "%s", "Out of range: (p > 50.0e6) && (T > T_MAX)!\n");
+    fprintf(stderr, "%s", "Out of range: (p > 50.0e6) && (T > IF97_T_25)!\n");
     return -4;
   }
 
-  if (T <= T_13)
+  if (T <= IF97_T_13)
   {
     double ps = R4_p_sat_from_T(T);
     return (p > ps) ? 1 : 2;
@@ -61,7 +61,7 @@ find_T_lower_bound(double T)
 /*
 double rho_l_sat_from_T(double T)
 {
-  if ((T < T_MIN) || (T > T_CRIT))
+  if ((T < IF97_T_MIN) || (T > T_CRIT))
   {
     fprintf(stderr, "%s", "Temperature is out of bound!\n");
     exit(1);
@@ -74,7 +74,7 @@ double rho_l_sat_from_T(double T)
 
 double rho_g_sat_from_T(double T)
 {
-  if ((T < T_MIN) || (T > T_CRIT))
+  if ((T < IF97_T_MIN) || (T > T_CRIT))
   {
     fprintf(stderr, "%s", "Temperature is out of bound!\n");
     exit(1);
@@ -351,13 +351,13 @@ double R3_rho_from_p_T_ITER(double p, double T)
     else
     {
       rho_min = R3_rho_l_sat_from_T_ITER(Ts);
-      rho_max = 1.0 / R1_specific_volume(p, T_13);
+      rho_max = 1.0 / R1_specific_volume(p, IF97_T_13);
     }
   }
   else
   {
     rho_min = 1.0 / R2_specific_volume(p23, T);
-    rho_max = 1.0 / R1_specific_volume(p, T_13);
+    rho_max = 1.0 / R1_specific_volume(p, IF97_T_13);
   }
 
   double tau = T_CRIT / T;
@@ -382,7 +382,7 @@ double R3_specific_volume_from_pT(double p, double T) { return 1.0 / R3_rho_from
 
 void R3_rho_T_x_from_p_h_ITER(double p, double h, double &rho, double &T, double &x)
 {
-  double T_min = T_13;
+  double T_min = IF97_T_13;
   double T_max = B23_T_from_p(p);
 
   if (p < P_CRIT)
@@ -454,7 +454,7 @@ void R3_rho_T_x_from_p_h_ITER(double p, double h, double &rho, double &T, double
 
 void R3_rho_T_x_from_p_s_ITER(double p, double s, double &rho, double &T, double &x)
 {
-  double T_min = T_13;
+  double T_min = IF97_T_13;
   double T_max = B23_T_from_p(p);
 
   if (p < P_CRIT)
@@ -555,8 +555,8 @@ double R5_rho_from_pT(double p, double T) { return 1.0 / R5_specific_volume(p, T
 
 double R5_T_from_p_h_ITER(double p, double h)
 {
-  double T_min = T_MAX;
-  double T_max = T_MAX2;
+  double T_min = IF97_T_25;
+  double T_max = IF97_T_MAX;
   double T_find, T_error = 1.0;
 
   while (T_error > 1.0e-9)
@@ -575,8 +575,8 @@ double R5_T_from_p_h_ITER(double p, double h)
 
 double R5_T_from_p_s_ITER(double p, double s)
 {
-  double T_min = T_MAX;
-  double T_max = T_MAX2;
+  double T_min = IF97_T_25;
+  double T_max = IF97_T_MAX;
   double T_find, T_error = 1.0;
 
   while (T_error > 1.0e-9)

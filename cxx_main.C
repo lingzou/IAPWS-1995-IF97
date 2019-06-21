@@ -35,6 +35,11 @@ int main(int argc, char *argv[])
 
     std::cout << T << "; " << rho_l_sat_from_T(T) << std::endl;
   }
+
+  std::cout << "p = 6.54670 MPa, T_sat = " << T_sat_from_p(6.54670e6)
+            << std::endl
+            << "h_sat = " << h_g_sat_from_p(6.54670e6) << std::endl
+            << "h_2bc = " << B2bc_h_from_p(6.54670e6)  << std::endl;
 /*
   genR3_sat_line();
 

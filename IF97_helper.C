@@ -397,7 +397,7 @@ void R3_rho_T_x_from_p_h_ITER(double p, double h, double &rho, double &T, double
     {
       T = Ts;
       x = (h - h_l_sat) / (h_g_sat - h_l_sat);
-      rho = rho_l_sat * (1.0 - x) + rho_g_sat * x;
+      rho = 1.0 / ((1.0 - x) / rho_l_sat + x / rho_g_sat);
     }
     else
     {
@@ -469,7 +469,7 @@ void R3_rho_T_x_from_p_s_ITER(double p, double s, double &rho, double &T, double
     {
       T = Ts;
       x = (s - s_l_sat) / (s_g_sat - s_l_sat);
-      rho = rho_l_sat * (1.0 - x) + rho_g_sat * x;
+      rho = 1.0 / ((1.0 - x) / rho_l_sat + x / rho_g_sat);
     }
     else
     {

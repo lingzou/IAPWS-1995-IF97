@@ -79,5 +79,20 @@ double cp_from_pT(double p, double T);
 double c_from_pT(double p, double T);
 double k_from_pT(double p, double T);
 double mu_from_pT(double p, double T);
+
+/***************************************************************
+ * (p, h)-based properties
+ ***************************************************************/
+ int locateRegion_from_ph(double p, double h);
+ double v_from_ph(double p, double h);
+ double rho_from_ph(double p, double h);
+ double e_from_ph(double p, double h);
+ double T_from_ph(double p, double h);
+ double s_from_ph(double p, double h);
+ double cv_from_ph(double p, double h);
+ double cp_from_ph(double p, double h);
+ double c_from_ph(double p, double h);
+ double k_from_ph(double p, double h);
+ double mu_from_ph(double p, double h);
 }
 #endif /*IF97_INTERFACE_H*/

@@ -21,6 +21,15 @@ lib_IF97.rho_l_sat_from_T.argtypes = [c_double]
 lib_IF97.rho_l_sat_from_T.restype = c_double
 lib_IF97.rho_g_sat_from_T.argtypes = [c_double]
 lib_IF97.rho_g_sat_from_T.restype = c_double
+
+lib_IF97.R1_specific_enthalpy.argtypes = [c_double, c_double]
+lib_IF97.R1_specific_enthalpy.restype = c_double
+lib_IF97.R2_specific_enthalpy.argtypes = [c_double, c_double]
+lib_IF97.R2_specific_enthalpy.restype = c_double
+
+lib_IF97.h_from_pT.argtypes = [c_double, c_double]
+lib_IF97.h_from_pT.restype = c_double
+
 '''
 sat_data = np.loadtxt(os.path.join(os.pardir, 'tables', 'sat_line.dat'), skiprows = 1)
 T_array = sat_data[:, 0]
@@ -45,10 +54,10 @@ print lib_IF97.B23_p_from_T(0.62315e3)
 print lib_IF97.p_sat_from_T(300.0)
 print lib_IF97.T_sat_from_p(10.0e6)
 '''
-print lib_IF97.R3_rho_l_sat_from_T_ITER(623.149)
-print lib_IF97.R3_rho_l_sat_from_T_ITER(623.15)
-print lib_IF97.R3_rho_l_sat_from_T_ITER(623.151)
+print lib_IF97.R1_specific_enthalpy(611.657, 273.16)
+print lib_IF97.R2_specific_enthalpy(611.657, 273.16)
 
+'''
 N = 100000
 T = np.random.uniform(273.15, 647.096, N)
 rho_l = np.zeros(N)
@@ -64,3 +73,19 @@ fig, ax = plt.subplots()
 ax.plot(T, rho_l, color='r', marker='+', markersize=1, ls='')
 ax.plot(T, rho_g, color='b', marker='+', markersize=1, ls='')
 plt.show()
+'''
+
+'''
+N = 1000
+p = np.random.uniform(1000, 5000.0, N)
+h = np.zeros(N)
+
+for i in xrange(0, N) :
+  #h[i] = lib_IF97.R2_specific_enthalpy(p[i], 273.15)
+  h[i] = lib_IF97.h_from_pT(p[i], 273.16)
+
+#print T, rho_l, rho_g
+fig, ax = plt.subplots()
+ax.plot(p, h, color='r', marker='+', markersize=1, ls='')
+plt.show()
+'''

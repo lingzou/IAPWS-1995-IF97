@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
     return 0;
   }
 
+  std::cout << std::scientific << std::setprecision(8) << "psat = " << p_sat_from_T(623.15) << std::endl;
+
   std::cout << std::scientific << std::setprecision(8);
   for (int i = 0; i < 100; i++)
   {

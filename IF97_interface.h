@@ -83,16 +83,31 @@ double mu_from_pT(double p, double T);
 /***************************************************************
  * (p, h)-based properties
  ***************************************************************/
- int locateRegion_from_ph(double p, double h);
- double v_from_ph(double p, double h);
- double rho_from_ph(double p, double h);
- double e_from_ph(double p, double h);
- double T_from_ph(double p, double h);
- double s_from_ph(double p, double h);
- double cv_from_ph(double p, double h);
- double cp_from_ph(double p, double h);
- double c_from_ph(double p, double h);
- double k_from_ph(double p, double h);
- double mu_from_ph(double p, double h);
+int locateRegion_from_ph(double p, double h);
+double v_from_ph(double p, double h);
+double rho_from_ph(double p, double h);
+double e_from_ph(double p, double h);
+double T_from_ph(double p, double h);
+double s_from_ph(double p, double h);
+double cv_from_ph(double p, double h);
+double cp_from_ph(double p, double h);
+double c_from_ph(double p, double h);
+double k_from_ph(double p, double h);
+double mu_from_ph(double p, double h);
+
+/***************************************************************
+ * (p, s)-based properties
+ ***************************************************************/
+int locateRegion_from_ps(double p, double s);
+double v_from_ps(double p, double s);
+double rho_from_ps(double p, double s);
+double e_from_ps(double p, double s);
+double T_from_ps(double p, double s);
+double h_from_ps(double p, double s);
+double cv_from_ps(double p, double s);
+double cp_from_ps(double p, double s);
+double c_from_ps(double p, double s);
+double k_from_ps(double p, double s);
+double mu_from_ps(double p, double s);
 }
 #endif /*IF97_INTERFACE_H*/

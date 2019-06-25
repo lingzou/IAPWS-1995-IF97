@@ -109,34 +109,36 @@ double mu_l_sat_from_T(double T)
   return viscosity(rho_l_sat, T);
 }
 
-void liquid_sat_properties_from_T(double T, double & p, double & v, double & rho, double & e, double & h,
-                                  double & s, double & cv, double & cp, double & c, double & k, double & mu)
+void liquid_sat_properties_from_T(double T, double * p, double * v, double * rho, double * e, double * h,
+                                  double * s, double * cv, double * cp, double * c, double * k, double * mu)
 {
   checkTSatValid(T);
-  p = R4_p_sat_from_T(T);
-  rho = rho_l_sat_from_T(T);
-  v = 1.0 / rho;
-  mu = viscosity(rho, T);
+  double p_val = R4_p_sat_from_T(T);
+  double rho_val = rho_l_sat_from_T(T);
+  if (p != NULL)   *p = p_val;
+  if (v != NULL)   *v = 1.0 / rho_val;
+  if (rho != NULL) *rho = rho_val;
+  if (mu != NULL)  *mu = viscosity(rho_val, T);
 
   if (T <= IF97_T_13)
   {
-    e = R1_specific_int_energy(p, T);
-    h = R1_specific_enthalpy(p, T);
-    s = R1_specific_entropy(p, T);
-    cv = R1_cv(p, T);
-    cp = R1_cp(p, T);
-    c = R1_sound_speed(p, T);
-    k = thermal_conductivity_R1(p, T);
+    if (e != NULL)  *e = R1_specific_int_energy(p_val, T);
+    if (h != NULL)  *h = R1_specific_enthalpy(p_val, T);
+    if (s != NULL)  *s = R1_specific_entropy(p_val, T);
+    if (cv != NULL) *cv = R1_cv(p_val, T);
+    if (cp != NULL) *cp = R1_cp(p_val, T);
+    if (c != NULL)  *c = R1_sound_speed(p_val, T);
+    if (k != NULL)  *k = thermal_conductivity_R1(p_val, T);
   }
   else
   {
-    e = R3_specific_int_energy(rho, T);
-    h = R3_specific_enthalpy(rho, T);
-    s = R3_specific_entropy(rho, T);
-    cv = R3_cv(rho, T);
-    cp = R3_cp(rho, T);
-    c = R3_sound_speed(rho, T);
-    k = thermal_conductivity_R3(rho, T);
+    if (e != NULL)  *e = R3_specific_int_energy(rho_val, T);
+    if (h != NULL)  *h = R3_specific_enthalpy(rho_val, T);
+    if (s != NULL)  *s = R3_specific_entropy(rho_val, T);
+    if (cv != NULL) *cv = R3_cv(rho_val, T);
+    if (cp != NULL) *cp = R3_cp(rho_val, T);
+    if (c != NULL)  *c = R3_sound_speed(rho_val, T);
+    if (k != NULL)  *k = thermal_conductivity_R3(rho_val, T);
   }
 }
 
@@ -231,34 +233,36 @@ double mu_g_sat_from_T(double T)
   return viscosity(rho_g_sat, T);
 }
 
-void vapor_sat_properties_from_T(double T, double & p, double & v, double & rho, double & e, double & h,
-                                  double & s, double & cv, double & cp, double & c, double & k, double & mu)
+void vapor_sat_properties_from_T(double T, double * p, double * v, double * rho, double * e, double * h,
+                                  double * s, double * cv, double * cp, double * c, double * k, double * mu)
 {
   checkTSatValid(T);
-  p = R4_p_sat_from_T(T);
-  rho = rho_g_sat_from_T(T);
-  v = 1.0 / rho;
-  mu = viscosity(rho, T);
+  double p_val = R4_p_sat_from_T(T);
+  double rho_val = rho_g_sat_from_T(T);
+  if (p != NULL)   *p = p_val;
+  if (v != NULL)   *v = 1.0 / rho_val;
+  if (rho != NULL) *rho = rho_val;
+  if (mu != NULL)  *mu = viscosity(rho_val, T);
 
   if (T <= IF97_T_13)
   {
-    e = R2_specific_int_energy(p, T);
-    h = R2_specific_enthalpy(p, T);
-    s = R2_specific_entropy(p, T);
-    cv = R2_cv(p, T);
-    cp = R2_cp(p, T);
-    c = R2_sound_speed(p, T);
-    k = thermal_conductivity_R2(p, T);
+    if (e != NULL)  *e = R2_specific_int_energy(p_val, T);
+    if (h != NULL)  *h = R2_specific_enthalpy(p_val, T);
+    if (s != NULL)  *s = R2_specific_entropy(p_val, T);
+    if (cv != NULL) *cv = R2_cv(p_val, T);
+    if (cp != NULL) *cp = R2_cp(p_val, T);
+    if (c != NULL)  *c = R2_sound_speed(p_val, T);
+    if (k != NULL)  *k = thermal_conductivity_R2(p_val, T);
   }
   else
   {
-    e = R3_specific_int_energy(rho, T);
-    h = R3_specific_enthalpy(rho, T);
-    s = R3_specific_entropy(rho, T);
-    cv = R3_cv(rho, T);
-    cp = R3_cp(rho, T);
-    c = R3_sound_speed(rho, T);
-    k = thermal_conductivity_R3(rho, T);
+    if (e != NULL)  *e = R3_specific_int_energy(rho_val, T);
+    if (h != NULL)  *h = R3_specific_enthalpy(rho_val, T);
+    if (s != NULL)  *s = R3_specific_entropy(rho_val, T);
+    if (cv != NULL) *cv = R3_cv(rho_val, T);
+    if (cp != NULL) *cp = R3_cp(rho_val, T);
+    if (c != NULL)  *c = R3_sound_speed(rho_val, T);
+    if (k != NULL)  *k = thermal_conductivity_R3(rho_val, T);
   }
 }
 
@@ -316,33 +320,35 @@ double mu_l_sat_from_p(double p)
   return mu_l_sat_from_T(T_sat_from_p(p));
 }
 
-void liquid_sat_properties_from_p(double p, double & T, double & v, double & rho, double & e, double & h,
-                                  double & s, double & cv, double & cp, double & c, double & k, double & mu)
+void liquid_sat_properties_from_p(double p, double * T, double * v, double * rho, double * e, double * h,
+                                  double * s, double * cv, double * cp, double * c, double * k, double * mu)
 {
-  T = T_sat_from_p(p); // This will check if p is valid
-  rho = rho_l_sat_from_T(T);
-  v = 1.0 / rho;
-  mu = viscosity(rho, T);
+  double T_val = T_sat_from_p(p); // This will check if p is valid
+  double rho_val = rho_l_sat_from_T(T_val);
+  if (T != NULL)   *T = T_val;
+  if (v != NULL)   *v = 1.0 / rho_val;
+  if (rho != NULL) *rho = rho_val;
+  if (mu != NULL)  *mu = viscosity(rho_val, T_val);
 
-  if (T <= IF97_T_13)
+  if (T_val <= IF97_T_13)
   {
-    e = R1_specific_int_energy(p, T);
-    h = R1_specific_enthalpy(p, T);
-    s = R1_specific_entropy(p, T);
-    cv = R1_cv(p, T);
-    cp = R1_cp(p, T);
-    c = R1_sound_speed(p, T);
-    k = thermal_conductivity_R1(p, T);
+    if (e != NULL)  *e = R1_specific_int_energy(p, T_val);
+    if (h != NULL)  *h = R1_specific_enthalpy(p, T_val);
+    if (s != NULL)  *s = R1_specific_entropy(p, T_val);
+    if (cv != NULL) *cv = R1_cv(p, T_val);
+    if (cp != NULL) *cp = R1_cp(p, T_val);
+    if (c != NULL)  *c = R1_sound_speed(p, T_val);
+    if (k != NULL)  *k = thermal_conductivity_R1(p, T_val);
   }
   else
   {
-    e = R3_specific_int_energy(rho, T);
-    h = R3_specific_enthalpy(rho, T);
-    s = R3_specific_entropy(rho, T);
-    cv = R3_cv(rho, T);
-    cp = R3_cp(rho, T);
-    c = R3_sound_speed(rho, T);
-    k = thermal_conductivity_R3(rho, T);
+    if (e != NULL)  *e = R3_specific_int_energy(rho_val, T_val);
+    if (h != NULL)  *h = R3_specific_enthalpy(rho_val, T_val);
+    if (s != NULL)  *s = R3_specific_entropy(rho_val, T_val);
+    if (cv != NULL) *cv = R3_cv(rho_val, T_val);
+    if (cp != NULL) *cp = R3_cp(rho_val, T_val);
+    if (c != NULL)  *c = R3_sound_speed(rho_val, T_val);
+    if (k != NULL)  *k = thermal_conductivity_R3(rho_val, T_val);
   }
 }
 
@@ -396,33 +402,35 @@ double mu_g_sat_from_p(double p)
   return mu_g_sat_from_T(T_sat_from_p(p));
 }
 
-void vapor_sat_properties_from_p(double p, double & T, double & v, double & rho, double & e, double & h,
-                                  double & s, double & cv, double & cp, double & c, double & k, double & mu)
+void vapor_sat_properties_from_p(double p, double * T, double * v, double * rho, double * e, double * h,
+                                  double * s, double * cv, double * cp, double * c, double * k, double * mu)
 {
-  T = T_sat_from_p(p);
-  rho = rho_g_sat_from_T(T);
-  v = 1.0 / rho;
-  mu = viscosity(rho, T);
+  double T_val = T_sat_from_p(p);
+  double rho_val = rho_g_sat_from_T(T_val);
+  if (T != NULL)   *T = T_val;
+  if (v != NULL)   *v = 1.0 / rho_val;
+  if (rho != NULL) *rho = rho_val;
+  if (mu != NULL)  *mu = viscosity(rho_val, T_val);
 
-  if (T <= IF97_T_13)
+  if (T_val <= IF97_T_13)
   {
-    e = R2_specific_int_energy(p, T);
-    h = R2_specific_enthalpy(p, T);
-    s = R2_specific_entropy(p, T);
-    cv = R2_cv(p, T);
-    cp = R2_cp(p, T);
-    c = R2_sound_speed(p, T);
-    k = thermal_conductivity_R2(p, T);
+    if (e != NULL)  *e = R2_specific_int_energy(p, T_val);
+    if (h != NULL)  *h = R2_specific_enthalpy(p, T_val);
+    if (s != NULL)  *s = R2_specific_entropy(p, T_val);
+    if (cv != NULL) *cv = R2_cv(p, T_val);
+    if (cp != NULL) *cp = R2_cp(p, T_val);
+    if (c != NULL)  *c = R2_sound_speed(p, T_val);
+    if (k != NULL)  *k = thermal_conductivity_R2(p, T_val);
   }
   else
   {
-    e = R3_specific_int_energy(rho, T);
-    h = R3_specific_enthalpy(rho, T);
-    s = R3_specific_entropy(rho, T);
-    cv = R3_cv(rho, T);
-    cp = R3_cp(rho, T);
-    c = R3_sound_speed(rho, T);
-    k = thermal_conductivity_R3(rho, T);
+    if (e != NULL)  *e = R3_specific_int_energy(rho_val, T_val);
+    if (h != NULL)  *h = R3_specific_enthalpy(rho_val, T_val);
+    if (s != NULL)  *s = R3_specific_entropy(rho_val, T_val);
+    if (cv != NULL) *cv = R3_cv(rho_val, T_val);
+    if (cp != NULL) *cp = R3_cp(rho_val, T_val);
+    if (c != NULL)  *c = R3_sound_speed(rho_val, T_val);
+    if (k != NULL)  *k = thermal_conductivity_R3(rho_val, T_val);
   }
 }
 

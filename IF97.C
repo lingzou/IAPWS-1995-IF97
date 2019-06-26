@@ -756,6 +756,24 @@ double R4_T_sat_from_p(double p)
   return 0.5 * (R4Coef[9] + D - std::sqrt(val));
 }
 
+void checkTSatValid(double T)
+{
+  if ((T < IF97_T_MIN) || (T > T_CRIT))
+  {
+    fprintf(stderr, "Invalid T_sat value: %f!\n", T);
+    exit(1);
+  }
+}
+
+void checkPSatValid(double p)
+{
+  if ((p < IF97_SAT_P_MIN) || (p > P_CRIT))
+  {
+    fprintf(stderr, "Invalid P_sat value: %f!\n", p);
+    exit(1);
+  }
+}
+
 double R5_gamma_0(double pi, double tau)
 {
   double gamma = std::log(pi);

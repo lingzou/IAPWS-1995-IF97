@@ -661,23 +661,8 @@ static const double R4Coef[10] = {
 // Eqn. (30), page 33; Eqn. (31), page 35, Ref. [1]
 double R4_p_sat_from_T(double T);
 double R4_T_sat_from_p(double p);
-inline void checkTSatValid(double T)
-{
-  if ((T < IF97_T_MIN) || (T > T_CRIT))
-  {
-    fprintf(stderr, "%s", "Invalid T_sat value!\n");
-    exit(1);
-  }
-}
-
-inline void checkPSatValid(double p)
-{
-  if ((p < IF97_SAT_P_MIN) || (p > P_CRIT))
-  {
-    fprintf(stderr, "%s", "Invalid P_sat value!\n");
-    exit(1);
-  }
-}
+void checkTSatValid(double T);
+void checkPSatValid(double p);
 
 /***************************************************************
  * Region 5

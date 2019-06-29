@@ -93,6 +93,9 @@ unsigned int find_T_lower_bound(double T);
 void genR3_sat_line();
 void genR4_sat_line();
 
+double R1_T_from_p_v_ITER(double p, double v);
+double R2_T_from_p_v_ITER(double p, double v);
+
 double R3_rho_l_sat_from_T_ITER(double T);
 double R3_rho_g_sat_from_T_ITER(double T);
 
@@ -100,11 +103,13 @@ double R3_rho_from_p_T_ITER(double p, double T);
 void R3_rho_T_x_from_p_h_ITER(double p, double h, double &rho, double &T, double &x);
 void R3_rho_T_x_from_p_s_ITER(double p, double s, double &rho, double &T, double &x);
 double R3_dp_ddelta(double delta, double tau);
+double R3_T_from_p_v_ITER(double p, double v);
 
 double R1_drho_dp(double p, double T);
 double R2_drho_dp(double p, double T);
 
 double R5_T_from_p_h_ITER(double p, double h);
 double R5_T_from_p_s_ITER(double p, double s);
+double R5_T_from_p_v_ITER(double p, double v);
 }
 #endif /*IF97_HELPER_H*/

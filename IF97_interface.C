@@ -1520,7 +1520,7 @@ double c_from_ps(double p, double s)
 
 double k_from_ps(double p, double s)
 {
-  int region = locateRegion_from_ph(p, s);
+  int region = locateRegion_from_ps(p, s);
   switch (region) {
     case 1:
       return thermal_conductivity_R1(p, R1_T_from_p_s(p, s));
@@ -1551,7 +1551,7 @@ double k_from_ps(double p, double s)
 
 double mu_from_ps(double p, double s)
 {
-  int region = locateRegion_from_ph(p, s);
+  int region = locateRegion_from_ps(p, s);
   switch (region) {
     case 1:
     case 21:
@@ -1563,6 +1563,344 @@ double mu_from_ps(double p, double s)
       double rho = rho_from_ps(p, s);
       double T = T_from_ps(p, s);
       return viscosity(rho, T);
+    }
+    case 4:
+    {
+      return -1.0; // not defined
+    }
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+/***************************************************************
+ * (p, v)-based properties
+ ***************************************************************/
+int locateRegion_from_pv(double p, double v)
+{
+  if (p < IF97_SAT_P_MIN)
+  {
+    if (v < R2_specific_volume(p, IF97_T_MIN))
+    {
+      fprintf(stderr, "%s", "Out of range: v < v(p, 273.15K)!\n");
+      return -1;
+    }
+    else if (v < R2_specific_volume(p, IF97_T_25))
+      return 2;
+    else if (v < R5_specific_volume(p, IF97_T_MAX))
+      return 5;
+    else
+    {
+      fprintf(stderr, "%s", "Out of range: v > v(p, 2273.15K)!\n");
+      return -2;
+    }
+  }
+  else if (p < 1.65291643e7) // where 2-3 boundary line intersects with saturation line, (see page 6, Ref. [1])
+  {
+    if (v < R1_specific_volume(p, IF97_T_MIN))
+    {
+      fprintf(stderr, "%s", "Out of range: v < v(p, 273.15K)!\n");
+      return -1;
+    }
+    else if (v < v_l_sat_from_p(p))
+      return 1;
+    else if (v < v_g_sat_from_p(p))
+      return 4;
+    else if (v < R2_specific_volume(p, IF97_T_25))
+      return 2;
+    else if (v < R5_specific_volume(p, IF97_T_MAX))
+      return 5;
+    else
+    {
+      fprintf(stderr, "%s", "Out of range: v > v(p, 2273.15K)!\n");
+      return -2;
+    }
+  }
+  else if (p < P_CRIT)
+  {
+    if (v < R1_specific_volume(p, IF97_T_MIN))
+    {
+      fprintf(stderr, "%s", "Out of range: v < v(p, 273.15K)!\n");
+      return -1;
+    }
+    else if (v < R1_specific_volume(p, IF97_T_13))
+      return 1;
+    else if (v < v_l_sat_from_p(p))
+      return 3;
+    else if (v < v_g_sat_from_p(p))
+      return 4;
+    else if (v < R2_specific_volume(p, B23_T_from_p(p)))
+      return 3;
+    else if (v < R2_specific_volume(p, IF97_T_25))
+      return 2;
+    else if (v < R5_specific_volume(p, IF97_T_MAX))
+      return 5;
+    else
+    {
+      fprintf(stderr, "%s", "Out of range: v > v(p, 2273.15K)!\n");
+      return -2;
+    }
+  }
+  else if (p < 50.0e6)
+  {
+    if (v < R1_specific_volume(p, IF97_T_MIN))
+    {
+      fprintf(stderr, "%s", "Out of range: v < v(p, 273.15K)!\n");
+      return -1;
+    }
+    else if (v < R1_specific_volume(p, IF97_T_13))
+      return 1;
+    else if (v < R2_specific_volume(p, B23_T_from_p(p)))
+      return 3;
+    else if (v < R2_specific_volume(p, IF97_T_25))
+      return 2;
+    else if (v < R5_specific_volume(p, IF97_T_MAX))
+      return 5;
+    else
+    {
+      fprintf(stderr, "%s", "Out of range: v > v(p, 2273.15K)!\n");
+      return -2;
+    }
+  }
+  else if (p < 100.0e6)
+  {
+    if (v < R1_specific_volume(p, IF97_T_MIN))
+    {
+      fprintf(stderr, "%s", "Out of range: v < v(p, 273.15K)!\n");
+      return -1;
+    }
+    else if (v < R1_specific_volume(p, IF97_T_13))
+      return 1;
+    else if (v < R2_specific_volume(p, B23_T_from_p(p)))
+      return 3;
+    else if (v < R2_specific_volume(p, IF97_T_25))
+      return 2;
+    else
+    {
+      fprintf(stderr, "%s", "Out of range: v > v(p, 1073.15K)!\n");
+      return -4;
+    }
+  }
+  else
+  {
+    return -3;
+  }
+}
+
+double T_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+
+  switch (region) {
+    case 1:
+      return R1_T_from_p_v_ITER(p, v);
+    case 2:
+      return R2_T_from_p_v_ITER(p, v);
+    case 3:
+      return R3_T_from_p_v_ITER(p, v);
+    case 4:
+      return T_sat_from_p(p);
+    case 5:
+      return R5_T_from_p_v_ITER(p, v);
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double h_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+
+  switch (region) {
+    case 1:
+      return R1_specific_enthalpy(p, R1_T_from_p_v_ITER(p, v));
+    case 2:
+      return R2_specific_enthalpy(p, R2_T_from_p_v_ITER(p, v));
+    case 3:
+      return R3_specific_enthalpy(1.0 / v, R3_T_from_p_v_ITER(p, v));
+    case 4:
+    {
+      double v_l_sat = v_l_sat_from_p(p);
+      double v_g_sat = v_g_sat_from_p(p);
+      double h_l_sat = h_l_sat_from_p(p);
+      double h_g_sat = h_g_sat_from_p(p);
+      double x = (v - v_l_sat) / (v_g_sat - v_l_sat);
+      return h_g_sat * x + h_l_sat * (1.0 - x);
+    }
+    case 5:
+      return R5_specific_enthalpy(p, R5_T_from_p_v_ITER(p, v));
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double e_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+
+  switch (region) {
+    case 1:
+      return R1_specific_int_energy(p, R1_T_from_p_v_ITER(p, v));
+    case 2:
+      return R2_specific_int_energy(p, R2_T_from_p_v_ITER(p, v));
+    case 3:
+      return R3_specific_int_energy(1.0 / v, R3_T_from_p_v_ITER(p, v));
+    case 4:
+    {
+      double v_l_sat = v_l_sat_from_p(p);
+      double v_g_sat = v_g_sat_from_p(p);
+      double e_l_sat = e_l_sat_from_p(p);
+      double e_g_sat = e_g_sat_from_p(p);
+      double x = (v - v_l_sat) / (v_g_sat - v_l_sat);
+      return e_g_sat * x + e_l_sat * (1.0 - x);
+    }
+    case 5:
+      return R5_specific_int_energy(p, R5_T_from_p_v_ITER(p, v));
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double s_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+
+  switch (region) {
+    case 1:
+      return R1_specific_entropy(p, R1_T_from_p_v_ITER(p, v));
+    case 2:
+      return R2_specific_entropy(p, R2_T_from_p_v_ITER(p, v));
+    case 3:
+      return R3_specific_entropy(1.0 / v, R3_T_from_p_v_ITER(p, v));
+    case 4:
+    {
+      double v_l_sat = v_l_sat_from_p(p);
+      double v_g_sat = v_g_sat_from_p(p);
+      double s_l_sat = s_l_sat_from_p(p);
+      double s_g_sat = s_g_sat_from_p(p);
+      double x = (v - v_l_sat) / (v_g_sat - v_l_sat);
+      return s_g_sat * x + s_l_sat * (1.0 - x);
+    }
+    case 5:
+      return R5_specific_entropy(p, R5_T_from_p_v_ITER(p, v));
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double cv_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+  switch (region) {
+    case 1:
+      return R1_cv(p, R1_T_from_p_v_ITER(p, v));
+    case 2:
+      return R2_cv(p, R2_T_from_p_v_ITER(p, v));
+    case 3:
+      return R3_cv(1.0 / v, R3_T_from_p_v_ITER(p, v));
+    case 4:
+    {
+      return -1.0; // not defined
+    }
+    case 5:
+      return R5_cv(p, R5_T_from_p_v_ITER(p, v));
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double cp_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+  switch (region) {
+    case 1:
+      return R1_cp(p, R1_T_from_p_v_ITER(p, v));
+    case 2:
+      return R2_cp(p, R2_T_from_p_v_ITER(p, v));
+    case 3:
+      return R3_cp(1.0 / v, R3_T_from_p_v_ITER(p, v));
+    case 4:
+    {
+      return -1.0; // not defined
+    }
+    case 5:
+      return R5_cp(p, R5_T_from_p_v_ITER(p, v));
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double c_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+  switch (region) {
+    case 1:
+      return R1_sound_speed(p, R1_T_from_p_v_ITER(p, v));
+    case 2:
+      return R2_sound_speed(p, R2_T_from_p_v_ITER(p, v));
+    case 3:
+      return R3_sound_speed(1.0 / v, R3_T_from_p_v_ITER(p, v));
+    case 4:
+    {
+      return -1.0; // needs special model, not this package's interest
+    }
+    case 5:
+      return R5_sound_speed(p, R5_T_from_p_v_ITER(p, v));
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double k_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+  switch (region) {
+    case 1:
+      return thermal_conductivity_R1(p, R1_T_from_p_v_ITER(p, v));
+    case 2:
+      return thermal_conductivity_R2(p, R2_T_from_p_v_ITER(p, v));
+    case 3:
+      return thermal_conductivity_R3(1.0 / v, R3_T_from_p_v_ITER(p, v));
+    case 4:
+    {
+      return -1.0; // not defined
+    }
+    case 5:
+      return thermal_conductivity_R5(p, R5_T_from_p_v_ITER(p, v));
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+      return 0.0;
+  }
+}
+
+double mu_from_pv(double p, double v)
+{
+  int region = locateRegion_from_pv(p, v);
+  switch (region) {
+    case 1:
+    case 2:
+    case 3:
+    case 5:
+    {
+      double T = T_from_pv(p, v);
+      return viscosity(1.0 / v, T);
     }
     case 4:
     {

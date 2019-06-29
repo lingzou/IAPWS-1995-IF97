@@ -268,6 +268,53 @@ void genR4_sat_line()
   fclose(ptr_sat_line_File);
 }
 
+double R1_T_from_p_v_ITER(double p, double v)
+{
+  double T_min = IF97_T_MIN;
+  double T_max = (p > 1.65291643e7) ? IF97_T_13 : R4_T_sat_from_p(p);
+  double T_find, T_error = 1.0;
+
+  while (T_error > 1.0e-9)
+  {
+    T_find = 0.5 * (T_min + T_max);
+    double v_find = R1_specific_volume(p, T_find);
+
+    if (v_find > v)   T_max = T_find;
+    else              T_min = T_find;
+
+    T_error = fabs((T_max - T_min) / T_find);
+  }
+
+  return T_find;
+}
+
+double R2_T_from_p_v_ITER(double p, double v)
+{
+  double T_min = 0.0;
+  if (p < IF97_SAT_P_MIN)
+    T_min = IF97_T_MIN;
+  else if (p < 1.65291643e7)
+    T_min = R4_T_sat_from_p(p);
+  else
+    T_min = B23_T_from_p(p);
+
+  double T_max = IF97_T_25;
+  double T_find, T_error = 1.0;
+
+  while (T_error > 1.0e-9)
+  {
+    T_find = 0.5 * (T_min + T_max);
+    double v_find = R2_specific_volume(p, T_find);
+
+    if (v_find > v)   T_max = T_find;
+    else              T_min = T_find;
+
+    T_error = fabs((T_max - T_min) / T_find);
+  }
+
+  return T_find;
+}
+
 double R3_rho_l_sat_from_T_ITER(double T)
 {
   if (T > 647.0955)
@@ -527,6 +574,53 @@ double R3_dp_ddelta(double delta, double tau)
   return RHO_CRIT * R_GAS * T_CRIT / tau * (2.0 * delta * R3_phi_delta(delta, tau) + delta * delta * R3_phi_delta_delta(delta, tau));
 }
 
+double R3_T_from_p_v_ITER(double p, double v)
+{
+  double T_min = 0.0, T_max = 0.0;
+  if (p < P_CRIT)
+  {
+    double Ts = R4_T_sat_from_p(p);
+    double v_l_sat = 1.0 / R3_rho_l_sat_from_T_ITER(Ts);
+    double v_g_sat = 1.0 / R3_rho_g_sat_from_T_ITER(Ts);
+
+    if (v < v_l_sat)
+    {
+      T_min = IF97_T_13;
+      T_max = Ts;
+    }
+    else if (v > v_g_sat)
+    {
+      T_min = Ts;
+      T_max = B23_T_from_p(p);
+    }
+    else
+    {
+      fprintf(stderr, "Why you are here?\n");
+      exit(1);
+    }
+  }
+  else
+  {
+    T_min = IF97_T_13;
+    T_max = B23_T_from_p(p);
+  }
+
+  double T_find, T_error = 1.0;
+
+  while (T_error > 1.0e-9)
+  {
+    T_find = 0.5 * (T_min + T_max);
+    double v_find = 1.0 / R3_rho_from_p_T_ITER(p, T_find);
+
+    if (v_find > v)   T_max = T_find;
+    else              T_min = T_find;
+
+    T_error = fabs((T_max - T_min) / T_find);
+  }
+
+  return T_find;
+}
+
 double R1_drho_dp(double p, double T)
 {
   double pi  = p / R1_pStar;
@@ -577,6 +671,26 @@ double R5_T_from_p_s_ITER(double p, double s)
     double s_find = R5_specific_entropy(p, T_find);
 
     if (s_find > s)   T_max = T_find;
+    else              T_min = T_find;
+
+    T_error = fabs((T_max - T_min) / T_find);
+  }
+
+  return T_find;
+}
+
+double R5_T_from_p_v_ITER(double p, double v)
+{
+  double T_min = IF97_T_25;
+  double T_max = IF97_T_MAX;
+  double T_find, T_error = 1.0;
+
+  while (T_error > 1.0e-9)
+  {
+    T_find = 0.5 * (T_min + T_max);
+    double v_find = R5_specific_volume(p, T_find);
+
+    if (v_find > v)   T_max = T_find;
     else              T_min = T_find;
 
     T_error = fabs((T_max - T_min) / T_find);

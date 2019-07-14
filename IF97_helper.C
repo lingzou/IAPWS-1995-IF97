@@ -35,11 +35,13 @@ int locateRegion_from_pT(double p, double T)
     double ps = R4_p_sat_from_T(T);
     return (p > ps) ? 1 : 2;
   }
-  else
+  else if (T < IF97_T_25)
   {
     double p_bc = B23_p_from_T(T);
     return (p > p_bc) ? 3 : 2;
   }
+  else
+    return 5;
 }
 
 unsigned int

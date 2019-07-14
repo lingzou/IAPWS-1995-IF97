@@ -20,7 +20,9 @@ const static double IF97_T_MIN     = 273.15;              // K
 const static double IF97_T_13      = 623.15;              // K
 const static double IF97_T_25      = 1073.15;             // K
 const static double IF97_T_MAX     = 2273.15;             // K
-const static double IF97_SAT_P_MIN = 611.213;             // Pa; See page 35, Ref. [1]
+//Instead of 611.213 [Pa]; See page 35, Ref. [1]. The consistent value is:
+const static double IF97_SAT_P_MIN = 6.112126774443e2;    // Pa
+const static double IF97_P_MID     = 50.0e6;              // Pa
 const static double IF97_P_MAX     = 100.0e6;             // Pa
 
 /***************************************************************

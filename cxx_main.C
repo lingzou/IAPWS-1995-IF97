@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
     return 0;
   }
 
-  std::cout << std::scientific << std::setprecision(8) << "psat = " << p_sat_from_T(623.15) << std::endl;
-
+  std::cout << std::scientific << std::setprecision(12) << "psat = " << p_sat_from_T(623.15) << std::endl;
+  /*
   std::cout << std::scientific << std::setprecision(8);
   for (int i = 0; i < 100; i++)
   {
@@ -41,7 +41,31 @@ int main(int argc, char *argv[])
   std::cout << "p = 6.54670 MPa, T_sat = " << T_sat_from_p(6.54670e6)
             << std::endl
             << "h_sat = " << h_g_sat_from_p(6.54670e6) << std::endl
-            << "h_2bc = " << B2bc_h_from_p(6.54670e6)  << std::endl;
+            << "h_2bc = " << B2bc_h_from_p(6.54670e6)  << std::endl;*/
+
+  std::cout << "h_l_sat(T=T_crit) = " << h_l_sat_from_T(T_CRIT) << std::endl;
+  std::cout << "h_g_sat(T=T_crit) = " << h_g_sat_from_T(T_CRIT) << std::endl;
+  std::cout << "T_sat_from_p(p=p_crit) = " << T_sat_from_p(P_CRIT) << std::endl;
+  std::cout << "h_l_sat(p=p_crit) = " << h_l_sat_from_p(P_CRIT) << std::endl;
+  std::cout << "h_g_sat(p=p_crit) = " << h_g_sat_from_p(P_CRIT) << std::endl;
+
+  std::cout << "R3_crit = " << R3_specific_enthalpy(RHO_CRIT, T_CRIT) << std::endl;
+
+  std::cout << "h(p=1.0bar, T=273.15) = " << h_from_pT(1.0e5, 273.15) << std::endl;
+  //std::cout << "T(p=1.0bar, h=0.0) = " << T_from_ph(1.0e5, 0.0) << std::endl;
+  std::cout << "s(p=1.0bar, T=273.15) = " << s_from_pT(1.0e5, 273.15) << std::endl;
+
+  std::cout << "h(p=50MPa, T=2253.15) = " << h_from_pT(50.e6, 2253.15) << std::endl;
+  std::cout << "s(p=50MPa, T=2253.15) = " << s_from_pT(50.e6, 2253.15) << std::endl;
+
+  std::cout << "T_sat(p=611.213Pa) = " << T_sat_from_p(611.213) << std::endl;
+  std::cout << "T_sat(p=611.213Pa) = " << T_sat_from_p(6.112126774443e2) << std::endl;
+  std::cout << "p_sat(p=273.15K) = " << p_sat_from_T(273.15) << std::endl;
+
+  std::cout << "1: " << IF97_H_PMAX_TMIN << std::endl;
+  std::cout << "2: " << IF97_H_PMAX_T25 << std::endl;
+  std::cout << "3: " << IF97_H_PMID_T25 << std::endl;
+  std::cout << "4: " << IF97_H_PMID_TMAX << std::endl;
 /*
   genR3_sat_line();
 

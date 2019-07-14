@@ -5,6 +5,11 @@
 
 extern "C"
 {
+const static double IF97_H_PMAX_TMIN = R1_specific_enthalpy(IF97_P_MAX, IF97_T_MIN);
+const static double IF97_H_PMAX_T25 = R2_specific_enthalpy(IF97_P_MAX, IF97_T_25);
+const static double IF97_H_PMID_T25 = R2_specific_enthalpy(IF97_P_MID, IF97_T_25);
+const static double IF97_H_PMID_TMAX = R2_specific_enthalpy(IF97_P_MID, IF97_T_MAX);
+
 const static double R3_T_list[51] =
 {
   624.15, 625.15, 626.15, 627.15, 628.15,

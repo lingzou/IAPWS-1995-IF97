@@ -1169,6 +1169,140 @@ double mu_from_ph(double p, double h)
   }
 }
 
+void properties_from_ph(double p, double h, double * v, double * rho, double * e, double * T,
+                         double * s, double * cv, double * cp, double * c, double * k, double * mu)
+{
+  int region = locateRegion_from_ph(p, h);
+
+  switch (region) {
+    case 1:
+    {
+      double T_val = R1_T_from_p_h(p, h);
+      double v_val = R1_specific_volume(p, T_val);
+      double rho_val = 1.0 / v_val;
+      if (v != NULL)   *v = v_val;
+      if (rho != NULL) *rho = rho_val;
+      if (e != NULL)   *e = h - p * v_val;
+      if (T != NULL)   *T = T_val;
+      if (s != NULL)   *s = R1_specific_entropy(p, T_val);
+      if (cv != NULL)  *cv = R1_cv(p, T_val);
+      if (cp != NULL)  *cp = R1_cp(p, T_val);
+      if (c != NULL)   *c = R1_sound_speed(p, T_val);
+      if (k != NULL)   *k = thermal_conductivity_R1(p, T_val);
+      if (mu != NULL)  *mu = viscosity(rho_val, T_val);
+    }
+    case 21:
+    {
+      double T_val = R2a_T_from_p_h(p, h);
+      double v_val = R2_specific_volume(p, T_val);
+      double rho_val = 1.0 / v_val;
+      if (v != NULL)   *v = v_val;
+      if (rho != NULL) *rho = rho_val;
+      if (e != NULL)   *e = h - p * v_val;
+      if (T != NULL)   *T = T_val;
+      if (s != NULL)   *s = R2_specific_entropy(p, T_val);
+      if (cv != NULL)  *cv = R2_cv(p, T_val);
+      if (cp != NULL)  *cp = R2_cp(p, T_val);
+      if (c != NULL)   *c = R2_sound_speed(p, T_val);
+      if (k != NULL)   *k = thermal_conductivity_R2(p, T_val);
+      if (mu != NULL)  *mu = viscosity(rho_val, T_val);
+    }
+    case 22:
+    {
+      double T_val = R2b_T_from_p_h(p, h);
+      double v_val = R2_specific_volume(p, T_val);
+      double rho_val = 1.0 / v_val;
+      if (v != NULL)   *v = v_val;
+      if (rho != NULL) *rho = rho_val;
+      if (e != NULL)   *e = h - p * v_val;
+      if (T != NULL)   *T = T_val;
+      if (s != NULL)   *s = R2_specific_entropy(p, T_val);
+      if (cv != NULL)  *cv = R2_cv(p, T_val);
+      if (cp != NULL)  *cp = R2_cp(p, T_val);
+      if (c != NULL)   *c = R2_sound_speed(p, T_val);
+      if (k != NULL)   *k = thermal_conductivity_R2(p, T_val);
+      if (mu != NULL)  *mu = viscosity(rho_val, T_val);
+    }
+    case 23:
+    {
+      double T_val = R2c_T_from_p_h(p, h);
+      double v_val = R2_specific_volume(p, T_val);
+      double rho_val = 1.0 / v_val;
+      if (v != NULL)   *v = v_val;
+      if (rho != NULL) *rho = rho_val;
+      if (e != NULL)   *e = h - p * v_val;
+      if (T != NULL)   *T = T_val;
+      if (s != NULL)   *s = R2_specific_entropy(p, T_val);
+      if (cv != NULL)  *cv = R2_cv(p, T_val);
+      if (cp != NULL)  *cp = R2_cp(p, T_val);
+      if (c != NULL)   *c = R2_sound_speed(p, T_val);
+      if (k != NULL)   *k = thermal_conductivity_R2(p, T_val);
+      if (mu != NULL)  *mu = viscosity(rho_val, T_val);
+    }
+    case 3:
+    {
+      double rho_val = 0.0, T_val = 0.0, x_val = 0.0;
+      R3_rho_T_x_from_p_h_ITER(p, h, rho_val, T_val, x_val); /* This function covers Region 3 and the subsetion of 4 within 3 */
+      if (v != NULL)   *v = 1.0 / rho_val;
+      if (rho != NULL) *rho = rho_val;
+      if (e != NULL)   *e = h - p / rho_val;
+      if (T != NULL)   *T = T_val;
+      if (s != NULL)   *s = R3_specific_entropy(rho_val, T_val);
+      if (cv != NULL)  *cv = R3_cv(rho_val, T_val);
+      if (cp != NULL)  *cp = R3_cp(rho_val, T_val);
+      if (c != NULL)   *c = R3_sound_speed(rho_val, T_val);
+      if (k != NULL)   *k = thermal_conductivity_R3(rho_val, T_val);
+      if (mu != NULL)  *mu = viscosity(rho_val, T_val);
+    }
+    case 4:
+    {
+      double h_l_sat = h_l_sat_from_p(p);
+      double h_g_sat = h_g_sat_from_p(p);
+      double x = (h - h_l_sat) / (h_g_sat - h_l_sat);
+
+      double rho_l_sat = rho_l_sat_from_p(p);
+      double rho_g_sat = rho_g_sat_from_p(p);
+      double v_l_sat = 1.0 / rho_l_sat;
+      double v_g_sat = 1.0 / rho_g_sat;
+      double v_val = x * v_g_sat + (1.0 - x) * v_l_sat;
+
+      if (v != NULL)   *v = v_val;
+      if (rho != NULL) *rho = 1.0 / v_val;
+      if (e != NULL)   *e = h - p * v_val;
+      if (T != NULL)   *T = T_sat_from_p(p);
+      if (s != NULL)
+      {
+        double s_l_sat = s_l_sat_from_p(p);
+        double s_g_sat = s_g_sat_from_p(p);
+        *s = x * s_g_sat + (1.0 - x) * s_l_sat;
+      }
+      if (cv != NULL)  *cv = -1.0;
+      if (cp != NULL)  *cp = -1.0;
+      if (c != NULL)   *c = -1.0;
+      if (k != NULL)   *k = -1.0;
+      if (mu != NULL)  *mu = -1.0;
+    }
+    case 5:
+    {
+      double T_val = R5_T_from_p_h_ITER(p, h);
+      double v_val = R5_specific_volume(p, T_val);
+      double rho_val = 1.0 / v_val;
+      if (v != NULL)   *v = v_val;
+      if (rho != NULL) *rho = rho_val;
+      if (e != NULL)   *e = h - p * v_val;
+      if (T != NULL)   *T = T_val;
+      if (s != NULL)   *s = R5_specific_entropy(p, T_val);
+      if (cv != NULL)  *cv = R5_cv(p, T_val);
+      if (cp != NULL)  *cp = R5_cp(p, T_val);
+      if (c != NULL)   *c = R5_sound_speed(p, T_val);
+      if (k != NULL)   *k = thermal_conductivity_R5(p, T_val);
+      if (mu != NULL)  *mu = viscosity(rho_val, T_val);
+    }
+    default:
+      fprintf(stderr, "%s", "Region not recognized!\n");
+      exit(1);
+  }
+}
 /***************************************************************
  * (p, s)-based properties
  ***************************************************************/

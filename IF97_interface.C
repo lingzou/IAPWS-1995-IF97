@@ -500,7 +500,6 @@ double e_from_pT(double p, double T)
 double h_from_pT(double p, double T)
 {
   int region = locateRegion_from_pT(p, T);
-  fprintf(stderr, "region = %d\n", region);
   switch (region) {
     case 1:
       return R1_specific_enthalpy(p, T);
@@ -702,7 +701,8 @@ int locateRegion_from_ph(double p, double h)
   {
     if (h < R2_specific_enthalpy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h < h(p, 273.15K)!\n");
       return -1;
     }
     else if (h < R2_specific_enthalpy(p, IF97_T_25))
@@ -711,7 +711,8 @@ int locateRegion_from_ph(double p, double h)
       return 5;
     else
     {
-      fprintf(stderr, "%s", "Out of range: h > h(p, 2273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h > h(p, 2273.15K)!\n");
       return -2;
     }
   }
@@ -719,7 +720,8 @@ int locateRegion_from_ph(double p, double h)
   {
     if (h < R1_specific_enthalpy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h < h(p, 273.15K)!\n");
       return -1;
     }
     else if (h < h_l_sat_from_p(p))
@@ -732,7 +734,8 @@ int locateRegion_from_ph(double p, double h)
       return 5;
     else
     {
-      fprintf(stderr, "%s", "Out of range: h > h(p, 2273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h > h(p, 2273.15K)!\n");
       return -2;
     }
   }
@@ -740,7 +743,8 @@ int locateRegion_from_ph(double p, double h)
   {
     if (h < R1_specific_enthalpy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h < h(p, 273.15K)!\n");
       return -1;
     }
     else if (h < h_l_sat_from_p(p))
@@ -753,7 +757,8 @@ int locateRegion_from_ph(double p, double h)
       return 5;
     else
     {
-      fprintf(stderr, "%s", "Out of range: h > h(p, 2273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h > h(p, 2273.15K)!\n");
       return -2;
     }
   }
@@ -761,7 +766,8 @@ int locateRegion_from_ph(double p, double h)
   {
     if (h < R1_specific_enthalpy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h < h(p, 273.15K)!\n");
       return -1;
     }
     else if (h < h_l_sat_from_p(p))
@@ -776,7 +782,8 @@ int locateRegion_from_ph(double p, double h)
       return 5;
     else
     {
-      fprintf(stderr, "%s", "Out of range: h > h(p, 2273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h > h(p, 2273.15K)!\n");
       return -2;
     }
   }
@@ -784,7 +791,8 @@ int locateRegion_from_ph(double p, double h)
   {
     if (h < R1_specific_enthalpy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h < h(p, 273.15K)!\n");
       return -1;
     }
     else if (h < R1_specific_enthalpy(p, IF97_T_13))
@@ -803,15 +811,17 @@ int locateRegion_from_ph(double p, double h)
       return 5;
     else
     {
-      fprintf(stderr, "%s", "Out of range: h > h(p, 2273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h > h(p, 2273.15K)!\n");
       return -2;
     }
   }
-  else if (p < 50.0e6)
+  else if (p <= 50.0e6)
   {
     if (h < R1_specific_enthalpy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h < h(p, 273.15K)!\n");
       return -1;
     }
     else if (h < R1_specific_enthalpy(p, IF97_T_13))
@@ -826,7 +836,8 @@ int locateRegion_from_ph(double p, double h)
       return 5;
     else
     {
-      fprintf(stderr, "%s", "Out of range: h > h(p, 2273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h > h(p, 2273.15K)!\n");
       return -2;
     }
   }
@@ -834,7 +845,8 @@ int locateRegion_from_ph(double p, double h)
   {
     if (h < R1_specific_enthalpy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h < h(p, 273.15K)!\n");
       return -1;
     }
     else if (h < R1_specific_enthalpy(p, IF97_T_13))
@@ -847,7 +859,8 @@ int locateRegion_from_ph(double p, double h)
       return 22;
     else
     {
-      fprintf(stderr, "%s", "Out of range: h > h(p, 1073.15K)!\n");
+      fprintf(stderr, "p = %f; h = %f\n", p, h);
+      fprintf(stderr, "Out of range: h > h(p, 1073.15K)!\n");
       return -4;
     }
   }
@@ -1183,7 +1196,7 @@ int locateRegion_from_ps(double p, double s)
   {
     if (s < R1_specific_entropy(p, IF97_T_MIN))
     {
-      fprintf(stderr, "%s", "Out of range: h < h(p, 273.15K)!\n");
+      fprintf(stderr, "%s", "Out of range: s < s(p, 273.15K)!\n");
       return -1;
     }
     else if (s < s_l_sat_from_p(p))
@@ -1647,4 +1660,31 @@ double mu_from_ps(double p, double s)
       exit(1);
       return 0.0;
   }
+}
+
+/***************************************************************
+ * (h, v)-based properties
+ ***************************************************************/
+double p_from_hv(double h, double v)
+{
+  double p_min = IF97_SAT_P_MIN;
+  double p_max = p_max_from_h(h);
+
+  double p_find, v_find, p_error = 1.0;
+  unsigned int it = 0;
+  while ((p_error > 1.0e-9) && it < 1000)
+  {
+    p_find = 0.5 * (p_min + p_max);
+    v_find = v_from_ph(p_find, h);
+
+    if (v_find > v)   p_min = p_find;
+    else              p_max = p_find;
+
+    p_error = fabs((p_max - p_min) / p_find);
+    it ++;
+    /*if (it > 900)
+      printf("it > 900\n");*/
+  }
+
+  return p_find;
 }

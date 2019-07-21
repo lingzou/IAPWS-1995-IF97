@@ -109,5 +109,9 @@ double c_from_ps(double p, double s);
 double k_from_ps(double p, double s);
 double mu_from_ps(double p, double s);
 
+/***************************************************************
+ * (h, v)-based properties
+ ***************************************************************/
+double p_from_hv(double h, double v);
 }
 #endif /*IF97_INTERFACE_H*/

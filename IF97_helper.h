@@ -116,5 +116,7 @@ double R2_drho_dp(double p, double T);
 double R5_T_from_p_h_ITER(double p, double h);
 double R5_T_from_p_s_ITER(double p, double s);
 double R5_T_from_p_v_ITER(double p, double v);
+
+double p_max_from_h(double h);
 }
 #endif /*IF97_HELPER_H*/

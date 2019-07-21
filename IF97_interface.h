@@ -110,6 +110,9 @@ double cp_from_ps(double p, double s);
 double c_from_ps(double p, double s);
 double k_from_ps(double p, double s);
 double mu_from_ps(double p, double s);
+void properties_from_ps(double p, double s, double * v, double * rho, double * e, double * T,
+                         double * h, double * cv, double * cp, double * c, double * k, double * mu);
+
 
 /***************************************************************
  * (h, v)-based properties

@@ -1944,6 +1944,14 @@ double p_from_hv(double h, double v)
 {
   double p_min = IF97_SAT_P_MIN;
   double p_max = p_max_from_h(h);
+  double v_min = v_from_pT(p_max, IF97_T_MIN);
+
+  if (v < v_min)
+  {
+    fprintf(stderr, "v = %16.9f is out of bounds: v < v_min from given h:\n", v);
+    fprintf(stderr, "  v_min = %16.9f, from given h = %16.9f!\n", v_min, h);
+    exit(1);
+  }
 
   double p_find, v_find, p_error = 1.0;
   unsigned int it = 0;
@@ -1957,6 +1965,8 @@ double p_from_hv(double h, double v)
 
     p_error = fabs((p_max - p_min) / p_find);
     it ++;
+
+    //printf("it = %5d; p_find = %16.9e; v_find = %16.9e; p_min = %16.9e; p_max = %16.9e\n", it, p_find, v_find, p_min, p_max);
     /*if (it > 900)
       printf("it > 900\n");*/
   }

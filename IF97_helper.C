@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "IF97_helper.h"
+#include "IF97_interface.h"
 
 
 int locateRegion_from_pT(double p, double T)
@@ -757,4 +758,61 @@ double p_max_from_h(double h)
     exit(1);
     return 0.0;
   }
+}
+
+double h_max_from_v(double v)
+{
+  double h_min = 0.0;
+  double h_max = 4200.0e3; // To be fixed
+
+  double h_find, v_find, h_error = 1.0;
+  while (h_error > 1.0e-9)
+  {
+    h_find = 0.5 * (h_min + h_max);
+    double p_max = p_max_from_h(h_find);
+    double v_find = v_from_ph(p_max, h_find);
+
+    if (v_find > v)   h_max = h_find;
+    else              h_min = h_find;
+
+    h_error = fabs((h_max - h_min) / h_find);
+  }
+
+  return h_find;
+}
+
+double h_min_from_v(double v)
+{
+  /* we will limit the minimum h to be 0, although in extreme conditions (very close to (273.15K, 611.213Pa)), it could be less than 0.0 */
+  if (v < IF97_VMIN_GLOBAL)
+  {
+    fprintf(stderr, "Out of boundary: v > IF97_VMIN_GLOBAL in h_min_from_v().\n");
+    exit(1);
+    return 0.0;
+  }
+  else if (v < IF97_V_LIQ_PSATMIN_TMIN)
+  {
+    double h_min = IF97_HMIN_GLOBAL;
+    double h_max = IF97_H_PMAX_TMIN;
+
+    double h_find, v_find, h_error = 1.0;
+    unsigned int it = 0;
+    while (h_error > 1.0e-9)
+    {
+      h_find = 0.5 * (h_min + h_max);
+      double p_max = p_max_from_h(h_find);
+      double v_find = v_from_ph(p_max, h_find);
+
+      if (v_find > v)   h_min = h_find;
+      else              h_max = h_find;
+
+      h_error = fabs((h_max - h_min) / h_find);
+      it ++;
+      //printf("it = %5d; h_find = %16.9e; v_find = %16.9e; h_min = %16.9e; h_max = %16.9e\n", it, h_find, v_find, h_min, h_max);
+    }
+
+    return (h_find < 0.0) ? 0.0 : h_find;
+  }
+  else
+    return 0.0;
 }

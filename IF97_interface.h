@@ -83,6 +83,7 @@ void properties_from_pT(double p, double T, double * v, double * rho, double * e
  * (p, h)-based properties
  ***************************************************************/
 int locateRegion_from_ph(double p, double h);
+double x_from_ph(double p, double h);
 double v_from_ph(double p, double h);
 double rho_from_ph(double p, double h);
 double e_from_ph(double p, double h);
@@ -93,13 +94,14 @@ double cp_from_ph(double p, double h);
 double c_from_ph(double p, double h);
 double k_from_ph(double p, double h);
 double mu_from_ph(double p, double h);
-void properties_from_ph(double p, double h, double * v, double * rho, double * e, double * T,
+void properties_from_ph(double p, double h, double * x, double * v, double * rho, double * e, double * T,
                          double * s, double * cv, double * cp, double * c, double * k, double * mu);
 
 /***************************************************************
  * (p, s)-based properties
  ***************************************************************/
 int locateRegion_from_ps(double p, double s);
+double x_from_ps(double p, double h);
 double v_from_ps(double p, double s);
 double rho_from_ps(double p, double s);
 double e_from_ps(double p, double s);
@@ -110,7 +112,7 @@ double cp_from_ps(double p, double s);
 double c_from_ps(double p, double s);
 double k_from_ps(double p, double s);
 double mu_from_ps(double p, double s);
-void properties_from_ps(double p, double s, double * v, double * rho, double * e, double * T,
+void properties_from_ps(double p, double s, double * x, double * v, double * rho, double * e, double * T,
                          double * h, double * cv, double * cp, double * c, double * k, double * mu);
 
 
@@ -118,5 +120,14 @@ void properties_from_ps(double p, double s, double * v, double * rho, double * e
  * (h, v)-based properties
  ***************************************************************/
 double p_from_hv(double h, double v);
+double x_from_hv(double h, double v);
+double e_from_hv(double h, double v);
+double T_from_hv(double h, double v);
+double s_from_hv(double h, double v);
+double cv_from_hv(double h, double v);
+double cp_from_hv(double h, double v);
+double c_from_hv(double h, double v);
+double k_from_hv(double h, double v);
+double mu_from_hv(double h, double v);
 }
 #endif /*IF97_INTERFACE_H*/

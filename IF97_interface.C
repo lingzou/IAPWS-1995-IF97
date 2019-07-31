@@ -870,6 +870,27 @@ int locateRegion_from_ph(double p, double h)
   }
 }
 
+double x_from_ph(double p, double h)
+{
+  double x = 0.0;
+
+  if (p > P_CRIT)
+    x = 0.0; // Let x = 0 for both single-phase liquid and supercritical region
+  else
+  {
+    double h_l_sat = h_l_sat_from_p(p);
+    double h_g_sat = h_g_sat_from_p(p);
+    if (h < h_l_sat)
+      x = 0.0;
+    else if (h > h_g_sat)
+      x = 1.0;
+    else
+      x = (h - h_l_sat) / (h_g_sat - h_l_sat);
+  }
+
+  return x;
+}
+
 double v_from_ph(double p, double h)
 {
   int region = locateRegion_from_ph(p, h);
@@ -1169,9 +1190,12 @@ double mu_from_ph(double p, double h)
   }
 }
 
-void properties_from_ph(double p, double h, double * v, double * rho, double * e, double * T,
+void properties_from_ph(double p, double h, double * x, double * v, double * rho, double * e, double * T,
                          double * s, double * cv, double * cp, double * c, double * k, double * mu)
 {
+  if (x != NULL)
+    *x = x_from_ph(p, h);
+
   int region = locateRegion_from_ph(p, h);
 
   switch (region) {
@@ -1258,13 +1282,13 @@ void properties_from_ph(double p, double h, double * v, double * rho, double * e
     {
       double h_l_sat = h_l_sat_from_p(p);
       double h_g_sat = h_g_sat_from_p(p);
-      double x = (h - h_l_sat) / (h_g_sat - h_l_sat);
+      double xx = (h - h_l_sat) / (h_g_sat - h_l_sat);
 
       double rho_l_sat = rho_l_sat_from_p(p);
       double rho_g_sat = rho_g_sat_from_p(p);
       double v_l_sat = 1.0 / rho_l_sat;
       double v_g_sat = 1.0 / rho_g_sat;
-      double v_val = x * v_g_sat + (1.0 - x) * v_l_sat;
+      double v_val = xx * v_g_sat + (1.0 - xx) * v_l_sat;
 
       if (v != NULL)   *v = v_val;
       if (rho != NULL) *rho = 1.0 / v_val;
@@ -1274,7 +1298,7 @@ void properties_from_ph(double p, double h, double * v, double * rho, double * e
       {
         double s_l_sat = s_l_sat_from_p(p);
         double s_g_sat = s_g_sat_from_p(p);
-        *s = x * s_g_sat + (1.0 - x) * s_l_sat;
+        *s = xx * s_g_sat + (1.0 - xx) * s_l_sat;
       }
       if (cv != NULL)  *cv = -1.0;
       if (cp != NULL)  *cp = -1.0;
@@ -1467,6 +1491,27 @@ int locateRegion_from_ps(double p, double s)
   {
     return -3;
   }
+}
+
+double x_from_ps(double p, double s)
+{
+  double x = 0.0;
+
+  if (p > P_CRIT)
+    x = 0.0; // Let x = 0 for both single-phase liquid and supercritical region
+  else
+  {
+    double s_l_sat = s_l_sat_from_p(p);
+    double s_g_sat = s_g_sat_from_p(p);
+    if (s < s_l_sat)
+      x = 0.0;
+    else if (s > s_g_sat)
+      x = 1.0;
+    else
+      x = (s - s_l_sat) / (s_g_sat - s_l_sat);
+  }
+
+  return x;
 }
 
 double v_from_ps(double p, double s)
@@ -1797,9 +1842,12 @@ double mu_from_ps(double p, double s)
   }
 }
 
-void properties_from_ps(double p, double s, double * v, double * rho, double * e, double * T,
+void properties_from_ps(double p, double s, double * x, double * v, double * rho, double * e, double * T,
                          double * h, double * cv, double * cp, double * c, double * k, double * mu)
 {
+  if (x != NULL)
+    *x = x_from_ps(p, s);
+
   int region = locateRegion_from_ps(p, s);
 
   switch (region) {
@@ -1886,13 +1934,13 @@ void properties_from_ps(double p, double s, double * v, double * rho, double * e
     {
       double s_l_sat = s_l_sat_from_p(p);
       double s_g_sat = s_g_sat_from_p(p);
-      double x = (s - s_l_sat) / (s_g_sat - s_l_sat);
+      double xx = (s - s_l_sat) / (s_g_sat - s_l_sat);
 
       double rho_l_sat = rho_l_sat_from_p(p);
       double rho_g_sat = rho_g_sat_from_p(p);
       double v_l_sat = 1.0 / rho_l_sat;
       double v_g_sat = 1.0 / rho_g_sat;
-      double v_val = x * v_g_sat + (1.0 - x) * v_l_sat;
+      double v_val = xx * v_g_sat + (1.0 - xx) * v_l_sat;
 
       if (v != NULL)   *v = v_val;
       if (rho != NULL) *rho = 1.0 / v_val;
@@ -1900,14 +1948,14 @@ void properties_from_ps(double p, double s, double * v, double * rho, double * e
       {
         double e_l_sat = e_l_sat_from_p(p);
         double e_g_sat = e_g_sat_from_p(p);
-        *h = e_g_sat * x + e_l_sat * (1.0 - x);
+        *h = e_g_sat * xx + e_l_sat * (1.0 - xx);
       }
       if (T != NULL)   *T = T_sat_from_p(p);
       if (h != NULL)
       {
         double h_l_sat = h_l_sat_from_p(p);
         double h_g_sat = h_g_sat_from_p(p);
-        *h = x * h_g_sat + (1.0 - x) * h_l_sat;
+        *h = xx * h_g_sat + (1.0 - xx) * h_l_sat;
       }
       if (cv != NULL)  *cv = -1.0;
       if (cp != NULL)  *cp = -1.0;
@@ -1972,4 +2020,58 @@ double p_from_hv(double h, double v)
   }
 
   return p_find;
+}
+
+double x_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return x_from_ph(p, h);
+}
+
+double e_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return e_from_ph(p, h);
+}
+
+double T_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return T_from_ph(p, h);
+}
+
+double s_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return s_from_ph(p, h);
+}
+
+double cv_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return cv_from_ph(p, h);
+}
+
+double cp_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return cp_from_ph(p, h);
+}
+
+double c_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return c_from_ph(p, h);
+}
+
+double k_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return k_from_ph(p, h);
+}
+
+double mu_from_hv(double h, double v)
+{
+  double p = p_from_hv(h, v);
+  return mu_from_ph(p, h);
 }

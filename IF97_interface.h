@@ -129,5 +129,7 @@ double cp_from_hv(double h, double v);
 double c_from_hv(double h, double v);
 double k_from_hv(double h, double v);
 double mu_from_hv(double h, double v);
+void properties_from_hv(double h, double v, double * x, double * p, double * e, double * T,
+                         double * s, double * cv, double * cp, double * c, double * k, double * mu);
 }
 #endif /*IF97_INTERFACE_H*/

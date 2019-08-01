@@ -706,7 +706,8 @@ double p_max_from_h(double h)
 {
   if (h < 0.0)
   {
-    fprintf(stderr, "Out of boundary: h < 0.0 in p_max_from_h\n");
+    fprintf(stderr, "Out of boundary: h < 0.0 in p_max_from_h:\n");
+    fprintf(stderr, "  h = %16.9f\n", h);
     exit(1);
     return 0.0;
   }
@@ -790,7 +791,7 @@ double h_min_from_v(double v)
     exit(1);
     return 0.0;
   }
-  else if (v < IF97_V_LIQ_PSATMIN_TMIN)
+  else if (v < IF97_V_SAT_LIQ_TMIN)
   {
     double h_min = IF97_HMIN_GLOBAL;
     double h_max = IF97_H_PMAX_TMIN;
@@ -813,6 +814,12 @@ double h_min_from_v(double v)
 
     return (h_find < 0.0) ? 0.0 : h_find;
   }
+  else if (v < IF97_V_SAT_VAP_TMIN)
+  {
+    double x = (v - IF97_V_SAT_LIQ_TMIN) / (IF97_V_SAT_VAP_TMIN - IF97_V_SAT_LIQ_TMIN);
+    double h = x * IF97_H_SAT_VAP_TMIN + (1.0 - x) * IF97_H_SAT_LIQ_TMIN;
+    return (h < 0.0) ? 0.0 : h;
+  }
   else
-    return 0.0;
+    return IF97_H_SAT_VAP_TMIN; // FIXME: need further improvement
 }

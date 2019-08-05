@@ -8,11 +8,13 @@ extern "C"
 const static double IF97_H_PMAX_TMIN = R1_specific_enthalpy(IF97_P_MAX, IF97_T_MIN);
 const static double IF97_H_PMAX_T25 = R2_specific_enthalpy(IF97_P_MAX, IF97_T_25);
 const static double IF97_H_PMID_T25 = R2_specific_enthalpy(IF97_P_MID, IF97_T_25);
-const static double IF97_H_PMID_TMAX = R2_specific_enthalpy(IF97_P_MID, IF97_T_MAX);
+const static double IF97_H_PMID_TMAX = R5_specific_enthalpy(IF97_P_MID, IF97_T_MAX);
+const static double IF97_H_PMIN_TMAX = R5_specific_enthalpy(IF97_SAT_P_MIN, IF97_T_MAX);
 
 const static double IF97_VMIN_GLOBAL = R1_specific_volume(IF97_P_MAX, IF97_T_MIN);
 const static double IF97_V_SAT_LIQ_TMIN = R1_specific_volume(IF97_SAT_P_MIN, IF97_T_MIN);
 const static double IF97_V_SAT_VAP_TMIN = R2_specific_volume(IF97_SAT_P_MIN, IF97_T_MIN);
+const static double IF97_V_PMID_TMAX = R5_specific_volume(IF97_P_MID, IF97_T_MAX);
 const static double IF97_H_SAT_LIQ_TMIN = R1_specific_enthalpy(IF97_SAT_P_MIN, IF97_T_MIN);
 const static double IF97_H_SAT_VAP_TMIN = R2_specific_enthalpy(IF97_SAT_P_MIN, IF97_T_MIN);
 const static double IF97_HMIN_GLOBAL = IF97_H_SAT_LIQ_TMIN;

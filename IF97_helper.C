@@ -753,6 +753,25 @@ double p_max_from_h(double h)
   }
   else if (h <= IF97_H_PMID_TMAX)
     return IF97_P_MID;
+  else if (h <= IF97_H_PMIN_TMAX)
+  {
+    double p_min = IF97_SAT_P_MIN;
+    double p_max = IF97_P_MID;
+
+    double p_find, p_error = 1.0;
+    while (p_error > 1.0e-9)
+    {
+      p_find = 0.5 * (p_min + p_max);
+      double h_find = R5_specific_enthalpy(p_find, IF97_T_MAX);
+
+      if (h_find > h)   p_min = p_find;
+      else              p_max = p_find;
+
+      p_error = fabs((p_max - p_min) / p_find);
+    }
+
+    return p_find * (1.0 - 1.0e-8);
+  }
   else
   {
     fprintf(stderr, "Out of boundary: h > IF97_H_PMID_TMAX in p_max_from_h\n");
@@ -764,7 +783,7 @@ double p_max_from_h(double h)
 double h_max_from_v(double v)
 {
   double h_min = 0.0;
-  double h_max = 4200.0e3; // To be fixed
+  double h_max = IF97_H_PMIN_TMAX;
 
   double h_find, v_find, h_error = 1.0;
   while (h_error > 1.0e-9)

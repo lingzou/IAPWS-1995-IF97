@@ -131,5 +131,22 @@ double k_from_hv(double h, double v);
 double mu_from_hv(double h, double v);
 void properties_from_hv(double h, double v, double * x, double * p, double * e, double * T,
                          double * s, double * cv, double * cp, double * c, double * k, double * mu);
+
+/***************************************************************
+ * (h, s)-based properties
+ ***************************************************************/
+double p_from_hs(double h, double s);
+double x_from_hs(double h, double s);
+double v_from_hs(double h, double s);
+double rho_from_hs(double h, double s);
+double e_from_hs(double h, double s);
+double T_from_hs(double h, double s);
+double cv_from_hs(double h, double s);
+double cp_from_hs(double h, double s);
+double c_from_hs(double h, double s);
+double k_from_hs(double h, double s);
+double mu_from_hs(double h, double s);
+void properties_from_hs(double h, double s, double * x, double * v, double * rho, double * p, double * e, double * T,
+                         double * cv, double * cp, double * c, double * k, double * mu);
 }
 #endif /*IF97_INTERFACE_H*/

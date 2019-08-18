@@ -1687,7 +1687,7 @@ double h_from_ps(double p, double s)
     case 5:
       return R5_specific_enthalpy(p, R5_T_from_p_s_ITER(p, s));
     default:
-      fprintf(stderr, "%s", "Region not recognized!\n");
+      fprintf(stderr, "Region %d not recognized in h_from_ps(p, s)!\n", region);
       exit(1);
       return 0.0;
   }
@@ -1993,6 +1993,7 @@ double p_from_hv(double h, double v)
   double p_min = IF97_SAT_P_MIN;
   double p_max = p_max_from_h(h);
   double v_min = v_from_pT(p_max, IF97_T_MIN);
+  // FIXME: should v_min = v_from_ph(p_max, h)
   // FIXME: also check v_max
 
   if (v < v_min)
@@ -2101,6 +2102,134 @@ void properties_from_hv(double h, double v, double * x, double * p, double * e, 
     properties_from_ph(p_find, h, x, &v_find, NULL, e, T, s, cv, cp, c, k, mu);
 
     if (v_find > v)   p_min = p_find;
+    else              p_max = p_find;
+
+    p_error = fabs((p_max - p_min) / p_find);
+    it ++;
+
+    //printf("it = %5d; p_find = %16.9e; v_find = %16.9e; p_min = %16.9e; p_max = %16.9e\n", it, p_find, v_find, p_min, p_max);
+    /*if (it > 900)
+      printf("it > 900\n");*/
+  }
+}
+
+/***************************************************************
+ * (h, s)-based properties
+ ***************************************************************/
+double p_from_hs(double h, double s)
+{
+  double p_min = IF97_SAT_P_MIN;
+  double p_max = p_max_from_h(h);
+  double s_min = s_from_ph(p_max, h);
+  // FIXME: also check s_max
+
+  if (s < s_min)
+  {
+    fprintf(stderr, "s = %16.9f is out of bounds: s < s_min from given h:\n", s);
+    fprintf(stderr, "  s_min = %16.9f, from given h = %16.9f!\n", s_min, h);
+    exit(1);
+  }
+
+  double p_find, s_find, p_error = 1.0;
+  unsigned int it = 0;
+  while ((p_error > 1.0e-9) && it < 1000)
+  {
+    p_find = 0.5 * (p_min + p_max);
+    s_find = s_from_ph(p_find, h);
+
+    if (s_find > s)   p_min = p_find;
+    else              p_max = p_find;
+
+    p_error = fabs((p_max - p_min) / p_find);
+    it ++;
+
+    //printf("it = %5d; p_find = %16.9e; v_find = %16.9e; p_min = %16.9e; p_max = %16.9e\n", it, p_find, v_find, p_min, p_max);
+    /*if (it > 900)
+      printf("it > 900\n");*/
+  }
+
+  return p_find;
+}
+
+double x_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return x_from_ph(p, h);
+}
+
+double v_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return v_from_ph(p, h);
+}
+
+double rho_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return rho_from_ph(p, h);
+}
+
+double e_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return e_from_ph(p, h);
+}
+
+double T_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return T_from_ph(p, h);
+}
+
+double cv_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return cv_from_ph(p, h);
+}
+
+double cp_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return cp_from_ph(p, h);
+}
+
+double c_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return c_from_ph(p, h);
+}
+
+double k_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return k_from_ph(p, h);
+}
+
+double mu_from_hs(double h, double s)
+{
+  double p = p_from_hs(h, s);
+  return mu_from_ph(p, h);
+}
+
+void properties_from_hs(double h, double s, double * x, double * v, double * rho, double * p, double * e, double * T,
+                         double * cv, double * cp, double * c, double * k, double * mu)
+{
+  double p_min = IF97_SAT_P_MIN;
+  double p_max = p_max_from_h(h);
+
+  // FIXME: check s_min and s_max
+  //double s_min = ...;
+  //double s_max = ...;
+
+  double p_find, s_find, p_error = 1.0;
+  unsigned int it = 0;
+  while ((p_error > 1.0e-9) && it < 1000)
+  {
+    p_find = 0.5 * (p_min + p_max);
+
+    properties_from_ph(p_find, h, x, v, rho, e, T, &s_find, cv, cp, c, k, mu);
+
+    if (s_find > s)   p_min = p_find;
     else              p_max = p_find;
 
     p_error = fabs((p_max - p_min) / p_find);

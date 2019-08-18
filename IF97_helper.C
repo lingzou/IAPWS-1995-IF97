@@ -842,3 +842,57 @@ double h_min_from_v(double v)
   else
     return IF97_H_SAT_VAP_TMIN; // FIXME: need further improvement
 }
+
+double p_max_from_s(double s)
+{
+  if (s > IF97_S_PMIN_TMAX)
+  {
+    fprintf(stderr, "Out of boundary: s > IF97_S_PMIN_TMAX in p_max_from_s().\n");
+    exit(1);
+    return 0.0;
+  }
+  else if (s > IF97_S_PMID_TMAX)
+  {
+    double p_min = IF97_SAT_P_MIN;
+    double p_max = IF97_P_MID;
+
+    double p_find, p_error = 1.0;
+    while (p_error > 1.0e-9)
+    {
+      p_find = 0.5 * (p_min + p_max);
+      double s_find = R5_specific_entropy(p_find, IF97_T_MAX);
+
+      if (s_find > s)   p_min = p_find;
+      else              p_max = p_find;
+
+      p_error = fabs((p_max - p_min) / p_find);
+    }
+
+    return p_find * (1.0 - 1.0e-8);
+  }
+  else if (s > IF97_S_PMID_T25)
+  {
+    return IF97_P_MID;
+  }
+  else if (s > IF97_S_PMAX_T25)
+  {
+    double p_min = IF97_P_MID;
+    double p_max = IF97_P_MAX;
+
+    double p_find, p_error = 1.0;
+    while (p_error > 1.0e-9)
+    {
+      p_find = 0.5 * (p_min + p_max);
+      double s_find = R2_specific_entropy(p_find, IF97_T_25);
+
+      if (s_find > s)   p_min = p_find;
+      else              p_max = p_find;
+
+      p_error = fabs((p_max - p_min) / p_find);
+    }
+
+    return p_find * (1.0 - 1.0e-8);
+  }
+  else
+    return IF97_P_MAX; // need refine
+}

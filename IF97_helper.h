@@ -11,6 +11,11 @@ const static double IF97_H_PMID_T25 = R2_specific_enthalpy(IF97_P_MID, IF97_T_25
 const static double IF97_H_PMID_TMAX = R5_specific_enthalpy(IF97_P_MID, IF97_T_MAX);
 const static double IF97_H_PMIN_TMAX = R5_specific_enthalpy(IF97_SAT_P_MIN, IF97_T_MAX);
 
+const static double IF97_S_PMAX_T25 = R2_specific_entropy(IF97_P_MAX, IF97_T_25);
+const static double IF97_S_PMID_T25 = R2_specific_entropy(IF97_P_MID, IF97_T_25);
+const static double IF97_S_PMID_TMAX = R5_specific_entropy(IF97_P_MID, IF97_T_MAX);
+const static double IF97_S_PMIN_TMAX = R5_specific_entropy(IF97_SAT_P_MIN, IF97_T_MAX);
+
 const static double IF97_VMIN_GLOBAL = R1_specific_volume(IF97_P_MAX, IF97_T_MIN);
 const static double IF97_V_SAT_LIQ_TMIN = R1_specific_volume(IF97_SAT_P_MIN, IF97_T_MIN);
 const static double IF97_V_SAT_VAP_TMIN = R2_specific_volume(IF97_SAT_P_MIN, IF97_T_MIN);
@@ -129,5 +134,7 @@ double R5_T_from_p_v_ITER(double p, double v);
 double p_max_from_h(double h);
 double h_max_from_v(double v);
 double h_min_from_v(double v);
+
+double p_max_from_s(double s);
 }
 #endif /*IF97_HELPER_H*/

@@ -12,7 +12,7 @@ do
 done
 
 # run all cases
-"./IF97" -test_all
+"./IF97-exe" -test_all
 
 # do diff for each case
 for case in "${unit_tests[@]}"

@@ -1,18 +1,22 @@
 SET (CMAKE_CXX_FLAGS "-std=gnu++11 ${CMAKE_CXX_FLAGS}")
-SET (CMAKE_C_COMPILER "/usr/local/bin/gcc-8")
-SET (CMAKE_CXX_COMPILER "/usr/local/bin/g++-8")
+SET (CMAKE_C_COMPILER "/usr/bin/gcc")
+SET (CMAKE_CXX_COMPILER "/usr/bin/g++")
 
 cmake_minimum_required (VERSION 3.0)
 project (IF97)
 
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
-message("Hello World" ${CMAKE_SOURCE_DIR})
+#message("Hello World" ${CMAKE_SOURCE_DIR})
 
 include_directories (${CMAKE_SOURCE_DIR})
+include_directories (${CMAKE_SOURCE_DIR}/IF97)
+include_directories (${CMAKE_SOURCE_DIR}/transport-properties)
 
 set (CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 AUX_SOURCE_DIRECTORY(${CMAKE_SOURCE_DIR} SRC_ROOT)
+AUX_SOURCE_DIRECTORY(${CMAKE_SOURCE_DIR}/IF97 SRC_IF97)
+AUX_SOURCE_DIRECTORY(${CMAKE_SOURCE_DIR}/transport-properties SRC_TranProp)
 
-ADD_EXECUTABLE (IF97 ${SRC_ROOT})
+ADD_EXECUTABLE (IF97-exe ${SRC_ROOT} ${SRC_IF97} ${SRC_TranProp})

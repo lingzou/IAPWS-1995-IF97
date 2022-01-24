@@ -54,8 +54,8 @@ print lib_IF97.B23_p_from_T(0.62315e3)
 print lib_IF97.p_sat_from_T(300.0)
 print lib_IF97.T_sat_from_p(10.0e6)
 '''
-print lib_IF97.R1_specific_enthalpy(611.657, 273.16)
-print lib_IF97.R2_specific_enthalpy(611.657, 273.16)
+print (lib_IF97.R1_specific_enthalpy(611.657, 273.16))
+print (lib_IF97.R2_specific_enthalpy(611.657, 273.16))
 
 '''
 N = 100000

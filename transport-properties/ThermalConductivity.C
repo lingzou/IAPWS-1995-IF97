@@ -72,7 +72,7 @@ double correlation_length_TC(double rho_bar, double T_bar, double zeta)
   double dchi_bar = rho_bar * (zeta - zeta_REF(rho_bar) * 1.5 / T_bar);
   dchi_bar = (dchi_bar > 0.0) ? dchi_bar : 0.0;
 
-  return 0.13 * std::pow(dchi_bar / 0.06, 0.630 / 1.239);
+  return 0.13 * pow(dchi_bar / 0.06, 0.630 / 1.239);
 }
 
 double Zy(double y, double rho_bar, double kappa)

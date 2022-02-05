@@ -4,6 +4,7 @@ from ctypes import *
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from math import *
 
 
 #lib_IF97 = ctypes.CDLL('lib_IF97.so')
@@ -29,6 +30,11 @@ lib_IF97.R2_specific_enthalpy.restype = c_double
 
 lib_IF97.h_from_pT.argtypes = [c_double, c_double]
 lib_IF97.h_from_pT.restype = c_double
+lib_IF97.s_from_pT.argtypes = [c_double, c_double]
+lib_IF97.s_from_pT.restype = c_double
+lib_IF97.p_sat_from_T.argtypes = [c_double]
+lib_IF97.p_sat_from_T.restype = c_double
+
 
 '''
 sat_data = np.loadtxt(os.path.join(os.pardir, 'tables', 'sat_line.dat'), skiprows = 1)
@@ -89,3 +95,25 @@ fig, ax = plt.subplots()
 ax.plot(p, h, color='r', marker='+', markersize=1, ls='')
 plt.show()
 '''
+
+#T_list = [0, 0.1, 0.2, 1]
+T_list = [2000]
+
+fig, ax = plt.subplots()
+
+for T in T_list :
+  p_array=[]
+  s_array=[]
+  for i in xrange(0, 201) :
+    #p_sat = lib_IF97.p_sat_from_T(273.15+T)
+    p_max = 50.0e6
+    p_min = 611.213
+    p = (log(p_max-0.00001)-log(p_min+0.00001))/200 * i + log(p_min+0.00001)
+    p = exp(p)
+    p_array.append(p)
+    s_array.append(lib_IF97.s_from_pT(p, 273.15+T))
+
+  ax.plot(p_array, s_array, color = "k", marker = "None", ls="-")
+#ax.plot(p_array, s1_array, color = "b", marker = "None", ls="-")
+#ax.set_yscale('log')
+plt.show()

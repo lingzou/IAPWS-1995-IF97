@@ -3,10 +3,9 @@ SET (CMAKE_C_COMPILER "/usr/bin/gcc")
 SET (CMAKE_CXX_COMPILER "/usr/bin/g++")
 
 cmake_minimum_required (VERSION 3.0)
-project (IF97)
+project (IF97 VERSION 0.01 DESCRIPTION "IAPWS-IF97")
 
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}")
-#message("Hello World" ${CMAKE_SOURCE_DIR})
 
 include_directories (${CMAKE_SOURCE_DIR})
 include_directories (${CMAKE_SOURCE_DIR}/IF97)
@@ -20,3 +19,4 @@ AUX_SOURCE_DIRECTORY(${CMAKE_SOURCE_DIR}/IF97 SRC_IF97)
 AUX_SOURCE_DIRECTORY(${CMAKE_SOURCE_DIR}/transport-properties SRC_TranProp)
 
 ADD_EXECUTABLE (IF97-exe ${SRC_ROOT} ${SRC_IF97} ${SRC_TranProp})
+ADD_LIBRARY (IF97LIB SHARED ${SRC_ROOT})

@@ -1,7 +1,7 @@
 #!/bin/bash
 declare -a unit_tests=("B23" "R1" "R1_PH" "R1_PS" "R2" "R2Meta" "B2bc" "R2_PH" "R2_PS" "R3" "R4" "R5"
   "R3_sat_line" "R4_sat_line" "R3_rho_pT" "R3_Tx_ph" "R3_Tx_ps" "SurfTension" "Viscosity"
-  "ThermCondNoEnhancement" "ThermCondR1" "ThermCondR2" "ThermCondR3")
+  "ThermCondNoEnhancement" "ThermCondR1" "ThermCondR2" "ThermCondR3" "IAPWS95_test1" "IAPWS95_test2")
 ALL_CASES_SUCCEEDED=true
 result=""
 

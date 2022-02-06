@@ -8,6 +8,7 @@
 #include "SurfaceTension.h"
 #include "Viscosity.h"
 #include "ThermalConductivity.h"
+#include "IAPWS1995_Rev.h"
 
 void Unit_Test_All()
 {
@@ -46,6 +47,9 @@ void Unit_Test_All()
   Unit_Test_ThermCond_R1();
   Unit_Test_ThermCond_R2();
   Unit_Test_ThermCond_R3();
+
+  Unit_Test_IAPWS95_Test1();
+  Unit_Test_IAPWS95_Test2();
 }
 
 void Unit_Test(std::string str)
@@ -666,4 +670,115 @@ void Unit_Test_ThermCond_R3()
   }
 
   fclose(ptr_File);
+}
+
+void Unit_Test_IAPWS95_Test1()
+{
+  // Table 6, page 15,
+  // [1]. Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use.
+  //        IAPWS R6-95(2018)
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/IAPWS95_test1.dat", "w");
+
+  double T = 500.0;
+  double rho = 838.025;
+
+  fprintf (ptr_File, "%s%f\n", "# T[K] = ", T);
+  fprintf (ptr_File, "%s%f\n", "# rho[kg/m^3] = ", rho);
+
+  fprintf (ptr_File, "%24s%20.8e\n", "phi_0", IAPWS1995Rev::func_phi_0(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_0_d_delta", IAPWS1995Rev::func_d_phi0_d_delta(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_0_d_delta2", IAPWS1995Rev::func_d_phi0_d_delta2(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_0_d_tau", IAPWS1995Rev::func_d_phi0_d_tau(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_0_d_tau2", IAPWS1995Rev::func_d_phi0_d_tau2(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi0_d_tau_d_delta", IAPWS1995Rev::func_d_phi0_d_tau_d_delta(T, rho));
+
+  fprintf (ptr_File, "%24s%20.8e\n", "phi_r", IAPWS1995Rev::func_phi_r(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_r_d_delta", IAPWS1995Rev::func_d_phir_d_delta(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_r_d_delta2", IAPWS1995Rev::func_d_phir_d_delta2(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_r_d_tau", IAPWS1995Rev::func_d_phir_d_tau(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phi_r_d_tau2", IAPWS1995Rev::func_d_phir_d_tau2(T, rho));
+  fprintf (ptr_File, "%24s%20.8e\n", "d_phir_d_tau_d_delta", IAPWS1995Rev::func_d_phir_d_tau_d_delta(T, rho));
+
+  fclose(ptr_File);
+}
+
+void Unit_Test_IAPWS95_Test2()
+{
+  // Table 7, page 15,
+  // [1]. Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use.
+  //        IAPWS R6-95(2018)
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/IAPWS95_test2.dat", "w");
+
+  const double T_array[11] = {
+              300.0,
+              300.0,
+              300.0,
+              500.0,
+              500.0,
+              500.0,
+              500.0,
+              647.0,
+              900.0,
+              900.0,
+              900.0 };
+
+  const double rho_array[11] = {
+              0.9965560E3,
+              0.1005308E4,
+              0.1188202E4,
+              0.4350000E0,
+              0.4532000E1,
+              0.8380250E3,
+              0.1084564E4,
+              0.3580000E3,
+              0.2410000E0,
+              0.5261500E2,
+              0.8707690E3 };
+
+  fprintf (ptr_File, "%20s%20s%20s%20s%20s%20s\n", "T [K]", "rho [kg/m^3]", "p [MPa]", "cv [kJ/kg-K]", "w (m/s)", "s [kJ/kg-K]");
+  for (int i = 0; i < 11; i++)
+    fprintf (ptr_File, "%20.8e%20.8e%20.8e%20.8e%20.8e%20.8e\n", T_array[i], rho_array[i],
+                IAPWS1995Rev::Pressure(T_array[i], rho_array[i]) * 1e-6,
+                IAPWS1995Rev::Cv(T_array[i], rho_array[i]) * 1e-3,
+                IAPWS1995Rev::SoundSpeed(T_array[i], rho_array[i]),
+                IAPWS1995Rev::Entropy(T_array[i], rho_array[i]) * 1e-3 );
+
+  fclose(ptr_File);
+  /*
+  double T = 275.0;
+  double rho_l = 0.999887406e3;
+  double rho_g = 0.550664919e-2;
+
+  std::cout << "T = " << T << std::endl;
+  fprintf(stderr, "%20s%20.8e\n", "p_l = ", IAPWS1995Rev::Pressure(T, rho_l) * 1e-6);
+  fprintf(stderr, "%20s%20.8e\n", "p_g = ", IAPWS1995Rev::Pressure(T, rho_g) * 1e-6);
+  fprintf(stderr, "%20s%20.8e\n", "h_l = ", IAPWS1995Rev::Enthalpy(T, rho_l) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "h_g = ", IAPWS1995Rev::Enthalpy(T, rho_g) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "s_l = ", IAPWS1995Rev::Entropy(T, rho_l) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "s_g = ", IAPWS1995Rev::Entropy(T, rho_g) * 1e-3);
+
+  T = 450.0;
+  rho_l = 0.890341250e3;
+  rho_g = 0.481200360e1;
+
+  std::cout << "T = " << T << std::endl;
+  fprintf(stderr, "%20s%20.8e\n", "p_l = ", IAPWS1995Rev::Pressure(T, rho_l) * 1e-6);
+  fprintf(stderr, "%20s%20.8e\n", "p_g = ", IAPWS1995Rev::Pressure(T, rho_g) * 1e-6);
+  fprintf(stderr, "%20s%20.8e\n", "h_l = ", IAPWS1995Rev::Enthalpy(T, rho_l) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "h_g = ", IAPWS1995Rev::Enthalpy(T, rho_g) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "s_l = ", IAPWS1995Rev::Entropy(T, rho_l) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "s_g = ", IAPWS1995Rev::Entropy(T, rho_g) * 1e-3);
+  T = 625.0;
+  rho_l = 0.567090385e3;
+  rho_g = 0.118290280e3;
+
+  std::cout << "T = " << T << std::endl;
+  fprintf(stderr, "%20s%20.8e\n", "p_l = ", IAPWS1995Rev::Pressure(T, rho_l) * 1e-6);
+  fprintf(stderr, "%20s%20.8e\n", "p_g = ", IAPWS1995Rev::Pressure(T, rho_g) * 1e-6);
+  fprintf(stderr, "%20s%20.8e\n", "h_l = ", IAPWS1995Rev::Enthalpy(T, rho_l) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "h_g = ", IAPWS1995Rev::Enthalpy(T, rho_g) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "s_l = ", IAPWS1995Rev::Entropy(T, rho_l) * 1e-3);
+  fprintf(stderr, "%20s%20.8e\n", "s_g = ", IAPWS1995Rev::Entropy(T, rho_g) * 1e-3);*/
 }

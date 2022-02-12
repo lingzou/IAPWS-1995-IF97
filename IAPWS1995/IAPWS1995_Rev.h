@@ -11,6 +11,7 @@ namespace IAPWS1995Rev
 {
   //Reference constants, Ref. [1]
   static const double T_critical  = 647.096;    //K         //Eqn (1) page 3, Ref. [1]
+  static const double p_critical	= 22.064E6;   //Pa        //Eqn (2.2b) page 398, Eqn (6.2) page 428, Ref. [2]
   static const double Rho_critical= 322.0;      //kg/m^3    //Eqn (2) page 3, Ref. [1]
   static const double R    = 0.46151805E3;      //J/kg-K    //Eqn (3) page 3, Ref. [1]
   //Note the different unit used in the code, [J/kg-K], and in the document, [kJ/kg-K].
@@ -200,6 +201,40 @@ namespace IAPWS1995Rev
   double Isentropic_TemperaturePressure_Coeff(const double Temperature, const double rho);
   double Second_Virial_Coeff(const double Temperature, const double rho);
   double Third_Virial_Coeff(const double Temperature, const double rho);
+
+  // Aux equations for saturation line and properties
+  // See discussions at the end of section 2.3.1 of Ref. [2],
+  //   the difference between the results of these aux equations and the above equations are extremely small,
+  //   they are not thermodynamically consistent.
+
+  // constants, page 399 and 400 of Ref. [2]
+  static const double a[6]  = { -7.85951783,  1.84408259,  -11.7866497,  22.6807411,  -15.9618719,  1.80122502  };
+  static const double coeff_P[6]  = { 1.0,    1.5,    3.0,    3.5,    4.0,    7.5    };
+  static const double b[6]  = { 1.99274064,   1.09965342,  -0.510839303,  -1.75493479,  -45.5170352,  -6.74694450E5  };
+  static const double coeff_L[6]  = { 1.0/3.0,    2.0/3.0,  5.0/3.0,  16.0/3.0,  43.0/3.0,  110.0/3.0  };
+  static const double c[6]  = { -2.0315024,    -2.6830294,  -5.38626492,  -17.2991605,  -44.7586581,  -63.9201063  };
+  static const double coeff_V[6]  = { 2.0/6.0,    4.0/6.0,  8.0/6.0,  18.0/6.0,  37.0/6.0,  71.0/6.0  };
+
+  static const double alpha_0   = 1.0e3;  // [J/kg]
+  static const double psi_0     = alpha_0 / T_critical; // [J/kg-K]
+  static const double d_alpha   = -1135.905627715;
+  static const double d_psi     = 2319.5246;
+  static const double d[5]      = { -5.65134998E-8,  2690.66631,  127.287297,  -135.003439,  0.981825814  };
+  static const double coeff_alpha[5]  = { -19.0,    1.0,    4.5,    5.0,    54.5    };
+
+  void temperatureInRange(const double T);  // helper function
+  double psat_from_T(const double T);       // eqn (2.5), page 398, Ref. [2]
+  double dpsat_dT(const double T);          // eqn (2.5a), page 399, Ref. [2]
+  double rho_l_sat_from_T(const double T);  // eqn (2.6), page 399, Ref. [2]
+  double rho_g_sat_from_T(const double T);  // eqn (2.7), page 399, Ref. [2]
+  double alpha_ratio(const double T);       // eqn (2.9), page 400, Ref. [2]
+  double psi_ratio(const double T);         // eqn (2.9a), page 400, Ref. [2]
+  double e_l_sat_from_T(const double T);    // eqn (2.12), page 400, Ref. [2]
+  double e_g_sat_from_T(const double T);    // eqn (2.13), page 400, Ref. [2]
+  double h_l_sat_from_T(const double T);    // eqn (2.10), page 400, Ref. [2]
+  double h_g_sat_from_T(const double T);    // eqn (2.11), page 400, Ref. [2]
+  double s_l_sat_from_T(const double T);    // eqn (2.14), page 401, Ref. [2]
+  double s_g_sat_from_T(const double T);    // eqn (2.15), page 401, Ref. [2]
 }
 
 #endif //IAPWS1995REV_H

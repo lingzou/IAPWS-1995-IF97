@@ -10,6 +10,7 @@
 #include "Viscosity.h"
 #include "ThermalConductivity.h"
 #include "IF97_interface.h"
+#include "IAPWS1995_Rev.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +29,33 @@ int main(int argc, char *argv[])
   }
 
   std::cout << std::scientific << std::setprecision(12) << "psat = " << p_sat_from_T(623.15) << std::endl;
+
+  double T_min = 273.16;
+  double T_max = 647.096;
+  int N = 100;
+  double dT = (T_max - T_min) / N;
+  for (int i = 0; i < N + 1; i++)
+  {
+    double T = T_min + dT * i;
+    std::cout << p_sat_from_T(T) << ", "
+              << rho_l_sat_from_T(T) << ", "
+              << rho_g_sat_from_T(T) << ", "
+              << e_l_sat_from_T(T) << ", "
+              << e_g_sat_from_T(T) << ", "
+              << h_l_sat_from_T(T) << ", "
+              << h_g_sat_from_T(T) << ", "
+              << s_l_sat_from_T(T) << ", "
+              << s_g_sat_from_T(T) << ", "
+              << IAPWS1995Rev::psat_from_T(T) << ", "
+              << IAPWS1995Rev::rho_l_sat_from_T(T) << ", "
+              << IAPWS1995Rev::rho_g_sat_from_T(T) << ", "
+              << IAPWS1995Rev::e_l_sat_from_T(T) << ", "
+              << IAPWS1995Rev::e_g_sat_from_T(T) << ", "
+              << IAPWS1995Rev::h_l_sat_from_T(T) << ", "
+              << IAPWS1995Rev::h_g_sat_from_T(T) << ", "
+              << IAPWS1995Rev::s_l_sat_from_T(T) << ", "
+              << IAPWS1995Rev::s_g_sat_from_T(T) << std::endl;
+  }
   /*
   std::cout << std::scientific << std::setprecision(8);
   for (int i = 0; i < 100; i++)

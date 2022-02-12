@@ -591,3 +591,158 @@ IAPWS1995Rev::Third_Virial_Coeff(const double Temperature, const double rho)
   // TODO: Table 3, page 11. Ref. [1]
   return 0;
 }
+
+/// Aux equations for saturation line
+void
+IAPWS1995Rev::temperatureInRange(const double T)
+{
+  if((T < 273.16) || (T > 647.096))
+  {
+    std::cerr << "Temperature = " << T << ", is out of range." << std::endl;
+    exit(1);
+  }
+}
+
+double
+IAPWS1995Rev::psat_from_T(const double T)
+{
+  temperatureInRange(T);
+
+  double upsilon = 1.0 - T / T_critical;
+
+  double val = 0;
+  for(int i = 0; i < 6; i++)
+    val += a[i] * pow(upsilon, coeff_P[i]);
+
+  return p_critical * exp(T_critical / T * val);
+}
+
+double
+IAPWS1995Rev::dpsat_dT(const double T)
+{
+  temperatureInRange(T);
+
+  double upsilon = 1.0 - T / T_critical;
+  double psat = psat_from_T(T);
+
+  double val = log(psat / p_critical); // FIXME: is log ln?
+  for(int i = 0; i < 6; i++)
+    val += coeff_P[i] * a[i] * pow(upsilon, coeff_P[i] - 1.0);
+
+  return -psat / T * val;
+}
+
+double
+IAPWS1995Rev::rho_l_sat_from_T(const double T)
+{
+  temperatureInRange(T);
+
+  double upsilon = 1.0 - T / T_critical;
+
+  double val = 1.0;
+  for(int i = 0; i < 6; i++)
+    val += b[i] * pow(upsilon, coeff_L[i]);
+
+  return Rho_critical * val;
+}
+
+double
+IAPWS1995Rev::rho_g_sat_from_T(const double T)
+{
+  temperatureInRange(T);
+
+  double upsilon = 1.0 - T / T_critical;
+
+  double val = 0;
+  for(int i = 0; i < 6; i++)
+    val += c[i] * pow(upsilon, coeff_V[i]);
+
+  return Rho_critical * exp(val);
+}
+
+double
+IAPWS1995Rev::alpha_ratio(const double T)
+{
+  double theta = T / T_critical;
+
+  double val = d_alpha;
+  for(int i = 0; i < 5; i++)
+    val += d[i] * pow(theta, coeff_alpha[i]);
+
+  return val;
+}
+
+double
+IAPWS1995Rev::psi_ratio(const double T)
+{
+  double theta = T / T_critical;
+
+  return d_psi + 19.0/20.0 * d[0] * pow(theta, -20.0) + d[1] * log(theta) + 9.0/7.0 * d[2] * pow(theta, 3.5)
+          + 1.25 * d[3] * pow(theta, 4.0) + 109.0/107.0 * d[4] * pow(theta, 53.5);
+}
+
+double
+IAPWS1995Rev::e_l_sat_from_T(const double T)
+{
+  temperatureInRange(T);
+
+  double p_sat = psat_from_T(T);
+  double dPdT_sat = dpsat_dT(T);
+  double rho_l_sat = rho_l_sat_from_T(T);
+
+  return (alpha_ratio(T) + 1.0e-3 * (T * dPdT_sat - p_sat) / rho_l_sat) * 1.0e3;
+}
+
+double
+IAPWS1995Rev::e_g_sat_from_T(const double T)
+{
+  temperatureInRange(T);
+
+  double p_sat = psat_from_T(T);
+  double dPdT_sat = dpsat_dT(T);
+  double rho_g_sat = rho_g_sat_from_T(T);
+
+  return (alpha_ratio(T) + 1.0e-3 * (T * dPdT_sat - p_sat) / rho_g_sat) * 1.0e3;
+}
+
+double
+IAPWS1995Rev::h_l_sat_from_T(const double T)
+{
+  temperatureInRange(T);
+
+  double dPdT_sat = dpsat_dT(T);
+  double rho_l_sat = rho_l_sat_from_T(T);
+
+  return (alpha_ratio(T) + 1.0e-3 * T * dPdT_sat / rho_l_sat) * 1.0e3;
+}
+
+double
+IAPWS1995Rev::h_g_sat_from_T(const double T)
+{
+  temperatureInRange(T);
+
+  double dPdT_sat = dpsat_dT(T);
+  double rho_g_sat = rho_g_sat_from_T(T);
+
+  return (alpha_ratio(T) + 1.0e-3 * T * dPdT_sat / rho_g_sat) * 1.0e3;
+}
+
+double
+IAPWS1995Rev::s_l_sat_from_T(const double T)
+{
+  double psi = psi_0 * psi_ratio(T);
+  double dPdT_sat = dpsat_dT(T);
+  double rho_l_sat = rho_l_sat_from_T(T);
+
+  return psi + dPdT_sat / rho_l_sat;
+}
+
+double
+IAPWS1995Rev::s_g_sat_from_T(const double T)
+{
+  double psi = psi_0 * psi_ratio(T);
+  double dPdT_sat = dpsat_dT(T);
+  double rho_g_sat = rho_g_sat_from_T(T);
+
+  return psi + dPdT_sat / rho_g_sat;
+}

@@ -603,6 +603,16 @@ IAPWS1995Rev::temperatureInRange(const double T)
   }
 }
 
+void
+IAPWS1995Rev::pressureInRange(const double p)
+{
+  if((p < psat_from_T(273.16)) || (p > psat_from_T(647.096)))
+  {
+    std::cerr << "Pressure = " << p << ", is out of range." << std::endl;
+    exit(1);
+  }
+}
+
 double
 IAPWS1995Rev::psat_from_T(const double T)
 {
@@ -615,6 +625,37 @@ IAPWS1995Rev::psat_from_T(const double T)
     val += a[i] * pow(upsilon, coeff_P[i]);
 
   return p_critical * exp(T_critical / T * val);
+}
+
+double
+IAPWS1995Rev::Tsat_from_p(const double p)
+{
+  pressureInRange(p);
+
+  double T_min = 273.16;
+  double T_max = 647.096;
+  double T_guess = 0.0;
+
+  int it = 0;           int it_max = 1000;
+  double rtol = 1e-9;   double error = 1.0;
+
+  while (it < it_max)
+  {
+    T_guess = 0.5 * (T_min + T_max);
+    error = (psat_from_T(T_guess) - p) / p;
+
+    if (abs(error) < rtol)
+      break;
+    else
+    {
+      if (error > 0.0)    T_max = T_guess;
+      else                T_min = T_guess;
+    }
+    it++;
+  }
+  if (it == it_max)
+    std::cerr << "Max it number reached in IAPWS1995Rev::Tsat_from_p\n";
+  return T_guess;
 }
 
 double

@@ -11,7 +11,7 @@ namespace IAPWS1995Rev
 {
   //Reference constants, Ref. [1]
   static const double T_critical  = 647.096;    //K         //Eqn (1) page 3, Ref. [1]
-  static const double p_critical	= 22.064E6;   //Pa        //Eqn (2.2b) page 398, Eqn (6.2) page 428, Ref. [2]
+  static const double p_critical  = 22.064E6;   //Pa        //Eqn (2.2b) page 398, Eqn (6.2) page 428, Ref. [2]
   static const double Rho_critical= 322.0;      //kg/m^3    //Eqn (2) page 3, Ref. [1]
   static const double R    = 0.46151805E3;      //J/kg-K    //Eqn (3) page 3, Ref. [1]
   //Note the different unit used in the code, [J/kg-K], and in the document, [kJ/kg-K].
@@ -223,7 +223,9 @@ namespace IAPWS1995Rev
   static const double coeff_alpha[5]  = { -19.0,    1.0,    4.5,    5.0,    54.5    };
 
   void temperatureInRange(const double T);  // helper function
+  void pressureInRange(const double p);     // helper function
   double psat_from_T(const double T);       // eqn (2.5), page 398, Ref. [2]
+  double Tsat_from_p(const double p);       // helper function, iterative inverse from psat_from_T
   double dpsat_dT(const double T);          // eqn (2.5a), page 399, Ref. [2]
   double rho_l_sat_from_T(const double T);  // eqn (2.6), page 399, Ref. [2]
   double rho_g_sat_from_T(const double T);  // eqn (2.7), page 399, Ref. [2]

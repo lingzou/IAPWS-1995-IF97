@@ -11,6 +11,7 @@
 #include "ThermalConductivity.h"
 #include "IF97_interface.h"
 #include "IAPWS1995_Rev.h"
+#include "IAPWS1995_Interface.h"
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +31,18 @@ int main(int argc, char *argv[])
 
   std::cout << std::scientific << std::setprecision(12) << "psat = " << p_sat_from_T(623.15) << std::endl;
 
+  std::cout << std::scientific << std::setprecision(12) << "psat = " << IAPWS1995Rev::psat_from_T(623.15) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "Tsat = " << IAPWS1995Rev::Tsat_from_p(1.652933992355e7) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1.652933992355e7, 620.15) = " << IAPWS1995Rev::rho_l_from_pT(1.652933992355e7, 620.15) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1.652933992355e7, 625.15) = " << IAPWS1995Rev::rho_l_from_pT(1.652933992355e7, 625.15) << std::endl;
+
+  std::cout << "p = " << IAPWS1995Rev::Pressure(625.15, 3.395353297020e2) << std::endl;
+
+  std::cout << "T_sat(1e7) = " << IAPWS1995Rev::Tsat_from_p(1e7) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 529) = " << IAPWS1995Rev::rho_l_from_pT(1e7, 529) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 553) = " << IAPWS1995Rev::rho_l_from_pT(1e7, 553) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 598) = " << IAPWS1995Rev::rho_l_from_pT(1e7, 598) << std::endl;
+  /*
   double T_min = 273.16;
   double T_max = 647.096;
   int N = 100;
@@ -55,7 +68,7 @@ int main(int argc, char *argv[])
               << IAPWS1995Rev::h_g_sat_from_T(T) << ", "
               << IAPWS1995Rev::s_l_sat_from_T(T) << ", "
               << IAPWS1995Rev::s_g_sat_from_T(T) << std::endl;
-  }
+  }*/
   /*
   std::cout << std::scientific << std::setprecision(8);
   for (int i = 0; i < 100; i++)

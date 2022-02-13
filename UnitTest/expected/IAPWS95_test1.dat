@@ -1,0 +1,14 @@
+# T[K] = 500.000000
+# rho[kg/m^3] = 838.025000
+                   phi_0      2.04797733e+00
+         d_phi_0_d_delta      3.84236747e-01
+        d_phi_0_d_delta2     -1.47637878e-01
+           d_phi_0_d_tau      9.04611106e+00
+          d_phi_0_d_tau2     -1.93249185e+00
+    d_phi0_d_tau_d_delta      0.00000000e+00
+                   phi_r     -3.42693206e+00
+         d_phi_r_d_delta     -3.64366650e-01
+        d_phi_r_d_delta2      8.56063701e-01
+           d_phi_r_d_tau     -5.81403435e+00
+          d_phi_r_d_tau2     -2.23440737e+00
+    d_phir_d_tau_d_delta     -1.12176915e+00

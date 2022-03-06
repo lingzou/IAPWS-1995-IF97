@@ -9,6 +9,7 @@
 #include "Viscosity.h"
 #include "ThermalConductivity.h"
 #include "IAPWS1995_Rev.h"
+#include "IAPWS1995_Interface.h"
 
 void Unit_Test_All()
 {
@@ -50,6 +51,8 @@ void Unit_Test_All()
 
   Unit_Test_IAPWS95_Test1();
   Unit_Test_IAPWS95_Test2();
+  Unit_Test_IAPWS95_pT_water();
+  Unit_Test_IAPWS95_pT_steam();
 }
 
 void Unit_Test(std::string str)
@@ -781,4 +784,76 @@ void Unit_Test_IAPWS95_Test2()
   fprintf(stderr, "%20s%20.8e\n", "h_g = ", IAPWS1995Rev::Enthalpy(T, rho_g) * 1e-3);
   fprintf(stderr, "%20s%20.8e\n", "s_l = ", IAPWS1995Rev::Entropy(T, rho_l) * 1e-3);
   fprintf(stderr, "%20s%20.8e\n", "s_g = ", IAPWS1995Rev::Entropy(T, rho_g) * 1e-3);*/
+}
+
+void
+Unit_Test_IAPWS95_pT_water()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/IAPWS95_pT_water.dat", "w");
+
+  double pp[5] = {1.0e6, 5.0e6, 10.0e6, 15.0e6, 20.0e6};
+  double TT[5][3] = { {300, 400, 460},
+                      {300, 400, 540},
+                      {400, 500, 590},
+                      {400, 500, 620},
+                      {400, 600, 640} };
+
+  for (int i = 0; i < 5; i++)
+    for (int j = 0; j < 3; j++)
+    {
+      double p = pp[i];
+      double T = TT[i][j];
+      double rho, e, h, s, cv, cp, c, k, mu;
+      IAPWS1995Rev::liquid_properties_from_pT(p, T, rho, e, h, s, cv, cp, c, k, mu);
+      fprintf(ptr_File, "p    [Pa]      = %20.8e\n", p);
+      fprintf(ptr_File, "T    [K]       = %20.8e\n", T);
+      fprintf(ptr_File, "rho  [kg/m3]   = %20.8e\n", rho);
+      fprintf(ptr_File, "e    [J/kg]    = %20.8e\n", e);
+      fprintf(ptr_File, "h    [J/kg]    = %20.8e\n", h);
+      fprintf(ptr_File, "s    [J/kg-K]  = %20.8e\n", s);
+      fprintf(ptr_File, "cv   [J/kg-K]  = %20.8e\n", cv);
+      fprintf(ptr_File, "cp   [J/kg-K]  = %20.8e\n", cp);
+      fprintf(ptr_File, "c    [m/s]     = %20.8e\n", c);
+      fprintf(ptr_File, "k    [W/m-K]   = %20.8e\n", k);
+      fprintf(ptr_File, "mu   [Pa*s]    = %20.8e\n\n", mu);
+    }
+
+  fclose(ptr_File);
+}
+
+void
+Unit_Test_IAPWS95_pT_steam()
+{
+  FILE * ptr_File;
+  ptr_File = fopen("UnitTest/IAPWS95_pT_steam.dat", "w");
+
+  double pp[5] = {1.0e6, 5.0e6, 10.0e6, 15.0e6, 20.0e6};
+  double TT[5][3] = { {440, 500, 700},
+                      {520, 600, 800},
+                      {570, 600, 800},
+                      {600, 800, 1000},
+                      {620, 800, 1000} };
+
+  for (int i = 0; i < 5; i++)
+    for (int j = 0; j < 3; j++)
+    {
+      double p = pp[i];
+      double T = TT[i][j];
+      double rho, e, h, s, cv, cp, c, k, mu;
+      IAPWS1995Rev::vapor_properties_from_pT(p, T, rho, e, h, s, cv, cp, c, k, mu);
+      fprintf(ptr_File, "p    [Pa]      = %20.8e\n", p);
+      fprintf(ptr_File, "T    [K]       = %20.8e\n", T);
+      fprintf(ptr_File, "rho  [kg/m3]   = %20.8e\n", rho);
+      fprintf(ptr_File, "e    [J/kg]    = %20.8e\n", e);
+      fprintf(ptr_File, "h    [J/kg]    = %20.8e\n", h);
+      fprintf(ptr_File, "s    [J/kg-K]  = %20.8e\n", s);
+      fprintf(ptr_File, "cv   [J/kg-K]  = %20.8e\n", cv);
+      fprintf(ptr_File, "cp   [J/kg-K]  = %20.8e\n", cp);
+      fprintf(ptr_File, "c    [m/s]     = %20.8e\n", c);
+      fprintf(ptr_File, "k    [W/m-K]   = %20.8e\n", k);
+      fprintf(ptr_File, "mu   [Pa*s]    = %20.8e\n\n", mu);
+    }
+
+  fclose(ptr_File);
 }

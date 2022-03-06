@@ -225,7 +225,10 @@ namespace IAPWS1995Rev
   void temperatureInRange(const double T);  // helper function
   void pressureInRange(const double p);     // helper function
   double psat_from_T(const double T);       // eqn (2.5), page 398, Ref. [2]
+  extern "C"
+  {
   double Tsat_from_p(const double p);       // helper function, iterative inverse from psat_from_T
+  }
   double dpsat_dT(const double T);          // eqn (2.5a), page 399, Ref. [2]
   double rho_l_sat_from_T(const double T);  // eqn (2.6), page 399, Ref. [2]
   double rho_g_sat_from_T(const double T);  // eqn (2.7), page 399, Ref. [2]

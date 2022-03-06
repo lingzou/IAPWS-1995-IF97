@@ -38,3 +38,5 @@ void Unit_Test_ThermCond_R3();
 
 void Unit_Test_IAPWS95_Test1();
 void Unit_Test_IAPWS95_Test2();
+void Unit_Test_IAPWS95_pT_water();
+void Unit_Test_IAPWS95_pT_steam();

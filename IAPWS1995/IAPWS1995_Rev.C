@@ -517,9 +517,10 @@ IAPWS1995Rev::SoundSpeed(const double Temperature, const double rho)
   else
   {
     fprintf(stderr, "%s", "c_squared < 0!\n");
-    exit(1);
+    return 0;
+    //exit(1);
   }
-  return 0;
+  //return 0;
 }
 
 double

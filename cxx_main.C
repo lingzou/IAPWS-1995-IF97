@@ -31,17 +31,51 @@ int main(int argc, char *argv[])
 
   std::cout << std::scientific << std::setprecision(12) << "psat = " << p_sat_from_T(623.15) << std::endl;
 
-  std::cout << std::scientific << std::setprecision(12) << "psat = " << IAPWS1995Rev::psat_from_T(623.15) << std::endl;
-  std::cout << std::scientific << std::setprecision(12) << "Tsat = " << IAPWS1995Rev::Tsat_from_p(1.652933992355e7) << std::endl;
-  std::cout << std::scientific << std::setprecision(12) << "rho_l(1.652933992355e7, 620.15) = " << IAPWS1995Rev::rho_l_from_pT(1.652933992355e7, 620.15) << std::endl;
-  std::cout << std::scientific << std::setprecision(12) << "rho_l(1.652933992355e7, 625.15) = " << IAPWS1995Rev::rho_l_from_pT(1.652933992355e7, 625.15) << std::endl;
+  //std::cout << std::scientific << std::setprecision(12) << "psat = " << IAPWS1995Rev::psat_from_T(623.15) << std::endl;
+  //std::cout << std::scientific << std::setprecision(12) << "Tsat = " << IAPWS1995Rev::Tsat_from_p(1.652933992355e7) << std::endl;
+  //std::cout << std::scientific << std::setprecision(12) << "rho_l(1.652933992355e7, 620.15) = " << IAPWS1995Rev::rho_l_from_pT(1.652933992355e7, 620.15) << std::endl;
+  //std::cout << std::scientific << std::setprecision(12) << "rho_l(1.652933992355e7, 625.15) = " << IAPWS1995Rev::rho_l_from_pT(1.652933992355e7, 625.15) << std::endl;
 
-  std::cout << "p = " << IAPWS1995Rev::Pressure(625.15, 3.395353297020e2) << std::endl;
 
+  std::cout << "p = " << IAPWS1995Rev::Pressure(620.00, 3.46015969e+02) << std::endl;
+  std::cout << "p = " << IAPWS1995Rev::Pressure(620.00, 6.77938862e+02) << std::endl;
+  std::cout << "p = " << IAPWS1995Rev::Pressure(636.00, 154.8611) << std::endl;
+  std::cout << "p = " << IAPWS1995Rev::Pressure(636.00, 150.0885) << std::endl;  
+
+  std::cout << "Tsat(19.3MPa) = " << IAPWS1995Rev::Tsat_from_p(19.3e6) << std::endl;
+
+  double rho_l = 0; bool search_failed = true;
+  /*
   std::cout << "T_sat(1e7) = " << IAPWS1995Rev::Tsat_from_p(1e7) << std::endl;
-  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 529) = " << IAPWS1995Rev::rho_l_from_pT(1e7, 529) << std::endl;
-  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 553) = " << IAPWS1995Rev::rho_l_from_pT(1e7, 553) << std::endl;
-  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 598) = " << IAPWS1995Rev::rho_l_from_pT(1e7, 598) << std::endl;
+  IAPWS1995Rev::rho_l_from_pT(1e7, 529, rho_l, search_failed);
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 529) = " << rho_l << std::endl;
+  IAPWS1995Rev::rho_l_from_pT(1e7, 553, rho_l, search_failed);
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 553) = " << rho_l << std::endl;
+  IAPWS1995Rev::rho_l_from_pT(1e7, 585, rho_l, search_failed);
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 585) = " << rho_l << std::endl;
+  IAPWS1995Rev::rho_l_from_pT(1e7, 598, rho_l, search_failed);
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(1e7, 598) = " << rho_l << std::endl;
+*/
+  IAPWS1995Rev::rho_l_from_pT(16.7e6, 624, rho_l, search_failed);
+  std::cout << std::scientific << std::setprecision(12) << "rho_l(16.7e6, 624) = " << (search_failed ? 0 : rho_l) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "e_l(16.7e6, 624) = " << IAPWS1995Rev::e_l_from_pT(16.7e6, 624) << std::endl;
+
+  std::cout << std::scientific << std::setprecision(12) << "rho_g_meta(4.7e6, 455) = " << 1.0 / R2Meta_specific_volume(4.7e6, 455) << std::endl;
+/*
+  std::cout << std::scientific << std::setprecision(12) << "rho_g(1e7, 561) = " << IAPWS1995Rev::rho_g_from_pT(1e7, 561) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "rho_g(1e7, 584) = " << IAPWS1995Rev::rho_g_from_pT(1e7, 584) << std::endl;
+  std::cout << std::scientific << std::setprecision(12) << "rho_g(1e7, 606) = " << IAPWS1995Rev::rho_g_from_pT(1e7, 606) << std::endl;
+*/
+
+  //std::cout << "p = " << IAPWS1995Rev::Pressure(585, 3.438828230716e2) << std::endl;
+/*
+  for (int i = 0; i < 400; i++)
+  {
+    double rho = 7.563471314695e2 - i*2;
+    double T = 585;
+    std::cout << i << ": " << IAPWS1995Rev::Pressure(T, rho)
+              << "; rho = " << rho << std::endl;
+  }*/
   /*
   double T_min = 273.16;
   double T_max = 647.096;
